@@ -23,8 +23,10 @@ installing the iOS export templates (part of Godot's ~1 GB template download).
 
 Requirements on the Mac:
 
-1. macOS with **Xcode** (open it once and install the iOS platform), then
-   `sudo xcode-select -s /Applications/Xcode.app`.
+1. macOS with **Xcode 26 or newer** (open it once and install the iOS
+   platform), then `sudo xcode-select -s /Applications/Xcode.app`. Godot
+   4.7.2's iOS templates use iOS 26 SDK symbols; Xcode 16 fails at the final
+   link step (confirmed on a GitHub runner).
 2. **Godot 4.7.2** (the same version as this project) in `/Applications`.
 3. Godot's **export templates for 4.7.2**: in Godot, *Editor → Manage Export
    Templates → Download and Install*.

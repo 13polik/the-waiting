@@ -42,7 +42,11 @@ command -v xcodebuild >/dev/null || fail "xcodebuild not found. Install Xcode, t
 # Read whole outputs (sed -n 1p), never cut a pipe short (head): with
 # pipefail, a writer killed by SIGPIPE fails the build.
 xcodebuild -version | sed -n 1p
-xcrun --sdk iphoneos --show-sdk-version >/dev/null 2>&1 || fail "the iOS SDK is missing. Open Xcode once and install the iOS platform (Settings → Components)."
+IOS_SDK="$(xcrun --sdk iphoneos --show-sdk-version 2>/dev/null)" || fail "the iOS SDK is missing. Open Xcode once and install the iOS platform (Settings → Components)."
+echo "iOS SDK $IOS_SDK"
+# Godot 4.7.2's iOS templates use iOS 26 SDK symbols (Metal 4, CADynamicRange);
+# with an older SDK the build only fails at the very end, at the link step.
+[[ "${IOS_SDK%%.*}" -ge 26 ]] || fail "Godot $GODOT_VERSION_EXPECTED needs Xcode 26 (iOS 26 SDK); this Xcode has iOS SDK $IOS_SDK. Select it with: sudo xcode-select -s /Applications/Xcode_26.app"
 [[ -x "$GODOT" ]] || fail "Godot not found at $GODOT (set GODOT=/path/to/Godot)."
 GODOT_VERSION="$("$GODOT" --version 2>/dev/null | sed -n 1p)"
 echo "Godot $GODOT_VERSION"

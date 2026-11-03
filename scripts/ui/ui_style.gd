@@ -35,6 +35,14 @@ static func title_font() -> Font:
 	return _title_font
 
 
+## Size of in-world markers (prompt glyphs, exit marks): a phone screen is
+## small and fingers are not, so touch screens get them twice as large.
+static func glyph_scale() -> float:
+	# `-- --touch-ui` previews the phone sizing on a desktop.
+	var touch := DisplayServer.is_touchscreen_available() or OS.has_feature("mobile") or "--touch-ui" in OS.get_cmdline_user_args()
+	return 2.0 if touch else 1.4
+
+
 static func scale() -> float:
 	var settings: Node = (Engine.get_main_loop() as SceneTree).root.get_node_or_null("SettingsManager")
 	return settings.text_scale() if settings != null else 1.0

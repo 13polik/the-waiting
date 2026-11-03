@@ -246,6 +246,15 @@ func _world() -> void:
 	_check(main.room.room_id == "home" and absf(p.global_position.x - 2925.0) < 70.0, "home again, beside the door (%.0f)" % p.global_position.x)
 	await _shot("w05_home_again")
 
+	# Tapping the floating marker itself (above the tally's own area) works.
+	var tally := _find("tally")
+	_teleport(900.0)
+	await _wait(0.4)
+	await _touch_world(tally.global_position + tally.prompt_offset + Vector2(18, -12))
+	await _wait_until(func() -> bool: return UIManager.is_text_open(), 8.0)
+	_check(UIManager.is_text_open() and UIManager._title.text == Loc.t("OBJ_TALLY_TITLE").to_upper(), "tapping just beside a floating marker examines its object")
+	await _read_to_end()
+
 	# The smooth stone completes the cairn.
 	_teleport(1225.0)
 	await _examine_id("cairn")

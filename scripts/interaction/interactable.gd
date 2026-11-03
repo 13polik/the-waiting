@@ -9,6 +9,9 @@ extends Node2D
 ## [method ping] gives a brief ring of feedback when an examination begins.
 
 const LightTextures := preload("res://scripts/world/light_textures.gd")
+const UiStyle := preload("res://scripts/ui/ui_style.gd")
+## Extra reach around the glyph for a fingertip, in world pixels.
+const GLYPH_TOUCH_RADIUS := 34.0
 
 var object_id: String = ""
 var title: String = ""
@@ -35,6 +38,7 @@ var _t: float = 0.0
 var _glyph: Node2D
 var _pulse: Node2D
 var _ping_ring: Node2D
+var _glyph_scale: float = 1.4
 
 const GLYPH := Color(0.82, 0.92, 0.9)
 
@@ -59,8 +63,12 @@ func ping() -> void:
 	_ping = 1.0
 
 
+## The object itself, or its glyph (with room for a fingertip): tapping the
+## marker always counts, even where it floats above the object's own area.
 func contains_point(world_pos: Vector2) -> bool:
-	return Rect2(global_position + hit_offset - hit_size * 0.5, hit_size).has_point(world_pos)
+	if Rect2(global_position + hit_offset - hit_size * 0.5, hit_size).has_point(world_pos):
+		return true
+	return world_pos.distance_to(global_position + prompt_offset) <= GLYPH_TOUCH_RADIUS * _glyph_scale
 
 
 ## Where to stand, on whichever side the creature approaches from.
@@ -73,7 +81,7 @@ func _process(delta: float) -> void:
 	_t += delta
 	var target := highlight
 	if target == 0.0 and WorldManager.examine_count(object_id) == 0:
-		target = 0.28
+		target = 0.5
 	_shown = move_toward(_shown, target, delta * 1.6)
 	_ping = maxf(0.0, _ping - delta * 1.4)
 	# Everything below changes transforms and modulate only: the glyph is
@@ -82,21 +90,24 @@ func _process(delta: float) -> void:
 	if _glyph.visible:
 		_glyph.position = prompt_offset + Vector2(0, sin(_t * 1.4) * 3.0)
 		_glyph.modulate.a = _shown
-		_pulse.scale = Vector2.ONE * (1.0 + 0.15 * sin(_t * 2.0))
+		_pulse.scale = Vector2.ONE * (1.0 + 0.12 * sin(_t * 2.0))
 	_ping_ring.visible = _ping > 0.0
 	if _ping_ring.visible:
 		_ping_ring.position = prompt_offset
-		_ping_ring.scale = Vector2.ONE * lerpf(0.19, 1.0, 1.0 - _ping)
+		_ping_ring.scale = Vector2.ONE * lerpf(0.19, 1.0, 1.0 - _ping) * _glyph_scale
 		_ping_ring.modulate.a = _ping * _ping
 
 
 func _build_glyph() -> void:
+	_glyph_scale = UiStyle.glyph_scale()
 	_glyph = _drawn_child(func(ci: Node2D) -> void:
-		ci.draw_circle(Vector2.ZERO, 14.0, Color(GLYPH, 0.05))
-		ci.draw_circle(Vector2.ZERO, 2.2, Color(GLYPH, 0.85)))
+		ci.draw_circle(Vector2.ZERO, 16.0, Color(GLYPH, 0.10))
+		ci.draw_circle(Vector2.ZERO, 7.0, Color(GLYPH, 0.16))
+		ci.draw_circle(Vector2.ZERO, 3.2, Color(GLYPH, 1.0)))
+	_glyph.scale = Vector2.ONE * _glyph_scale
 	add_child(_glyph)
 	_pulse = _drawn_child(func(ci: Node2D) -> void:
-		ci.draw_arc(Vector2.ZERO, 8.0, 0.0, TAU, 28, Color(GLYPH, 0.35), 1.2, true))
+		ci.draw_arc(Vector2.ZERO, 10.0, 0.0, TAU, 32, Color(GLYPH, 0.6), 1.6, true))
 	_glyph.add_child(_pulse)
 	_ping_ring = _drawn_child(func(ci: Node2D) -> void:
 		ci.draw_arc(Vector2.ZERO, 42.0, 0.0, TAU, 48, Color(GLYPH, 0.5), 1.8, true))

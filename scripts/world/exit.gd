@@ -8,6 +8,7 @@ extends Area2D
 signal reached(to_room: String, to_entry: String)
 
 const LightTextures := preload("res://scripts/world/light_textures.gd")
+const UiStyle := preload("res://scripts/ui/ui_style.gd")
 const MARK := Color(0.82, 0.92, 0.9)
 
 ## {"id", "x0", "x1", "to_room", "to_entry", "flag"?}
@@ -40,6 +41,7 @@ func _ready() -> void:
 	_mark.position = Vector2(walk_x - position.x, -26)
 	_mark.draw.connect(_draw_mark)
 	_mark.modulate.a = 0.0
+	_mark.scale = Vector2.ONE * UiStyle.glyph_scale()
 	add_child(_mark)
 	refresh()
 
@@ -69,7 +71,7 @@ func _process(delta: float) -> void:
 	if is_instance_valid(p) and p.is_inside_tree():
 		target = clampf(1.0 - absf(p.global_position.x - global_position.x) / 420.0, 0.0, 1.0)
 	_near = move_toward(_near, target, delta * 1.5)
-	_mark.modulate.a = _near * 0.55
+	_mark.modulate.a = _near * 0.85
 
 
 func _on_body_entered(body: Node) -> void:
@@ -86,4 +88,5 @@ func _on_body_entered(body: Node) -> void:
 func _draw_mark() -> void:
 	var dir := 1.0 if str(spec.get("side", "right")) == "right" else -1.0
 	for i in 3:
-		_mark.draw_circle(Vector2(dir * i * 14.0, 0), 2.4 - i * 0.5, Color(MARK, 0.9 - i * 0.25))
+		_mark.draw_circle(Vector2(dir * i * 14.0, 0), 7.0 - i * 1.2, Color(MARK, 0.12))
+		_mark.draw_circle(Vector2(dir * i * 14.0, 0), 3.0 - i * 0.5, Color(MARK, 1.0 - i * 0.25))

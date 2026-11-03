@@ -39,10 +39,12 @@ step() { echo; echo "==> $*"; }
 step "Checking the build machine"
 [[ "$(uname -s)" == "Darwin" ]] || fail "this script needs macOS (found $(uname -s))."
 command -v xcodebuild >/dev/null || fail "xcodebuild not found. Install Xcode, then: sudo xcode-select -s /Applications/Xcode.app"
-xcodebuild -version | head -1
+# Read whole outputs (sed -n 1p), never cut a pipe short (head): with
+# pipefail, a writer killed by SIGPIPE fails the build.
+xcodebuild -version | sed -n 1p
 xcrun --sdk iphoneos --show-sdk-version >/dev/null 2>&1 || fail "the iOS SDK is missing. Open Xcode once and install the iOS platform (Settings → Components)."
 [[ -x "$GODOT" ]] || fail "Godot not found at $GODOT (set GODOT=/path/to/Godot)."
-GODOT_VERSION="$("$GODOT" --version | head -1)"
+GODOT_VERSION="$("$GODOT" --version 2>/dev/null | sed -n 1p)"
 echo "Godot $GODOT_VERSION"
 [[ "$GODOT_VERSION" == "$GODOT_VERSION_EXPECTED"* ]] || fail "this project is made with Godot $GODOT_VERSION_EXPECTED; found $GODOT_VERSION."
 [[ -f "$TEMPLATES" ]] || fail "iOS export templates missing: $TEMPLATES
@@ -70,8 +72,12 @@ awk -v bundle="${BUNDLE_ID:-}" -v team="${TEAM_ID:-}" '
 	{ print }
 ' "$PRESETS" > "$PRESETS.tmp" && mv "$PRESETS.tmp" "$PRESETS"
 grep -E "^application/(bundle_identifier|export_project_only|app_store_team_id|short_version)=" "$PRESETS"
-grep -q '^application/bundle_identifier="com.example' "$PRESETS" && 	echo "warning: the bundle identifier is still the placeholder com.example.thewaiting — set BUNDLE_ID (or the preset) before signing."
-grep -q '^application/app_store_team_id=""' "$PRESETS" && 	echo "note: no App Store Team ID set (TEAM_ID). Fine for an unsigned build unless Godot requires it below."
+if grep -q '^application/bundle_identifier="com.example' "$PRESETS"; then
+	echo "warning: the bundle identifier is still the placeholder com.example.thewaiting — set BUNDLE_ID (or the preset) before signing."
+fi
+if grep -q '^application/app_store_team_id=""' "$PRESETS"; then
+	echo "note: no App Store Team ID set (TEAM_ID). Fine for an unsigned build unless Godot requires it below."
+fi
 
 step "Importing resources"
 "$GODOT" --headless --path "$WORK/project" --import >/dev/null 2>&1 || true
@@ -79,7 +85,7 @@ step "Importing resources"
 step "Exporting the Xcode project with Godot"
 mkdir -p "$WORK/xcode"
 "$GODOT" --headless --path "$WORK/project" --export-release "iOS" "$WORK/xcode/TheWaiting.ipa" 2>&1 | tee "$WORK/export.log" || true
-XCPROJ="$(find "$WORK/xcode" -maxdepth 1 -name "*.xcodeproj" | head -1)"
+XCPROJ="$(find "$WORK/xcode" -maxdepth 1 -name "*.xcodeproj" -print -quit)"
 if [[ -z "$XCPROJ" ]]; then
 	if grep -qi "team id" "$WORK/export.log"; then
 		fail "Godot requires an App Store Team ID even for this unsigned export. Set TEAM_ID (or the repository variable IOS_TEAM_ID) to your Apple Developer Team ID."
@@ -89,7 +95,7 @@ fi
 echo "Xcode project: $XCPROJ"
 
 step "Building for iOS devices without signing"
-SCHEME="$(xcodebuild -list -project "$XCPROJ" 2>/dev/null | awk '/Schemes:/{f=1;next} f&&NF{gsub(/^ +/,"");print;exit}')"
+SCHEME="$(xcodebuild -list -project "$XCPROJ" 2>/dev/null | awk '/Schemes:/{f=1;next} f&&NF&&!done{gsub(/^ +/,"");print;done=1}')"
 [[ -n "$SCHEME" ]] || SCHEME="$(basename "$XCPROJ" .xcodeproj)"
 echo "Scheme: $SCHEME"
 xcodebuild \
@@ -100,9 +106,10 @@ xcodebuild \
 	-destination "generic/platform=iOS" \
 	-derivedDataPath "$WORK/derived" \
 	CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" \
-	build | tail -20
+	build > "$WORK/xcodebuild.log" 2>&1 || { tail -80 "$WORK/xcodebuild.log"; fail "xcodebuild failed (last lines above)."; }
+tail -5 "$WORK/xcodebuild.log"
 
-APP="$(find "$WORK/derived/Build/Products/Release-iphoneos" -maxdepth 1 -name "*.app" | head -1)"
+APP="$(find "$WORK/derived/Build/Products/Release-iphoneos" -maxdepth 1 -name "*.app" -print -quit)"
 [[ -n "$APP" ]] || fail "xcodebuild did not produce an .app."
 
 step "Packaging the unsigned IPA"
@@ -112,7 +119,7 @@ rm -f "$OUT"
 (cd "$WORK/ipa" && zip -qry "$OUT" Payload)
 echo "Unsigned IPA: $OUT ($(du -h "$OUT" | cut -f1))"
 echo "Contents check:"
-unzip -l "$OUT" | awk 'NR>3 && /Payload\/[^/]+\.app\/[^/]+$/ {print "  " $4}' | head -8
+unzip -l "$OUT" | awk 'NR>3 && /Payload\/[^/]+\.app\/[^/]+$/ && n < 8 {print "  " $4; n++}'
 rm -rf "$WORK"
 trap - ERR
 echo

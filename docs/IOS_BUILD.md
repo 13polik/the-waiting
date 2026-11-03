@@ -92,3 +92,11 @@ and uploads `TheWaiting-unsigned.ipa` as a run artifact. It needs the
 repository **secret** `IOS_TEAM_ID` (masked in logs; the repository is
 public). Optional: the variable `IOS_BUNDLE_ID`. Start it from the *Actions*
 tab (*Run workflow*) or by pushing to `main`.
+
+**Current value of `IOS_TEAM_ID`: the placeholder `NOTEAMID00`**, set on
+2026-11-03 at the owner's request. It is not anyone's Team ID: the owner uses
+a free Apple ID (Personal Team) and signs the unsigned IPA with their own
+tool, which applies their own team. Godot only needs the field to be filled;
+with signing disabled the value is not part of any signature. Replace the
+secret with a real Team ID if you move to a paid Apple Developer account or
+let Xcode sign the build.

@@ -1,0 +1,204 @@
+keys,en,pl
+MENU_CONTINUE,Continue,Kontynuuj
+MENU_NEW_GAME,New Game,Nowa gra
+MENU_SETTINGS,Settings,Ustawienia
+MENU_CREDITS,Credits,Twórcy
+MENU_EXIT,Exit Game,Wyjdź z gry
+MENU_TAGLINE,Four hundred days beneath the world.,Czterysta dni pod światem.
+MENU_SAVE_STATUS,Day %d of 400,Dzień %d z 400
+MENU_SAVE_TOO_NEW,This save comes from a newer version of the game and cannot be opened.,Ten zapis pochodzi z nowszej wersji gry i nie może zostać otwarty.
+CONFIRM_NEW_TITLE,Begin again?,Zacząć od nowa?
+CONFIRM_NEW_BODY,Your current wait (day %d) will be set aside and the countdown will start from the beginning. The previous save is kept as a backup copy.,"Obecne czekanie (dzień %d) zostanie odłożone na bok, a odliczanie zacznie się od początku. Poprzedni zapis zostanie zachowany jako kopia zapasowa."
+CONFIRM_NEW_YES,Begin again,Zacznij od nowa
+UI_CANCEL,Cancel,Anuluj
+UI_BACK,Back,Wróć
+SETTINGS_TITLE,Settings,Ustawienia
+SET_LANGUAGE,Language,Język
+LANG_PL,Polski,Polski
+LANG_EN,English,English
+SET_SOUND,Sound,Dźwięk
+SET_MASTER,Master volume,Głośność ogólna
+SET_MUSIC,Music & ambience,Muzyka i otoczenie
+SET_SFX,Sound effects,Efekty dźwiękowe
+SET_DISPLAY,Display,Ekran
+SET_FULLSCREEN,Fullscreen,Pełny ekran
+SET_WINDOWED,Window,Okno
+SET_TEXT_SIZE,Text size,Rozmiar tekstu
+TEXT_SMALL,Small,Mały
+TEXT_NORMAL,Normal,Średni
+TEXT_LARGE,Large,Duży
+SET_RESET,Reset to defaults,Przywróć domyślne
+SET_RESET_DONE,Settings restored to defaults.,Przywrócono ustawienia domyślne.
+CREDITS_TITLE,Credits,Twórcy
+CREDITS_1,An original game about waiting.,Oryginalna gra o czekaniu.
+CREDITS_2,Every image is drawn by code and every sound is synthesised — nothing comes from stock asset libraries.,"Każdy obraz jest rysowany kodem, a każdy dźwięk syntezowany — nic nie pochodzi z gotowych bibliotek zasobów."
+CREDITS_3,Made with the Godot Engine (MIT licence).,Stworzono w silniku Godot (licencja MIT).
+CREDITS_4,Thank you for waiting.,"Dziękujemy, że czekasz."
+PAUSE_TITLE,Paused,Pauza
+PAUSE_RESUME,Resume,Wznów
+PAUSE_SAVE,Save Game,Zapisz grę
+PAUSE_SAVED,Saved.,Zapisano.
+PAUSE_SAVE_FAILED,The game could not be saved. Your last save is untouched.,Nie udało się zapisać gry. Ostatni zapis pozostał nienaruszony.
+PAUSE_MAIN_MENU,Return to Main Menu,Wróć do menu głównego
+PAUSE_DEV,Developer tools,Narzędzia deweloperskie
+PAUSE_NOTE,"Time keeps passing, even while the game is paused.","Czas płynie dalej, nawet gdy gra jest wstrzymana."
+DEV_TITLE,Developer tools,Narzędzia deweloperskie
+DEV_ADD_HOUR,+1 hour,+1 godzina
+DEV_ADD_DAY,+1 day,+1 dzień
+DEV_ADD_7,+7 days,+7 dni
+DEV_ADD_30,+30 days,+30 dni
+DEV_ADD_100,+100 days,+100 dni
+DEV_CLEAR,Clear offset,Usuń przesunięcie
+DEV_CLOSE,Close,Zamknij
+DEV_DAY,Simulated day: %d of 400,Symulowany dzień: %d z 400
+DEV_REAL,Real waiting time: %s,Rzeczywisty czas oczekiwania: %s
+DEV_OFFSET,Developer offset: %s,Przesunięcie deweloperskie: %s
+DEV_TOTAL,Total simulated time: %s,Łączny symulowany czas: %s
+DEV_REMAINING,Remaining: %s,Pozostało: %s
+DEV_STATS,Clock rollbacks: %d   ·   FPS: %d,Cofnięcia zegara: %d   ·   FPS: %d
+DEV_NOTE,The offset is stored separately in the save and never changes the real-time clock.,Przesunięcie jest zapisywane osobno i nigdy nie zmienia zegara czasu rzeczywistego.
+DEV_KEYS,F3 panel  ·  F5 +1 day  ·  F6 +1 hour  ·  F8 save,F3 panel  ·  F5 +1 dzień  ·  F6 +1 godzina  ·  F8 zapis
+HINT_TOUCH,Touch where you wish to go. Touch a thing to look closer.,"Dotknij miejsca, do którego chcesz pójść. Dotknij rzeczy, by przyjrzeć się jej z bliska."
+HINT_DESKTOP,"Click where you wish to go — or A / D to walk, E to look closer.","Kliknij miejsce, do którego chcesz pójść — albo A / D, by iść, i E, by się przyjrzeć."
+HINT_AWAY,You were away for %s. The cave kept waiting.,Nie było cię przez %s. Jaskinia czekała dalej.
+HINT_SAVED,Saved.,Zapisano.
+LIST_AND, and , i 
+TIME_MOMENT,a moment,chwilę
+UNIT_DAYS_ONE,%d day,%d dzień
+UNIT_DAYS_FEW,%d days,%d dni
+UNIT_DAYS_MANY,%d days,%d dni
+UNIT_HOURS_ONE,%d hour,%d godzinę
+UNIT_HOURS_FEW,%d hours,%d godziny
+UNIT_HOURS_MANY,%d hours,%d godzin
+UNIT_MINUTES_ONE,%d minute,%d minutę
+UNIT_MINUTES_FEW,%d minutes,%d minuty
+UNIT_MINUTES_MANY,%d minutes,%d minut
+OBJ_NEST_TITLE,The Nest,The Nest
+OBJ_NEST_1,"A hollow pressed into the stone and lined with moss, lint and the soft grey dust of years.","Zagłębienie wciśnięte w kamień, wyściełane mchem, kłaczkami i miękkim, szarym pyłem lat."
+OBJ_NEST_2,"It is still faintly warm. It is always faintly warm, even when you have been away.","Wciąż jest lekko ciepłe. Zawsze jest lekko ciepłe, nawet gdy cię nie było."
+OBJ_NEST_R1,Home. Or the shape of one.,Dom. Albo jego kształt.
+OBJ_NEST_R2,You could lie down. But the waiting would still be here when you woke.,Można by się położyć. Ale czekanie wciąż tu będzie po przebudzeniu.
+OBJ_NEST_R3,The moss remembers the shape of you.,Mech pamięta twój kształt.
+OBJ_CAIRN_TITLE,The Cairn,Kopiec
+OBJ_CAIRN_1,"Seven flat stones, stacked with care.",Siedem płaskich kamieni ułożonych z troską.
+OBJ_CAIRN_2,"You built this. You do not remember why — only that it mattered, once, very much.","To twoje dzieło. Nie pamiętasz już, po co powstało — tylko tyle, że kiedyś bardzo się liczyło."
+OBJ_CAIRN_R1,"Seven stones. You count them again, just in case.","Siedem kamieni. Liczysz je jeszcze raz, na wszelki wypadek."
+OBJ_CAIRN_R2,Still seven.,Wciąż siedem.
+OBJ_CAIRN_R3,One of them is warmer than the others. You have never decided which.,Jeden z nich jest cieplejszy od pozostałych. Wciąż nie wiadomo który.
+OBJ_PASSAGE_TITLE,The Old Passage,Stary korytarz
+OBJ_PASSAGE_1,The old passage is choked with fallen rock.,Stary korytarz jest zasypany zwaliskiem skał.
+OBJ_PASSAGE_2,"Somewhere beyond it, air is moving. It smells faintly of rain — a word you know without knowing how.","Gdzieś za nim porusza się powietrze. Pachnie lekko deszczem — słowem, które znasz, choć nie wiesz skąd."
+OBJ_PASSAGE_R1,Not yet.,Jeszcze nie.
+OBJ_PASSAGE_R2,The stones have not moved. You listen anyway.,Kamienie się nie poruszyły. Mimo to nasłuchujesz.
+OBJ_PASSAGE_R3,"A draught, thin as a thread, slips between the rocks.",Cienki jak nić przeciąg prześlizguje się między skałami.
+OBJ_TALLY_TITLE,The Tally,Rachunek dni
+OBJ_TALLY_1,"Scratches in the stone, one for every day you have waited.",Rysy w kamieniu — po jednej za każdy dzień czekania.
+OBJ_TALLY_ONLY_ONE,There is only one so far. It looks very lonely.,Na razie jest tylko jedna. Wygląda na bardzo samotną.
+OBJ_TALLY_COUNT_ONE,There is %d of them now.,Jest już %d.
+OBJ_TALLY_COUNT_FEW,There are %d of them now.,Są już %d.
+OBJ_TALLY_COUNT_MANY,There are %d of them now.,Jest ich już %d.
+OBJ_TALLY_STILL_ONE,Still only one. Tomorrow there will be two.,Wciąż tylko jedna. Jutro będą dwie.
+OBJ_TALLY_R1_ONE,%d mark. You left room for four hundred.,%d rysa. Na ścianie jest miejsce na czterysta.
+OBJ_TALLY_R1_FEW,%d marks. You left room for four hundred.,%d rysy. Na ścianie jest miejsce na czterysta.
+OBJ_TALLY_R1_MANY,%d marks. You left room for four hundred.,%d rys. Na ścianie jest miejsce na czterysta.
+OBJ_TALLY_R2,"%d. You run a finger along them, one by one.","%d. Wodzisz po nich palcem, jedna po drugiej."
+OBJ_CRACK_TITLE,The Crack Above,Szczelina w górze
+OBJ_CRACK_1,"High above, a crack splits the ceiling, and a thread of grey light comes down through it.","Wysoko w górze sklepienie przecina rysa, a przez nią spływa nitka szarego światła."
+OBJ_CRACK_2,It is not sunlight. You are fairly sure it is not sunlight.,To nie jest światło słońca. Prawie na pewno nie jest to światło słońca.
+OBJ_CRACK_R1,The light has not changed. Neither have you.,Światło się nie zmieniło. Ty też nie.
+OBJ_CRACK_R2,"Dust turns slowly in the grey, as if it had nowhere to be.","Pył wiruje powoli w szarości, jakby nie miał dokąd się spieszyć."
+OBJ_CRACK_R3,You wonder who is looking down from the other end of it.,"Zastanawiasz się, kto patrzy w dół z drugiego końca."
+OBJ_POOL_TITLE,The Still Pool,Cicha sadzawka
+OBJ_POOL_1,"Water gathers here, one drop at a time.",Woda zbiera się tu kropla po kropli.
+OBJ_POOL_2,You once tried to count the drops. The number always slipped away somewhere in the thousands.,Liczenie kropel nigdy się nie udaje. Liczba zawsze ginie gdzieś w tysiącach.
+OBJ_POOL_R1,"Drip. And then, eventually — drip.","Kap. A potem, w końcu — kap."
+OBJ_POOL_R2,Your reflection waits too. It is better at it than you are.,Twoje odbicie też czeka. Wychodzi mu to lepiej niż tobie.
+OBJ_POOL_R3,The water is very cold and very patient.,Woda jest bardzo zimna i bardzo cierpliwa.
+OBJ_CAPS_TITLE,Pale Caps,Blade kapelusze
+OBJ_CAPS_1,"Small pale caps, glowing the colour of cold breath.","Małe, blade kapelusze świecące barwą zimnego oddechu."
+OBJ_CAPS_2,They grow so slowly that you only notice when you stop looking.,"Rosną tak powoli, że widać to dopiero wtedy, gdy przestaje się patrzeć."
+OBJ_CAPS_SAME,They have not changed. You are almost sure they have not changed.,Nie zmieniły się. Prawie na pewno się nie zmieniły.
+OBJ_CAPS_MORE,There are more of them than before. You are sure of it now.,Jest ich więcej niż przedtem. Teraz nie ma już wątpliwości.
+OBJ_CAPS_SPREAD,"They have spread along the stone like a slow, cold fire.","Rozeszły się po kamieniu jak powolny, zimny ogień."
+OBJ_DOOR_TITLE,The Door,Drzwi
+OBJ_DOOR_1,"A great door of carved stone, older than the cave around it.","Wielkie drzwi z rzeźbionego kamienia, starsze niż jaskinia wokół nich."
+OBJ_DOOR_2,Circles within circles. Notches too small and too many to count.,"Kręgi w kręgach. Nacięcia zbyt drobne i zbyt liczne, by je policzyć."
+OBJ_DOOR_3,"If you rest against it and wait long enough, you can feel it: something on the other side, breathing very, very slowly.","Jeśli oprzeć się o nie i czekać dość długo, można to poczuć: coś po drugiej stronie oddycha bardzo, bardzo powoli."
+OBJ_DOOR_R1,It is still breathing.,Wciąż oddycha.
+OBJ_DOOR_R2,"The notches around the circle — four hundred, perhaps. You lose count every time.",Nacięć wokół kręgu jest może czterysta. Za każdym razem gubisz rachunek.
+OBJ_DOOR_R3,Not yet. But closer than before.,Jeszcze nie. Ale bliżej niż przedtem.
+ROOM_HOME,Home,Dom
+ROOM_NARROW,The Narrow Way,Wąskie Przejście
+ROOM_HALL,The Hall of Echoes,Sala Ech
+ROOM_GARDEN,The Still Garden,Cichy Ogród
+PLACE_NEW,A new place,Nowe miejsce
+SATCHEL_TITLE,Satchel,Torba
+SATCHEL_EMPTY,Nothing yet. The cave keeps its things close.,Na razie nic. Jaskinia trzyma swoje rzeczy blisko.
+SATCHEL_PLACES,Places found: %d of %d,Odkryte miejsca: %d z %d
+PAUSE_SATCHEL,Satchel,Torba
+TOAST_FOUND,Into the satchel: %s,Do torby: %s
+ITEM_STONE_TITLE,Smooth Stone,Gładki kamień
+ITEM_STONE_DESC,Worn round by water over a very long time. It fits in the hand as if it were made for it.,"Wygładzony przez wodę przez bardzo długi czas. Leży w dłoni, jakby był dla niej zrobiony."
+ITEM_STONE_FOUND_1,"In the hollow beneath the trickle lies a stone, worn perfectly smooth.","W zagłębieniu pod strużką leży kamień, wygładzony do perfekcji."
+ITEM_STONE_FOUND_2,You take it. It feels as if it belongs somewhere.,"Zabierasz go. Wydaje się, że gdzieś pasuje."
+ITEM_WING_TITLE,Moth Wing,Skrzydło ćmy
+ITEM_WING_DESC,"Pale and dry as paper, dusted with a powder that glows faintly in the dark. There are no moths down here.","Blade i suche jak papier, pokryte pyłkiem, który słabo świeci w ciemności. Tu na dole nie ma ciem."
+ITEM_WING_FOUND_1,"On the tip of a stalagmite rests a single wing, light as breath.","Na czubku stalagmitu spoczywa pojedyncze skrzydło, lekkie jak oddech."
+ITEM_WING_FOUND_2,Where did it come from? You fold it carefully into your satchel.,Skąd się tu wzięło? Ostrożnie wkładasz je do torby.
+ITEM_FRAGMENT_TITLE,Carved Fragment,Rzeźbiony odłamek
+ITEM_FRAGMENT_DESC,A broken piece of carved stone. Its grooves are circles within circles — the same as on the great door.,Odłamany kawałek rzeźbionego kamienia. Jego żłobienia to kręgi w kręgach — takie same jak na wielkich drzwiach.
+ITEM_FRAGMENT_FOUND_1,Among the rubble of the fallen pillar lies a piece with carvings on it.,Wśród gruzu zwalonej kolumny leży kawałek z rzeźbieniami.
+ITEM_FRAGMENT_FOUND_2,The circles look familiar. You take it with you.,Kręgi wyglądają znajomo. Zabierasz go ze sobą.
+ITEM_BLOOM_TITLE,Pale Bloom,Blady kwiat
+ITEM_BLOOM_DESC,A flower that grew without sun. It does not wilt. It smells faintly of rain.,"Kwiat, który wyrósł bez słońca. Nie więdnie. Pachnie lekko deszczem."
+ITEM_BLOOM_FOUND_1,In the grey light grows a single pale flower.,W szarym świetle rośnie pojedynczy blady kwiat.
+ITEM_BLOOM_FOUND_2,You pick it gently. It does not seem to mind.,Zrywasz go delikatnie. Chyba nie ma nic przeciwko.
+OBJ_CAIRN_PLACE_1,"Seven flat stones — and the smooth stone in your satchel, waiting.","Siedem płaskich kamieni — i gładki kamień w twojej torbie, czekający."
+OBJ_CAIRN_PLACE_2,You set it on top. Eight. Now you remember why it mattered.,"Kładziesz go na szczycie. Osiem. Teraz pamiętasz, dlaczego to było ważne."
+OBJ_CAIRN_EIGHT_R1,Eight stones. It feels finished — or nearly.,Osiem kamieni. Wydaje się skończony — albo prawie.
+OBJ_CAIRN_EIGHT_R2,The smooth one at the top catches the lantern light.,Ten gładki na szczycie łapie światło latarni.
+OBJ_FOSSIL_TITLE,The Spiral,Spirala
+OBJ_FOSSIL_1,"A spiral pressed into the rock, finer than any carving.","Spirala odciśnięta w skale, delikatniejsza niż jakakolwiek rzeźba."
+OBJ_FOSSIL_2,"Something lived here once, when this stone was still mud. It waited too, in its way.","Coś tu kiedyś żyło, gdy ten kamień był jeszcze mułem. Na swój sposób też czekało."
+OBJ_FOSSIL_R1,It has waited longer than you. It is still waiting.,Czeka dłużej niż ty. Wciąż czeka.
+OBJ_FOSSIL_R2,You trace the spiral inward. It ends in a point too small to see.,"Wodzisz palcem po spirali do środka. Kończy się punktem zbyt małym, by go dostrzec."
+OBJ_MARKS_TITLE,Other Marks,Inne znaki
+OBJ_MARKS_1,"Scratches in groups, like your tally. But these come in sevens.","Rysy w grupach, jak twój rachunek dni. Tylko że te układają się po siedem."
+OBJ_MARKS_2,They are old — older than the dust in them. They are not yours.,"Są stare — starsze niż pył, który je wypełnia. Nie są twoje."
+OBJ_MARKS_R1,You count them again. They do not come out even.,Liczysz je jeszcze raz. Nie wychodzi równo.
+OBJ_MARKS_R2,Someone waited here before you.,Ktoś czekał tu przed tobą.
+OBJ_TRICKLE_TITLE,The Trickle,Strużka
+OBJ_TRICKLE_1,A thread of water runs down the wall into a hollow it has worn for itself.,"Nitka wody spływa po ścianie do zagłębienia, które sama sobie wyżłobiła."
+OBJ_TRICKLE_R1,It has all the time in the world.,Ma cały czas świata.
+OBJ_CHIMES_TITLE,Hanging Stones,Wiszące kamienie
+OBJ_CHIMES_1,"Flat stones hang out of the dark on long cords, far too high to have been hung by anyone small.","Płaskie kamienie zwisają z ciemności na długich sznurach — za wysoko, by zawiesił je ktoś mały."
+OBJ_CHIMES_2,You touch one. The note goes out into the hall and comes back changed.,Dotykasz jednego. Dźwięk odpływa w głąb sali i wraca odmieniony.
+OBJ_CHIMES_R1,The hall answers in its own time.,Sala odpowiada w swoim czasie.
+OBJ_CHIMES_R2,Three notes. The echo keeps a fourth.,Trzy dźwięki. Echo zatrzymuje czwarty.
+OBJ_CHIMES_R3,You wait for the last echo to fade. It takes a long while.,"Czekasz, aż wybrzmi ostatnie echo. Trwa to długo."
+OBJ_PILLAR_TITLE,The Fallen Pillar,Zwalona kolumna
+OBJ_PILLAR_1,A pillar of carved stone lies broken across the floor.,Kolumna z rzeźbionego kamienia leży rozbita w poprzek posadzki.
+OBJ_PILLAR_2,"Someone built here, once. Someone who knew about doors.","Ktoś tu kiedyś budował. Ktoś, kto wiedział coś o drzwiach."
+OBJ_PILLAR_R1,"The carvings run in circles, like the door at home.","Rzeźbienia biegną kręgami, jak na drzwiach w domu."
+OBJ_PILLAR_R2,It fell a long time ago. Nothing has come to lift it.,"Upadła bardzo dawno. Nic nie przyszło, by ją podnieść."
+OBJ_VEINS_TITLE,Bright Veins,Jasne żyły
+OBJ_VEINS_1,Threads of some pale mineral run through the wall and give off a faint glow.,Przez ścianę biegną nitki jakiegoś bladego minerału i lekko świecą.
+OBJ_VEINS_R1,"They brighten, very slightly, when the hanging stones are rung.","Rozjaśniają się, bardzo nieznacznie, gdy zadzwonią wiszące kamienie."
+OBJ_LOOSE_TITLE,Loose Stones,Luźne kamienie
+OBJ_LOOSE_1,"The wall here is not wall at all — only stones, piled up and settled.","Ściana nie jest tu wcale ścianą — to tylko ułożone, osiadłe kamienie."
+OBJ_LOOSE_2,"You pull at one. Then another. They give way, and cool air breathes through the gap.","Ciągniesz za jeden. Potem za kolejny. Ustępują, a przez szczelinę wpływa chłodne powietrze."
+OBJ_LOOSE_R1,The way is open now.,Droga jest teraz otwarta.
+OBJ_LOOSE_R2,"Cool air keeps coming through, smelling of green.","Wciąż napływa chłodne powietrze, pachnące zielenią."
+OBJ_MOSS_TITLE,Glowing Moss,Świecący mech
+OBJ_MOSS_1,"A soft bed of moss glows here, the colour of the pale caps at home, only brighter.","Miękki dywan mchu świeci tu barwą bladych kapeluszy z domu, tylko jaśniej."
+OBJ_MOSS_2,It is warm. Warmer than The Nest.,Jest ciepły. Cieplejszy niż The Nest.
+OBJ_MOSS_R1,You could stay here a while.,Można by tu zostać na chwilę.
+OBJ_MOSS_R2,"The glow breathes, slowly, like the door.","Blask oddycha, powoli, jak drzwi."
+OBJ_SPRING_TITLE,The Spring,Źródełko
+OBJ_SPRING_1,Clear water rises here from somewhere below and spills away into the dark.,Czysta woda wypływa tu skądś z dołu i odpływa w ciemność.
+OBJ_SPRING_R1,Below this place there is more place.,Pod tym miejscem jest jeszcze więcej miejsca.
+OBJ_SPRING_R2,The water is warm. That is new.,Woda jest ciepła. To coś nowego.
+OBJ_SKYLIGHT_TITLE,The Grey Light,Szare światło
+OBJ_SKYLIGHT_1,"The grey light reaches even here, through another crack far above.","Szare światło dociera nawet tutaj, przez kolejną szczelinę wysoko w górze."
+OBJ_SKYLIGHT_2,"The same light. Perhaps the same crack. Perhaps the same someone, looking down.","To samo światło. Może ta sama szczelina. Może ten sam ktoś, patrzący w dół."
+OBJ_SKYLIGHT_R1,Things grow in it.,Rzeczy w nim rosną.

@@ -1,0 +1,130 @@
+# Builds an UNSIGNED iOS .ipa of THE WAITING on a macOS runner and uploads it
+# as a workflow artifact. Nothing here signs the app, and no certificates,
+# profiles, keys or passwords are used or needed.
+#
+# Optional repository variables (Settings → Secrets and variables → Actions →
+# Variables). They are not secrets; leave them unset and the export preset's
+# values are used, with a warning in the job summary:
+#   IOS_BUNDLE_ID   your bundle identifier (preset: com.example.thewaiting)
+#   IOS_TEAM_ID     your Apple Developer Team ID, only if Godot requires one
+
+name: iOS IPA (unsigned)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-ipa-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The exact Godot release this project is made and tested with.
+  GODOT_VERSION: "4.7.2"
+  GODOT_RELEASE: "4.7.2-stable"
+
+jobs:
+  ios:
+    name: Export and build (unsigned)
+    runs-on: macos-15
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out the project
+        uses: actions/checkout@v4
+
+      - name: Show the build machine
+        run: |
+          sw_vers
+          xcodebuild -version
+          echo "iOS SDK: $(xcrun --sdk iphoneos --show-sdk-version)"
+
+      - name: Cache Godot and export templates
+        id: godot-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/Library/Application Support/Godot/export_templates/${{ env.GODOT_VERSION }}.stable
+          key: godot-${{ env.GODOT_RELEASE }}-macos-v1
+
+      - name: Download and verify Godot ${{ env.GODOT_RELEASE }} and its export templates
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          base="https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}"
+          editor="Godot_v${GODOT_RELEASE}_macos.universal.zip"
+          templates="Godot_v${GODOT_RELEASE}_export_templates.tpz"
+          mkdir -p ~/godot && cd ~/godot
+          curl -fsSL --retry 3 -o "$editor" "$base/$editor"
+          curl -fsSL --retry 3 -o "$templates" "$base/$templates"
+          curl -fsSL --retry 3 -o SHA512-SUMS.txt "$base/SHA512-SUMS.txt"
+          # Refuse anything that does not match Godot's published checksums.
+          for f in "$editor" "$templates"; do
+            expected="$(awk -v f="$f" '$2 == f || $2 == "*"f {print $1}' SHA512-SUMS.txt)"
+            [ -n "$expected" ] || { echo "::error::$f is not listed in SHA512-SUMS.txt"; exit 1; }
+            actual="$(shasum -a 512 "$f" | awk '{print $1}')"
+            [ "$expected" = "$actual" ] || { echo "::error::checksum mismatch for $f"; exit 1; }
+            echo "verified $f"
+          done
+          unzip -q "$editor"
+          unzip -q "$templates"
+          dest="$HOME/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$dest"
+          mv templates/* "$dest/"
+          rm -rf templates "$editor" "$templates" SHA512-SUMS.txt
+          test -f "$dest/ios.zip" || { echo "::error::ios.zip missing from the export templates"; exit 1; }
+
+      - name: Check Godot
+        run: |
+          "$HOME/godot/Godot.app/Contents/MacOS/Godot" --version
+          ls -la "$HOME/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.stable/ios.zip"
+
+      - name: Report missing iOS settings
+        env:
+          BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
+          TEAM_ID: ${{ vars.IOS_TEAM_ID }}
+        run: |
+          {
+            echo "### iOS settings used"
+            if [ -n "$BUNDLE_ID" ]; then echo "- Bundle identifier: \`$BUNDLE_ID\` (repository variable)";
+            else echo "- ⚠️ Bundle identifier: preset placeholder \`com.example.thewaiting\` — set the \`IOS_BUNDLE_ID\` variable before signing"; fi
+            if [ -n "$TEAM_ID" ]; then echo "- Team ID: set (repository variable)";
+            else echo "- Team ID: not set (not needed unless Godot refuses the export)"; fi
+            echo "- App icon 1024×1024: not set in the preset (Godot falls back to the project icon)"
+            echo "- Signing: none — the IPA is unsigned"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Export the Xcode project and build the unsigned IPA
+        env:
+          BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
+          TEAM_ID: ${{ vars.IOS_TEAM_ID }}
+        run: |
+          export GODOT="$HOME/godot/Godot.app/Contents/MacOS/Godot"
+          chmod +x tools/ios/build_unsigned_ipa.sh
+          tools/ios/build_unsigned_ipa.sh
+
+      - name: Describe the IPA
+        run: |
+          ipa=build/ios/TheWaiting-unsigned.ipa
+          {
+            echo "### Unsigned IPA"
+            echo "- Size: $(du -h "$ipa" | cut -f1)"
+            echo "- SHA-256: \`$(shasum -a 256 "$ipa" | cut -d' ' -f1)\`"
+            echo "- Sign it yourself before installing on a device."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheWaiting-${{ github.run_number }}-unsigned-ipa
+          path: build/ios/TheWaiting-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14

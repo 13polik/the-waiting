@@ -38,12 +38,18 @@ func _ready() -> void:
 			mode = "world-check"
 		elif arg == "--selftest-lifecycle":
 			mode = "lifecycle"
+		elif arg == "--selftest-days":
+			mode = "days"
+		elif arg == "--selftest-mods":
+			mode = "mods"
 	match mode:
 		"fps": _fps()
 		"lifecycle": _lifecycle()
 		"world": _world()
 		"fps-areas": _fps_areas()
 		"world-check": _world_check()
+		"days": _days()
+		"mods": _mods()
 		"write": _persist_write()
 		"check": _persist_check()
 		_: _full()
@@ -658,3 +664,181 @@ func _check(cond: bool, what: String) -> void:
 func _finish() -> void:
 	print("SELFTEST PASS" if _fails.is_empty() else "SELFTEST FAIL: " + ", ".join(_fails))
 	get_tree().quit(0 if _fails.is_empty() else 1)
+
+
+const DAY_SECONDS := 86400.0
+const Notes := preload("res://scripts/data/notes.gd")
+const BloomSprout := preload("res://scripts/world/props/bloom_sprout.gd")
+const ItemsReg := preload("res://scripts/data/items.gd")
+
+
+## 0.4: things that only move on with real days — the old passage (one stone a
+## day), the Scribe's Alcove behind it, the pages (one more readable each day)
+## and the bloom planted in the garden moss.
+func _days() -> void:
+	var p = main.player
+	await _wait(1.5)
+	_check(main.room.room_id == "home", "a new game starts at home")
+	_teleport(400.0)
+	await _examine_id("passage")
+	_check(int(WorldManager.get_flag("passage_stones", 0)) == 1, "the first stone comes away")
+	await _examine_id("passage")
+	_check(int(WorldManager.get_flag("passage_stones", 0)) == 1, "only one stone a day")
+	_teleport(400.0)
+	Input.action_press("move_left")
+	await _wait(1.2)
+	Input.action_release("move_left")
+	_check(main.room.room_id == "home", "the passage is still blocked")
+	for i in 6:
+		TimeManager.debug_add_seconds(DAY_SECONDS)
+		_teleport(400.0)
+		await _examine_id("passage")
+	_check(int(WorldManager.get_flag("passage_stones", 0)) == 7, "seven stones over seven days (%d)" % int(WorldManager.get_flag("passage_stones", 0)))
+	_check(WorldManager.get_flag("passage_open", false), "the passage is open")
+	await _wait(0.8)
+	await _shot("d01_passage_open")
+	await _walk_into("alcove", "move_left", 400.0)
+	_check(main.room.room_id == "alcove", "the passage leads to the Scribe's Alcove")
+	_check(WorldManager.discovered.has("alcove"), "the Alcove is discovered")
+	await _wait(1.2)
+	await _shot("d02_alcove")
+	for id in ["lamp", "desk", "sevens"]:
+		var o := _find(id)
+		if o != null:
+			_teleport(o.global_position.x)
+		await _examine_id(id)
+		_check(WorldManager.examine_count(id) == 1, "%s can be examined" % id)
+	_teleport(1080.0)
+	await _examine_id("item_pages")
+	_check(WorldManager.has_item("pages"), "the pages are taken")
+	_check(Notes.readable() == 1, "one page readable on the day they are found")
+	TimeManager.debug_add_seconds(DAY_SECONDS * 2.0)
+	_check(Notes.readable() == 3, "two days later, three pages (%d)" % Notes.readable())
+
+	await _press_action("inventory")
+	var satchel := await _wait_node_named("InventoryScreen")
+	if satchel != null:
+		await _click(satchel.find_child("Item_pages", true, false))
+		var read: Button = satchel.find_child("Read", true, false)
+		_check(read != null and read.visible, "the satchel offers to read the pages")
+		await _click(read)
+		var reader := await _wait_node_named("ReaderScreen")
+		_check(reader != null, "the reader opens")
+		if reader != null:
+			_check(reader.find_children("Page_*", "", true, false).size() == 3, "the reader shows three pages")
+			await _shot("d03_reader")
+			await _press_action("ui_cancel")
+			await _wait(0.6)
+			_check(not is_instance_valid(reader) or not reader.is_inside_tree(), "Back closes the reader first")
+			_check(is_instance_valid(satchel) and satchel.is_inside_tree(), "the satchel is still open under it")
+		if is_instance_valid(satchel):
+			await _click(satchel.find_child("Back", true, false))
+			await _wait(0.5)
+	_check(not get_tree().paused, "the game resumes")
+	TimeManager.debug_add_seconds(DAY_SECONDS * 30.0)
+	_check(Notes.readable() == 12, "never more than twelve pages")
+
+	# Back home through the passage, then plant the bloom in the garden moss.
+	await _walk_into("home", "move_right", 1700.0)
+	_check(main.room.room_id == "home" and absf(p.global_position.x - 420.0) < 80.0, "home again, by the passage (%.0f)" % p.global_position.x)
+	WorldManager.collect("bloom")
+	main.travel("garden", "")
+	await _wait_room("garden", 10.0)
+	await _wait(1.0)
+	_check(BloomSprout.stage() == -1, "nothing planted yet")
+	_teleport(700.0)
+	await _examine_id("moss")
+	_check(not WorldManager.has_item("bloom") and BloomSprout.stage() == 0, "the bloom is planted")
+	for st in [[2, 1], [3, 2], [5, 3]]:
+		TimeManager.debug_add_seconds(DAY_SECONDS * float(st[0]))
+		await _wait(0.3)
+		_check(BloomSprout.stage() == st[1], "sprout stage %d" % st[1])
+	_teleport(745.0)
+	await _wait(0.6)
+	await _shot("d04_bloom_open")
+	_teleport(700.0)
+	await _examine_id("moss")
+	_check(SaveManager.save_now("days-test"), "save succeeds")
+	var saved := SaveStore.read(SaveManager.save_file_path())
+	_check(saved["ok"] and saved["payload"]["world"]["flags"].has("bloom_planted_day"), "the planting is saved")
+	_finish()
+
+
+## 0.4 mods: the bundled example installs (switched off), a broken mod is
+## reported, switching the example on adds a side passage, a room and an item;
+## switching it off again leaves the game and the save working.
+func _mods() -> void:
+	await _wait(1.5)
+	var dir := ModManager.mods_dir()
+	_check(FileAccess.file_exists(dir.path_join("glimmer_grotto/mod.json")), "the example mod is installed")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir.path_join("broken_one")))
+	var f := FileAccess.open(dir.path_join("broken_one/mod.json"), FileAccess.WRITE)
+	f.store_string("{\"format\": 1, \"id\": \"broken_one\", \"name\": \"x\", \"rooms\": {\"r\": {\"anchor\": \"nowhere\"}}}")
+	f.close()
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir.path_join("not_json")))
+	f = FileAccess.open(dir.path_join("not_json/mod.json"), FileAccess.WRITE)
+	f.store_string("{ this is not json")
+	f.close()
+	ModManager.scan()
+	var by_id := {}
+	for m in ModManager.mods:
+		by_id[m["id"]] = m
+	_check(by_id.has("glimmer_grotto") and by_id["glimmer_grotto"]["ok"], "the example mod is valid %s" % str(by_id.get("glimmer_grotto", {}).get("errors", "")))
+	_check(by_id.has("glimmer_grotto") and not by_id["glimmer_grotto"]["enabled"], "the example mod starts switched off")
+	_check(by_id.has("broken_one") and not by_id["broken_one"]["ok"], "a mod with a bad anchor is refused")
+	_check(by_id.has("not_json") and not by_id["not_json"]["ok"], "a mod that is not JSON is refused")
+	print("    broken_one: ", by_id.get("broken_one", {}).get("errors", []))
+	print("    not_json: ", by_id.get("not_json", {}).get("errors", []))
+	_check(ModManager.room_ids().is_empty(), "nothing loads while switched off")
+
+	ModManager.set_enabled("glimmer_grotto", true)
+	_check(ModManager.room_ids() == ["mod:glimmer_grotto:grotto"], "the grotto is registered %s" % str(ModManager.room_ids()))
+	_check(ModManager.anchor_room("narrow") == "mod:glimmer_grotto:grotto", "it hangs off the Narrow Way")
+	_check(TranslationServer.translate(ModManager.room_def("mod:glimmer_grotto:grotto").get("title", "")) == "Lśniąca Grota", "its texts are translated")
+	main.travel("narrow", "")
+	await _wait_room("narrow", 10.0)
+	await _wait(1.0)
+	var side := _find("side:mod:glimmer_grotto:grotto")
+	_check(side != null, "the side passage is in the Narrow Way")
+	_teleport(1450.0)
+	await _wait(0.6)
+	await _shot("m01_side_passage")
+	if side != null:
+		main.player.interaction.examine(side)
+		await _wait(0.3)
+		await _read_to_end()
+	await _wait_room("mod:glimmer_grotto:grotto", 10.0)
+	_check(main.room.room_id == "mod:glimmer_grotto:grotto", "the side passage leads into the grotto")
+	await _wait(1.2)
+	await _shot("m02_grotto")
+	_teleport(600.0)
+	await _examine_id("mod:glimmer_grotto:grotto:o0")
+	_check(WorldManager.examine_count("mod:glimmer_grotto:grotto:o0") == 1, "a mod object can be examined")
+	_teleport(760.0)
+	await _examine_id("item_mod:glimmer_grotto:glass_pebble")
+	_check(WorldManager.has_item("mod:glimmer_grotto:glass_pebble"), "the mod's item is taken")
+	await _press_action("inventory")
+	var satchel := await _wait_node_named("InventoryScreen")
+	_check(satchel != null and satchel.find_child("Item_mod_glimmer_grotto_glass_pebble", true, false) != null, "the satchel shows the mod's item")
+	_check(satchel != null and String(satchel.find_child("Places", true, false).text).contains("Lśniąca Grota"), "the grotto counts as a place")
+	await _shot("m03_satchel")
+	if satchel != null:
+		await _click(satchel.find_child("Back", true, false))
+		await _wait(0.5)
+	await _walk_into("narrow", "move_left", 400.0)
+	_check(main.room.room_id == "narrow", "the grotto leads back to the Narrow Way")
+
+	ModManager.set_enabled("glimmer_grotto", false)
+	_check(ModManager.room_ids().is_empty() and ItemsReg.order().size() == ItemsReg.ORDER.size(), "switched off, the mod is gone")
+	main.travel("home", "")
+	await _wait_room("home", 10.0)
+	await _press_action("inventory")
+	satchel = await _wait_node_named("InventoryScreen")
+	_check(satchel != null, "the satchel still opens with the mod off")
+	if satchel != null:
+		await _click(satchel.find_child("Back", true, false))
+		await _wait(0.5)
+	_check(SaveManager.save_now("mods-test"), "the save still works")
+	var saved := SaveStore.read(SaveManager.save_file_path())
+	_check(saved["ok"] and Array(saved["payload"]["world"]["inventory"]).has("mod:glimmer_grotto:glass_pebble"), "the mod's item is kept in the save for later")
+	_finish()

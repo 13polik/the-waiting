@@ -14,6 +14,7 @@ const WaitingButton := preload("res://scripts/ui/waiting_button.gd")
 const SettingsScreen := preload("res://scripts/ui/settings_screen.gd")
 const CreditsScreen := preload("res://scripts/ui/credits_screen.gd")
 const ConfirmDialog := preload("res://scripts/ui/confirm_dialog.gd")
+const ModsScreen := preload("res://scripts/ui/mods_screen.gd")
 const Loc := preload("res://scripts/core/loc.gd")
 const GAME_SCENE := "res://scenes/main.tscn"
 
@@ -160,6 +161,7 @@ func _build_ui() -> void:
 	new_button = _menu_button("MENU_NEW_GAME", _on_new_game)
 	new_button.name = "NewGame"
 	_menu_button("MENU_SETTINGS", _open.bind(SettingsScreen)).name = "Settings"
+	_menu_button("MENU_MODS", _open.bind(ModsScreen)).name = "Mods"
 	_menu_button("MENU_CREDITS", _open.bind(CreditsScreen)).name = "Credits"
 	# iOS apps must not quit themselves; the button exists on desktop only.
 	if SettingsManager.is_desktop():

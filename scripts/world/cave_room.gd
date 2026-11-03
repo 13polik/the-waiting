@@ -2,7 +2,8 @@ extends "res://scripts/world/room_base.gd"
 ## The creature's first home, left to right: the choked passage, the tally
 ## wall, The Nest, the cairn, the crack of grey light, the still pool, the
 ## pale caps, the carved door — and, beside the door, a crevice leading east
-## into the Narrow Way (0.3).
+## into the Narrow Way (0.3). The old passage can be dug out, one stone per
+## real day; after seven it opens west into the Scribe's Alcove (0.4).
 
 const Texts := preload("res://scripts/data/home_texts.gd")
 const Nest := preload("res://scripts/world/props/nest.gd")
@@ -20,6 +21,11 @@ const CRACK_X := 1562.0
 const POOL_X := 1880.0
 ## The cairn grows by one stone when the smooth stone is placed on it.
 const FLAG_CAIRN_EIGHTH := "cairn_eighth_stone"
+const FLAG_PASSAGE_STONES := "passage_stones"
+const FLAG_PASSAGE_LAST_DAY := "passage_last_day"
+const FLAG_PASSAGE_OPEN := "passage_open"
+
+var passage: Node2D
 
 var tally: Node2D
 var caps: Node2D
@@ -49,8 +55,11 @@ func _configure() -> void:
 	fg_humps = [[60.0, 880.0, 200.0], [560.0, 920.0, 150.0], [1180.0, 960.0, 110.0], [1980.0, 930.0, 170.0], [2700.0, 950.0, 140.0], [3150.0, 860.0, 240.0]]
 	fg_spikes = [[1320.0, 410.0, 46.0], [2440.0, 380.0, 38.0], [380.0, 360.0, 30.0]]
 	sound_space = "home"
-	entries = {"from_narrow": {"x": 2925.0, "facing": -1}}
-	exit_specs = [{"id": "east", "x0": 2962.0, "x1": 3020.0, "side": "right", "to_room": "narrow", "to_entry": "from_home"}]
+	entries = {"from_narrow": {"x": 2925.0, "facing": -1}, "from_alcove": {"x": 420.0, "facing": 1}}
+	exit_specs = [
+		{"id": "east", "x0": 2962.0, "x1": 3020.0, "side": "right", "to_room": "narrow", "to_entry": "from_home"},
+		{"id": "west", "x0": 296.0, "x1": 340.0, "side": "left", "to_room": "alcove", "to_entry": "from_home", "flag": FLAG_PASSAGE_OPEN},
+	]
 
 
 func _light_specs() -> Array:
@@ -62,10 +71,13 @@ func _light_specs() -> Array:
 
 
 func _add_props(parent: Node) -> void:
-	var passage := Passage.new()
+	passage = Passage.new()
 	passage.position = Vector2(250, floor_y(250))
+	passage.progress = int(WorldManager.get_flag(FLAG_PASSAGE_STONES, 0))
 	parent.add_child(passage)
-	_interactable(parent, "passage", Vector2(262, floor_y(262)), {"stand": 100.0, "hit": Vector2(200, 230), "hit_offset": Vector2(-10, -105), "prompt": Vector2(0, -230), "radius": 130.0})
+	var passage_i := _interactable(parent, "passage", Vector2(262, floor_y(262)), {"stand": 100.0, "hit": Vector2(200, 230), "hit_offset": Vector2(-10, -105), "prompt": Vector2(0, -230), "radius": 130.0})
+	passage_i.dynamic_lines = _passage_lines
+	passage_i.on_examined = _on_passage_examined
 
 	tally = Tally.new()
 	tally.position = Vector2(640, floor_y(640) - 165)
@@ -143,6 +155,44 @@ func _caps_lines(count: int) -> Array:
 	if visible < 11:
 		return ["OBJ_CAPS_MORE"]
 	return ["OBJ_CAPS_SPREAD"]
+
+
+## The old passage: one stone may be pulled away each (real) day.
+func _passage_lines(count: int) -> Array:
+	var stones := int(WorldManager.get_flag(FLAG_PASSAGE_STONES, 0))
+	if WorldManager.get_flag(FLAG_PASSAGE_OPEN, false):
+		return ["OBJ_PASSAGE_OPEN_R"]
+	if _dug_today():
+		return ["OBJ_PASSAGE_TOMORROW", ["OBJ_PASSAGE_COUNT", stones]]
+	var lines: Array = ["OBJ_PASSAGE_1"] if count <= 1 else []
+	lines.append("OBJ_PASSAGE_DIG")
+	if stones + 1 >= Passage.STONES_TO_CLEAR:
+		lines.append("OBJ_PASSAGE_OPENED")
+	else:
+		lines.append(["OBJ_PASSAGE_COUNT", stones + 1])
+	return lines
+
+
+func _dug_today() -> bool:
+	var last: Variant = WorldManager.get_flag(FLAG_PASSAGE_LAST_DAY)
+	return last != null and int(last) == TimeManager.day_index()
+
+
+func _on_passage_examined(_count: int) -> void:
+	if WorldManager.get_flag(FLAG_PASSAGE_OPEN, false) or _dug_today():
+		return
+	var stones := int(WorldManager.get_flag(FLAG_PASSAGE_STONES, 0)) + 1
+	WorldManager.set_flag(FLAG_PASSAGE_STONES, stones)
+	WorldManager.set_flag(FLAG_PASSAGE_LAST_DAY, TimeManager.day_index())
+	AudioManager.play("rumble", -9.0, 1.5)
+	if stones >= Passage.STONES_TO_CLEAR:
+		WorldManager.set_flag(FLAG_PASSAGE_OPEN, true)
+		refresh_exits()
+	passage.progress = stones
+	if passage.baked:
+		Baker.rebake(passage)
+	else:
+		passage.queue_redraw()
 
 
 ## With the smooth stone from the Narrow Way, the cairn can be finished.

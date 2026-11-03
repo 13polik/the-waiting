@@ -129,6 +129,11 @@ up to).
 
 ## Milestones
 
+0. **0.4 (done)** — daily content: the old passage (one stone per real day,
+   seven days) opens into the Scribe's Alcove; twelve pages, one more readable
+   each day, in a reader in the satchel; the pale bloom planted in the garden
+   moss grows over 0–10 days. Data-only mods (`ModManager`, `docs/MODDING.md`)
+   with a Mods screen, Files-app access on iOS and a bundled example mod.
 0. **0.3 (done)** — rooms built from data (`room_base.gd`); three new areas
    east of home, one behind a hidden passage; exits with fades; four items,
    satchel, using the smooth stone on the cairn; discovered places; save v3.

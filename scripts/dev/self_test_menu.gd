@@ -74,6 +74,28 @@ func _full() -> void:
 	await _click(_node(credits, "Back"))
 	await _wait(0.4)
 
+	# 3b. Mods (0.4): the bundled example is listed, off; a click switches it on
+	# and back off.
+	await _click(_node(menu, "Mods"))
+	var mods := await _wait_node("ModsScreen")
+	var row: Node = mods.find_child("Mod_glimmer_grotto", true, false) if mods != null else null
+	_check(row != null, "the example mod is listed")
+	if row != null:
+		var toggle: Button = row.find_child("Toggle", true, false)
+		_check(toggle != null and not toggle.disabled and not toggle.selected, "the example mod is off")
+		await _click(toggle)
+		await _wait(0.5)
+		_check(bool(SettingsManager.get_value("mods_enabled").get("glimmer_grotto", false)), "a click switches it on")
+		await _shot("m03b_mods")
+		row = mods.find_child("Mod_glimmer_grotto", true, false)
+		await _click(row.find_child("Toggle", true, false))
+		await _wait(0.5)
+		_check(not bool(SettingsManager.get_value("mods_enabled").get("glimmer_grotto", false)), "and off again")
+	if mods != null:
+		await _click(_node(mods, "Back"))
+		await _wait(0.4)
+	_check(not is_instance_valid(mods) or not mods.is_inside_tree(), "the mods screen closes")
+
 	# 4. New Game (no save yet: no question asked).
 	await _click(menu.new_button)
 	await _wait_scene("Main")

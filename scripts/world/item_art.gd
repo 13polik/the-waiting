@@ -7,12 +7,14 @@ const Painter := preload("res://scripts/world/painter.gd")
 const INK := Color(0.04, 0.035, 0.045, 0.9)
 
 
+## [param item_id]: a game item or a mod item (drawn with its "art" kind).
 static func draw(ci: CanvasItem, item_id: String, c: Vector2, s: float = 1.0) -> void:
-	match item_id:
+	match load("res://scripts/data/items.gd").art(item_id):
 		"stone": _stone(ci, c, s)
 		"wing": _wing(ci, c, s)
 		"fragment": _fragment(ci, c, s)
 		"bloom": _bloom(ci, c, s)
+		"pages": _pages(ci, c, s)
 
 
 static func _stone(ci: CanvasItem, c: Vector2, s: float) -> void:
@@ -54,6 +56,21 @@ static func _fragment(ci: CanvasItem, c: Vector2, s: float) -> void:
 		notches.append(c + Vector2(4, 14) * s + Vector2.from_angle(a) * 24.5 * s)
 	ci.draw_multiline(notches, Color(0.06, 0.05, 0.05, 0.8), 1.0 * s)
 	ci.draw_polyline(Painter.closed(pts), INK, 1.4 * s, true)
+
+
+static func _pages(ci: CanvasItem, c: Vector2, s: float) -> void:
+	for i in 3:
+		var o := Vector2(i * 1.6 - 1.6, -i * 1.8) * s
+		var sheet := PackedVector2Array([c + o + Vector2(-9, -7) * s, c + o + Vector2(8, -8) * s,
+			c + o + Vector2(10, 7) * s, c + o + Vector2(-8, 8) * s])
+		ci.draw_colored_polygon(sheet, Color(0.74, 0.7, 0.6).darkened(0.12 * (2 - i)))
+		ci.draw_polyline(Painter.closed(sheet), INK, 1.0 * s, true)
+	var lines := PackedVector2Array()
+	for k in 4:
+		var y := -6.0 + k * 3.2
+		lines.append(c + Vector2(-5, y - 3.6) * s)
+		lines.append(c + Vector2(5 - k, y - 3.8) * s)
+	ci.draw_multiline(lines, Color(0.25, 0.22, 0.2, 0.7), 0.8 * s)
 
 
 static func _bloom(ci: CanvasItem, c: Vector2, s: float) -> void:

@@ -3,9 +3,12 @@
 A slow, atmospheric exploration game about a small hooded creature — the
 Wick — waiting four hundred real days beneath the world, beside the place it
 calls The Nest. Godot 4.7, GDScript, iOS-first, landscape, touch-first.
-Version 0.3: four connected areas (home, the Narrow Way, the Hall of Echoes,
-and a hidden Still Garden), four collectible items, a satchel, and saved
-discoveries — on top of 0.2's menu, Polish/English, settings and pause.
+Version 0.4: things that move on only with real days — an old passage dug
+out one stone a day (seven days) into the Scribe's Alcove, twelve faded pages
+that become readable one per day, and a bloom planted in the garden that grows
+over ten days — and data-only mods with a Mods screen in the menu
+([docs/MODDING.md](docs/MODDING.md)). On top of 0.3's five areas, items and
+satchel, and 0.2's menu, Polish/English, settings and pause.
 
 See [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) for the design,
 architecture, time/save design, roadmap, asset replacement plan and iOS
@@ -70,6 +73,10 @@ godot --headless --path . -- --profile=persist --selftest-persist=check
 godot --headless --path . -- --profile=menutest --reset-save --reset-settings --selftest-menu
 godot --headless --path . -- --profile=menutest --selftest-menu=settings-check
 ```
+
+0.4 content over simulated days: `-- --profile=daystest --reset-save --selftest-days`.
+Mods (example install, broken mods, side passage, mod item, switching off):
+`-- --profile=modtest --reset-save --selftest-mods`.
 
 World (areas, exits, hidden passage, items, satchel, then a restart check):
 `-- --profile=worldtest --reset-save --selftest-world`, then

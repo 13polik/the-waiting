@@ -1,0 +1,53 @@
+{
+	"format": 1,
+	"id": "glimmer_grotto",
+	"name": { "en": "The Glimmer Grotto", "pl": "Lśniąca Grota" },
+	"description": {
+		"en": "An example mod: a small grotto behind a side passage in the Narrow Way, with glowing veins, a spring and one thing to find.",
+		"pl": "Przykładowy mod: mała grota za bocznym przejściem w Wąskim Przejściu, ze świecącymi żyłami, źródełkiem i jedną rzeczą do znalezienia."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"items": {
+		"glass_pebble": {
+			"art": "stone",
+			"title": { "en": "Glass Pebble", "pl": "Szklany kamyk" },
+			"description": {
+				"en": "A pebble of something like glass. Light goes into it and takes a long time to come out.",
+				"pl": "Kamyk z czegoś podobnego do szkła. Światło wchodzi w niego i długo nie może wyjść."
+			},
+			"found": [
+				{ "en": "Among the veins' glow lies a pebble that glows back.", "pl": "W blasku żył leży kamyk, który odpowiada blaskiem." },
+				{ "en": "You take it. It is warm, the way the moss is warm.", "pl": "Zabierasz go. Jest ciepły, tak jak ciepły jest mech." }
+			]
+		}
+	},
+	"rooms": {
+		"grotto": {
+			"title": { "en": "The Glimmer Grotto", "pl": "Lśniąca Grota" },
+			"anchor": "narrow",
+			"width": 1800,
+			"floor": [[0, 800], [600, 812], [1100, 796], [1800, 805]],
+			"ceiling": [[0, 380], [700, 330], [1300, 360], [1800, 400]],
+			"palette": { "light": [0.28, 0.31, 0.38], "stone": [0.18, 0.19, 0.22], "wash": [0.13, 0.15, 0.19] },
+			"objects": [
+				{
+					"kind": "veins", "x": 600,
+					"title": { "en": "Glimmering Veins", "pl": "Lśniące żyły" },
+					"text": [
+						{ "en": "The walls here are threaded with light.", "pl": "Ściany są tu przetkane światłem." },
+						{ "en": "It moves, very slowly, like something breathing in its sleep.", "pl": "Porusza się, bardzo powoli, jak coś, co oddycha przez sen." }
+					],
+					"again": [ { "en": "Still breathing, still asleep.", "pl": "Wciąż oddycha, wciąż śpi." } ]
+				},
+				{ "kind": "moss", "x": 900 },
+				{
+					"kind": "pool", "x": 1300,
+					"title": { "en": "The Glass Spring", "pl": "Szklane źródło" },
+					"text": [ { "en": "The water is so clear it looks like nothing at all.", "pl": "Woda jest tak czysta, że wygląda jak nic." } ]
+				}
+			],
+			"items": [ { "item": "glass_pebble", "x": 760 } ]
+		}
+	}
+}

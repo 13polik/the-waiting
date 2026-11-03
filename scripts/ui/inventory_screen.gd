@@ -7,11 +7,15 @@ const Items := preload("res://scripts/data/items.gd")
 const Rooms := preload("res://scripts/world/rooms.gd")
 const ItemArt := preload("res://scripts/world/item_art.gd")
 const Loc := preload("res://scripts/core/loc.gd")
+const ReaderScreen := preload("res://scripts/ui/reader_screen.gd")
+const Notes := preload("res://scripts/data/notes.gd")
 
 var _owns_pause: bool = false
 var _desc: Label
 var _places: Label
 var _cards: Array = []
+var _read: Button
+var _sub: Node = null
 
 
 func _build() -> void:
@@ -22,7 +26,7 @@ func _build() -> void:
 	add_title("SATCHEL_TITLE")
 
 	var held: Array[String] = []
-	for id in Items.ORDER:
+	for id in Items.order():
 		if WorldManager.has_item(id):
 			held.append(id)
 	if held.is_empty():
@@ -35,7 +39,7 @@ func _build() -> void:
 		for id in held:
 			var card := ItemCard.new()
 			card.item_id = id
-			card.name = "Item_" + id
+			card.name = "Item_" + id.replace(":", "_")
 			card.pressed.connect(_select.bind(card))
 			card.focus_entered.connect(_select.bind(card))
 			row.add_child(card)
@@ -43,6 +47,8 @@ func _build() -> void:
 		_desc = add_paragraph("", true, 18)
 		_desc.name = "Description"
 		_desc.custom_minimum_size.y = 64
+		_read = add_button("SATCHEL_READ", _open_reader)
+		_read.name = "Read"
 		_select(_cards[0])
 
 	add_spacer(6)
@@ -58,18 +64,37 @@ func _build() -> void:
 func _select(card: Button) -> void:
 	for c in _cards:
 		c.selected = c == card
-	_desc.text = Items.ITEMS[card.item_id]["desc"]
+	_desc.text = Items.get_def(card.item_id)["desc"]
+	if _read != null:
+		_read.visible = card.item_id == "pages" and Notes.readable() > 0
+
+
+func _open_reader() -> void:
+	if _sub != null and is_instance_valid(_sub):
+		return
+	_sub = ReaderScreen.new()
+	get_parent().add_child(_sub)
+	_sub.closed.connect(func() -> void: _sub = null)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _sub != null and is_instance_valid(_sub):
+		return  # The reader on top handles Back itself.
+	super(event)
 
 
 func _refresh_places() -> void:
 	var names: PackedStringArray = []
-	for id in Rooms.ORDER:
+	var all := Rooms.all_ids()
+	for id in all:
 		if WorldManager.discovered.has(id):
-			names.append(Loc.t(Rooms.TITLES[id]))
-	_places.text = (Loc.t("SATCHEL_PLACES") % [names.size(), Rooms.ORDER.size()]) + "\n" + "  ·  ".join(names)
+			names.append(Loc.t(Rooms.title(id)))
+	_places.text = (Loc.t("SATCHEL_PLACES") % [names.size(), all.size()]) + "\n" + "  ·  ".join(names)
 
 
 func close() -> void:
+	if _sub != null and is_instance_valid(_sub):
+		return
 	if _owns_pause and not _closing:
 		get_tree().paused = false
 	super()
@@ -98,7 +123,7 @@ class ItemCard extends Button:
 		custom_minimum_size = Vector2(136, 132)
 		for state in ["normal", "hover", "pressed", "focus", "hover_pressed"]:
 			add_theme_stylebox_override(state, StyleBoxEmpty.new())
-		_label = UiStyleRef.label(ItemsRef.ITEMS[item_id]["title"], 16, UiStyleRef.INK)
+		_label = UiStyleRef.label(ItemsRef.get_def(item_id)["title"], 16, UiStyleRef.INK)
 		_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)

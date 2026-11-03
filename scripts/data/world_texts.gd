@@ -48,6 +48,21 @@ const OBJECTS := {
 		"first": ["OBJ_SPRING_1"],
 		"repeat": ["OBJ_SPRING_R1", "OBJ_SPRING_R2"],
 	},
+	"lamp": {
+		"title": "OBJ_LAMP_TITLE",
+		"first": ["OBJ_LAMP_1", "OBJ_LAMP_2"],
+		"repeat": ["OBJ_LAMP_R1", "OBJ_LAMP_R2"],
+	},
+	"desk": {
+		"title": "OBJ_DESK_TITLE",
+		"first": ["OBJ_DESK_1", "OBJ_DESK_2"],
+		"repeat": ["OBJ_DESK_R1"],
+	},
+	"sevens": {
+		"title": "OBJ_SEVENS_TITLE",
+		"first": ["OBJ_SEVENS_1", "OBJ_SEVENS_2"],
+		"repeat": ["OBJ_SEVENS_R1"],
+	},
 	"skylight": {
 		"title": "OBJ_SKYLIGHT_TITLE",
 		"first": ["OBJ_SKYLIGHT_1", "OBJ_SKYLIGHT_2"],

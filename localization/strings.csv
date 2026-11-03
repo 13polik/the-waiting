@@ -202,3 +202,61 @@ OBJ_SKYLIGHT_TITLE,The Grey Light,Szare światło
 OBJ_SKYLIGHT_1,"The grey light reaches even here, through another crack far above.","Szare światło dociera nawet tutaj, przez kolejną szczelinę wysoko w górze."
 OBJ_SKYLIGHT_2,"The same light. Perhaps the same crack. Perhaps the same someone, looking down.","To samo światło. Może ta sama szczelina. Może ten sam ktoś, patrzący w dół."
 OBJ_SKYLIGHT_R1,Things grow in it.,Rzeczy w nim rosną.
+ROOM_ALCOVE,The Scribe's Alcove,Alkowa Skryby
+OBJ_PASSAGE_DIG,You pull a stone from the heap. It comes away with a sigh of dust.,Wyciągasz kamień ze sterty. Odchodzi z westchnieniem pyłu.
+OBJ_PASSAGE_COUNT,Stones moved: %d of 7.,Przesunięte kamienie: %d z 7.
+OBJ_PASSAGE_TOMORROW,"Enough for today. The heap shifts and settles. Tomorrow, another.",Na dziś wystarczy. Sterta przesuwa się i osiada. Jutro kolejny.
+OBJ_PASSAGE_OPENED,"The last stone rolls away. Beyond it, a low way west, and air that smells of old ink.",Ostatni kamień odtacza się na bok. Za nim niskie przejście na zachód i powietrze pachnące starym atramentem.
+OBJ_PASSAGE_OPEN_R,The way west is open.,Droga na zachód jest otwarta.
+OBJ_PLANT_1,The pale bloom in your satchel would grow here — the moss is warm and the light is close.,"Blady kwiat z twojej torby mógłby tu rosnąć — mech jest ciepły, a światło blisko."
+OBJ_PLANT_2,You press it gently into the moss. Now it can wait too.,Delikatnie wciskasz go w mech. Teraz on też może czekać.
+OBJ_SPROUT_STAGE0,Nothing yet. The moss holds it close.,Na razie nic. Mech trzyma go blisko.
+OBJ_SPROUT_STAGE1,"A pale shoot, thin as a thread.","Blady pęd, cienki jak nitka."
+OBJ_SPROUT_STAGE2,"A bud has formed. It glows a little — enough to see by, almost.","Pojawił się pąk. Lekko świeci — prawie tyle, żeby coś przy nim zobaczyć."
+OBJ_SPROUT_STAGE3,"It has opened, larger than the first, and it glows like the lantern above your head.","Rozwinął się, większy niż pierwszy, i świeci jak latarnia nad twoją głową."
+OBJ_LAMP_TITLE,The Dark Lantern,Zgasła latarnia
+OBJ_LAMP_1,"A bulb on a long, dried stalk, lying in the dust. Dark.","Bulwa na długiej, wyschniętej łodydze, leżąca w pyle. Ciemna."
+OBJ_LAMP_2,You know what it is. You would rather not.,"Wiesz, co to jest. Wolisz nie wiedzieć."
+OBJ_LAMP_R1,It does not light when you touch it.,"Nie zapala się, gdy jej dotykasz."
+OBJ_LAMP_R2,"Your own lantern flickers, just once, when you are near it.","Twoja własna latarnia mruga, tylko raz, gdy jesteś przy niej."
+OBJ_DESK_TITLE,The Stone Desk,Kamienne biurko
+OBJ_DESK_1,"A slab of stone, worn smooth along one edge, as if someone leaned here for a very long time.","Płyta z kamienia, wygładzona wzdłuż jednej krawędzi, jakby ktoś bardzo długo się o nią opierał."
+OBJ_DESK_2,Someone wrote here. The scratches of it are still in the stone.,Ktoś tu pisał. Rysy po tym wciąż są w kamieniu.
+OBJ_DESK_R1,The worn edge fits your arm exactly.,Wytarta krawędź pasuje dokładnie do twojego ramienia.
+OBJ_SEVENS_TITLE,The Sevens,Siódemki
+OBJ_SEVENS_1,"The sevens again — hundreds of them, row after row.","Znowu siódemki — setki, rząd za rzędem."
+OBJ_SEVENS_2,"And then they stop, in the middle of a group.","A potem się urywają, w połowie grupy."
+OBJ_SEVENS_R1,"Four marks, where there should be seven.","Cztery kreski tam, gdzie powinno być siedem."
+ITEM_PAGES_TITLE,Faded Pages,Wyblakłe kartki
+ITEM_PAGES_DESC,"Thin pages covered in small, careful writing. The ink is almost gone; a little more of it comes back each day.","Cienkie kartki pokryte drobnym, starannym pismem. Atrament prawie zniknął; każdego dnia wraca go trochę więcej."
+ITEM_PAGES_FOUND_1,"A bundle of thin pages under a stone, the ink almost gone.","Pod kamieniem leży plik cienkich kartek, atrament prawie zniknął."
+ITEM_PAGES_FOUND_2,You can make out the first lines. The rest will have to wait.,Da się odczytać pierwsze linijki. Reszta musi poczekać.
+NOTE_1,Day one. The door is breathing. I will count the days until it stops.,"Dzień pierwszy. Drzwi oddychają. Będę liczyć dni, aż przestaną."
+NOTE_2,I count in sevens. Seven feels like a door's number.,Liczę po siedem. Siedem wydaje się liczbą drzwi.
+NOTE_3,The light from above is grey today. It was grey yesterday. I have started to like grey.,Światło z góry jest dziś szare. Wczoraj też było szare. Zaczynam lubić szarość.
+NOTE_4,The water in the pool turns warm if you keep your hand in it long enough.,"Woda w sadzawce robi się ciepła, jeśli trzymać w niej dłoń dość długo."
+NOTE_5,"The cairn is ready, except for one stone. There is no stone left that is right.","Kopiec jest gotowy, brakuje mu tylko jednego kamienia. Nie ma już kamienia, który by pasował."
+NOTE_6,Sometimes there is knocking. Three times. I never knock back.,Czasem słychać pukanie. Trzy razy. Nigdy nie odpukuję.
+NOTE_7,"The caps by the door grow when I am not looking. I stop looking, to help them.","Kapelusze przy drzwiach rosną, gdy na nie nie patrzę. Przestaję patrzeć, żeby im pomóc."
+NOTE_8,I wonder if anyone will find these pages. I wonder if it will be me.,"Ciekawe, czy ktoś znajdzie te kartki. Ciekawe, czy to będę ja."
+NOTE_9,The door breathes more slowly now. I think it is listening.,Drzwi oddychają teraz wolniej. Chyba słuchają.
+NOTE_10,The count has slipped away from me. I count anyway.,Rachunek mi się wymknął. Liczę dalej.
+NOTE_11,"My light is growing dim. I will leave it here, by the pages, so they are not alone.","Moje światło przygasa. Zostawię je tutaj, przy kartkach, żeby nie były same."
+NOTE_12,If you are reading this: do not open the door before it is time. Wait. It is the only thing it asks.,"Jeśli to czytasz: nie otwieraj drzwi przed czasem. Czekaj. To jedyne, o co proszą."
+READER_TITLE,Pages,Zapiski
+READER_PAGE,Page %d,Strona %d
+READER_MORE,The rest is still too faded. Another page will come back tomorrow.,Reszta jest jeszcze zbyt wyblakła. Jutro wróci kolejna strona.
+READER_ALL,That is all of it.,To już wszystko.
+SATCHEL_READ,Read the pages,Czytaj zapiski
+MENU_MODS,Mods,Mody
+MODS_TITLE,Mods,Mody
+MODS_NONE,No mods found.,Nie znaleziono modów.
+MODS_NOTE,"Mods add places, things and words — never code. They do not change your save: switching one off keeps your progress. Changes apply when you next enter the game.","Mody dodają miejsca, rzeczy i słowa — nigdy kod. Nie zmieniają zapisu: wyłączenie moda nie kasuje postępu. Zmiany działają od następnego wejścia do gry."
+MODS_FOLDER_DESKTOP,Mods folder: %s,Folder modów: %s
+MODS_FOLDER_IOS,"Put mods in the Files app: On My iPhone → The Waiting → mods (one folder per mod, with a mod.json).","Mody wgrywaj w aplikacji Pliki: Na moim iPhonie → The Waiting → mods (jeden folder na mod, z plikiem mod.json)."
+MODS_OPEN_FOLDER,Open folder,Otwórz folder
+MODS_RELOAD,Reload,Odśwież
+MODS_ENABLED,On,Włączony
+MODS_DISABLED,Off,Wyłączony
+MODS_BROKEN,Cannot load: %s,Nie można wczytać: %s
+MODS_BY,by %s · v%s,autor: %s · v%s

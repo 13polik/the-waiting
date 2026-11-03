@@ -18,6 +18,9 @@ const DEFAULTS := {
 	"sfx": 0.9,
 	"fullscreen": false,
 	"text_size": 1,
+	## mod id → on/off (see ModManager).
+	"mods_enabled": {},
+	"mods_example_installed": false,
 }
 const TEXT_SCALES := [0.85, 1.0, 1.2]
 
@@ -26,7 +29,7 @@ var values: Dictionary = {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	values = DEFAULTS.duplicate()
+	values = DEFAULTS.duplicate(true)
 	if not "--reset-settings" in OS.get_cmdline_user_args():
 		_load()
 	for key in values:
@@ -46,8 +49,13 @@ func set_value(key: String, value: Variant) -> void:
 	changed.emit(key)
 
 
+## Back to defaults — except which mods are switched on, which is not a preference.
 func reset() -> void:
-	values = DEFAULTS.duplicate()
+	var mods: Variant = values.get("mods_enabled", {})
+	var example: Variant = values.get("mods_example_installed", false)
+	values = DEFAULTS.duplicate(true)
+	values["mods_enabled"] = mods
+	values["mods_example_installed"] = example
 	for key in values:
 		_apply(key)
 	save()
@@ -93,8 +101,14 @@ func _sanitize(key: String, value: Variant) -> Variant:
 			if typeof(value) == TYPE_FLOAT or typeof(value) == TYPE_INT:
 				return clampf(float(value), 0.0, 1.0)
 			return DEFAULTS[key]
-		"fullscreen":
+		"fullscreen", "mods_example_installed":
 			return bool(value) if typeof(value) == TYPE_BOOL else DEFAULTS[key]
+		"mods_enabled":
+			var out := {}
+			if typeof(value) == TYPE_DICTIONARY:
+				for k in value:
+					out[str(k)] = bool(value[k])
+			return out
 		"text_size":
 			return clampi(int(value), 0, TEXT_SCALES.size() - 1) if typeof(value) in [TYPE_INT, TYPE_FLOAT] else DEFAULTS[key]
 	return value

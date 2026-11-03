@@ -232,6 +232,16 @@ func _test_translations_complete() -> void:
 	for base in ["UNIT_DAYS", "UNIT_HOURS", "UNIT_MINUTES", "OBJ_TALLY_COUNT", "OBJ_TALLY_R1"]:
 		for form in ["_ONE", "_FEW", "_MANY"]:
 			check(keys.has(base + form), "plural %s%s exists" % [base, form])
+	for i in 12:
+		check(keys.has("NOTE_%d" % (i + 1)), "page NOTE_%d exists" % (i + 1))
+	for k in ["OBJ_PASSAGE_DIG", "OBJ_PASSAGE_COUNT", "OBJ_PASSAGE_TOMORROW", "OBJ_PASSAGE_OPENED", "OBJ_PASSAGE_OPEN_R",
+			"OBJ_PLANT_1", "OBJ_PLANT_2", "OBJ_SPROUT_STAGE0", "OBJ_SPROUT_STAGE1", "OBJ_SPROUT_STAGE2", "OBJ_SPROUT_STAGE3",
+			"READER_TITLE", "READER_PAGE", "READER_MORE", "READER_ALL", "SATCHEL_READ",
+			"MENU_MODS", "MODS_TITLE", "MODS_NONE", "MODS_NOTE", "MODS_FOLDER_DESKTOP", "MODS_FOLDER_IOS",
+			"MODS_OPEN_FOLDER", "MODS_RELOAD", "MODS_ENABLED", "MODS_DISABLED", "MODS_BROKEN", "MODS_BY"]:
+		check(keys.has(k), "0.4 key %s exists" % k)
+	var ex: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://mods_examples/glimmer_grotto/mod.json"))
+	check(typeof(ex) == TYPE_DICTIONARY and ex.get("id") == "glimmer_grotto", "the example mod is valid JSON")
 	check(TranslationServer.translate("OBJ_NEST_TITLE") == "The Nest", "The Nest is not translated")
 
 

@@ -19,6 +19,7 @@ const Exit := preload("res://scripts/world/exit.gd")
 const ItemProp := preload("res://scripts/world/props/item_prop.gd")
 const Items := preload("res://scripts/data/items.gd")
 const Loc := preload("res://scripts/core/loc.gd")
+const TunnelMouthProp := preload("res://scripts/world/props/tunnel_mouth.gd")
 
 ## Fires when the creature walks into an open exit.
 signal exit_reached(to_room: String, to_entry: String)
@@ -143,6 +144,7 @@ func _ready() -> void:
 	props_layer.name = "Props"
 	add_child(props_layer)
 	_add_props(props_layer)
+	_add_mod_passage(props_layer)
 	_add_exits(props_layer)
 
 	actor_layer = Node2D.new()
@@ -554,12 +556,30 @@ func add_interactable(parent: Node, id: String, data: Dictionary, pos: Vector2, 
 	return it
 
 
+## If an enabled mod hangs a room off this one, a dark side passage opens in
+## the back wall at the anchor spot; tapping it walks the creature through.
+func _add_mod_passage(parent: Node) -> void:
+	var mod_room := ModManager.anchor_room(room_id)
+	if mod_room.is_empty():
+		return
+	var x: float = ModManager.ANCHORS[room_id]
+	var crack := TunnelMouthProp.new()
+	crack.style = "crevice"
+	crack.position = Vector2(x, floor_y(x))
+	parent.add_child(crack)
+	queue_bake(crack)
+	entries["anchor"] = {"x": x + 70.0, "facing": 1}
+	var it := add_interactable(parent, "side:" + mod_room, {"title": "", "first": [], "repeat": []}, Vector2(x, floor_y(x)),
+		{"hit": Vector2(120, 320), "hit_offset": Vector2(0, -150), "prompt": Vector2(0, -330), "stand": 0.0, "radius": 60.0})
+	it.on_examined = func(_count: int) -> void: exit_reached.emit(mod_room, "from_anchor")
+
+
 ## An item lying in the world. Examining it reads its lines and puts it in the
 ## satchel; it is never created again once collected. Returns null if taken.
 func add_collectible(parent: Node, item_id: String, pos: Vector2, opts: Dictionary = {}) -> Node2D:
 	if WorldManager.is_collected(item_id):
 		return null
-	var data: Dictionary = Items.ITEMS[item_id]
+	var data: Dictionary = Items.get_def(item_id)
 	var prop := ItemProp.new()
 	prop.item_id = item_id
 	prop.position = pos

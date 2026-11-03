@@ -8,6 +8,7 @@ const TunnelMouth := preload("res://scripts/world/props/tunnel_mouth.gd")
 const GlowFeatures := preload("res://scripts/world/props/glow_features.gd")
 const LightShaft := preload("res://scripts/world/props/light_shaft.gd")
 const Pool := preload("res://scripts/world/props/pool.gd")
+const BloomSprout := preload("res://scripts/world/props/bloom_sprout.gd")
 
 const SKY_X := 1250.0
 const SPRING_X := 1580.0
@@ -40,6 +41,26 @@ func _configure() -> void:
 	exit_specs = [{"id": "west", "x0": 150.0, "x1": 222.0, "side": "left", "to_room": "hall", "to_entry": "from_garden"}]
 
 
+## The moss: its own words — or, with the bloom, a place to plant it, and
+## then how the planted flower is coming along.
+func _moss_lines(count: int) -> Array:
+	var stage := BloomSprout.stage()
+	if stage >= 0:
+		return [["OBJ_SPROUT_STAGE0", "OBJ_SPROUT_STAGE1", "OBJ_SPROUT_STAGE2", "OBJ_SPROUT_STAGE3"][stage]]
+	if WorldManager.has_item("bloom"):
+		return ["OBJ_PLANT_1", "OBJ_PLANT_2"]
+	var data: Dictionary = Texts.OBJECTS["moss"]
+	if count <= 1:
+		return data["first"]
+	return [data["repeat"][(count - 2) % data["repeat"].size()]]
+
+
+func _on_moss_examined(_count: int) -> void:
+	if BloomSprout.stage() < 0 and WorldManager.has_item("bloom"):
+		WorldManager.use_item("bloom")
+		WorldManager.set_flag(BloomSprout.FLAG_PLANTED_DAY, TimeManager.day_index())
+
+
 func _light_specs() -> Array:
 	return [[Vector2(SKY_X + 30, floor_y(SKY_X) - 30), Color(0.62, 0.7, 0.78), 0.55, 2.2]]
 
@@ -60,7 +81,12 @@ func _add_props(parent: Node) -> void:
 		moss.position = Vector2(m[0], floor_y(m[0]) + 2)
 		parent.add_child(moss)
 		queue_bake(moss)
-	add_interactable(parent, "moss", Texts.OBJECTS["moss"], Vector2(700, floor_y(700)), {"hit": Vector2(200, 90), "hit_offset": Vector2(0, -20), "prompt": Vector2(0, -60), "stand": 60.0})
+	var sprout := BloomSprout.new()
+	sprout.position = Vector2(745, floor_y(745))
+	parent.add_child(sprout)
+	var moss_i := add_interactable(parent, "moss", Texts.OBJECTS["moss"], Vector2(700, floor_y(700)), {"hit": Vector2(200, 90), "hit_offset": Vector2(0, -20), "prompt": Vector2(0, -60), "stand": 60.0})
+	moss_i.dynamic_lines = _moss_lines
+	moss_i.on_examined = _on_moss_examined
 
 	var shaft := LightShaft.new()
 	shaft.position = Vector2(SKY_X, 160)

@@ -125,7 +125,8 @@ rm -f "$OUT"
 (cd "$WORK/ipa" && zip -qry "$OUT" Payload)
 echo "Unsigned IPA: $OUT ($(du -h "$OUT" | cut -f1))"
 echo "Contents check:"
-unzip -l "$OUT" | awk 'NR>3 && /Payload\/[^/]+\.app\/[^/]+$/ && n < 8 {print "  " $4; n++}'
+# A string pattern: BSD awk on macOS rejects "/" inside [...] in /regex/.
+unzip -l "$OUT" | awk 'NR > 3 && $4 ~ "^Payload/[^/]+[.]app/[^/]+$" && n < 8 { print "  " $4; n++ }'
 rm -rf "$WORK"
 trap - ERR
 echo

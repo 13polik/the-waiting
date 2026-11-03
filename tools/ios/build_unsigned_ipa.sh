@@ -71,7 +71,9 @@ awk -v bundle="${BUNDLE_ID:-}" -v team="${TEAM_ID:-}" '
 	in_opts && bundle != "" && /^application\/bundle_identifier=/ { print "application/bundle_identifier=\"" bundle "\""; next }
 	{ print }
 ' "$PRESETS" > "$PRESETS.tmp" && mv "$PRESETS.tmp" "$PRESETS"
-grep -E "^application/(bundle_identifier|export_project_only|app_store_team_id|short_version)=" "$PRESETS"
+# Build logs may be public: show whether a Team ID is set, never its value.
+grep -E "^application/(bundle_identifier|export_project_only|short_version)=" "$PRESETS"
+if grep -q '^application/app_store_team_id=".\+"' "$PRESETS"; then echo 'application/app_store_team_id=(set)'; fi
 if grep -q '^application/bundle_identifier="com.example' "$PRESETS"; then
 	echo "warning: the bundle identifier is still the placeholder com.example.thewaiting — set BUNDLE_ID (or the preset) before signing."
 fi
@@ -88,7 +90,7 @@ mkdir -p "$WORK/xcode"
 XCPROJ="$(find "$WORK/xcode" -maxdepth 1 -name "*.xcodeproj" -print -quit)"
 if [[ -z "$XCPROJ" ]]; then
 	if grep -qi "team id" "$WORK/export.log"; then
-		fail "Godot requires an App Store Team ID even for this unsigned export. Set TEAM_ID (or the repository variable IOS_TEAM_ID) to your Apple Developer Team ID."
+		fail "Godot requires an App Store Team ID even for this unsigned export. Set TEAM_ID (in GitHub Actions: the repository secret IOS_TEAM_ID) to your Apple Developer Team ID."
 	fi
 	fail "Godot did not produce an Xcode project (see the export output above)."
 fi

@@ -67,7 +67,7 @@ These are not needed for an unsigned test IPA, but are for distribution:
 | Item | Where | Current value |
 |---|---|---|
 | Bundle identifier | Export preset → Application | `com.example.thewaiting` (placeholder) |
-| App Store Team ID | Export preset → Application | empty (yours) |
+| App Store Team ID | Export preset → Application, or `TEAM_ID` / the GitHub secret `IOS_TEAM_ID` | empty — **required**: Godot 4.7.2 refuses to export an iOS project without one, even unsigned (confirmed on a macOS runner) |
 | Version / build | Export preset → Application | `0.3.0` / `1` |
 | App icon 1024×1024 | Export preset → Icons | not set (Godot falls back to the project icon) |
 | Launch screen colour | Export preset → Storyboard | `#050507`, matching the game |
@@ -83,3 +83,12 @@ With the iOS export templates installed in Godot on this Windows machine, the
 Xcode project can be exported here (*Export Project Only*) and copied to a Mac,
 where Xcode builds it. It does not remove the need for a Mac, so the script
 above is the simpler route.
+
+## GitHub Actions
+
+`.github/workflows/ios-unsigned-ipa.yml` runs the same script on a macOS
+runner (Godot 4.7.2 and its templates are downloaded and checksum-verified)
+and uploads `TheWaiting-unsigned.ipa` as a run artifact. It needs the
+repository **secret** `IOS_TEAM_ID` (masked in logs; the repository is
+public). Optional: the variable `IOS_BUNDLE_ID`. Start it from the *Actions*
+tab (*Run workflow*) or by pushing to `main`.

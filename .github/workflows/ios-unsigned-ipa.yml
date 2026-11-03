@@ -2,11 +2,13 @@
 # as a workflow artifact. Nothing here signs the app, and no certificates,
 # profiles, keys or passwords are used or needed.
 #
-# Optional repository variables (Settings → Secrets and variables → Actions →
-# Variables). They are not secrets; leave them unset and the export preset's
-# values are used, with a warning in the job summary:
-#   IOS_BUNDLE_ID   your bundle identifier (preset: com.example.thewaiting)
-#   IOS_TEAM_ID     your Apple Developer Team ID, only if Godot requires one
+# Settings (Settings → Secrets and variables → Actions):
+#   IOS_TEAM_ID     REQUIRED, as a *secret* (masked in the public logs): your
+#                   Apple Developer Team ID. Godot 4.7.2 refuses to export an
+#                   iOS project without one, even unsigned. It is used only to
+#                   fill the export preset; nothing is signed.
+#   IOS_BUNDLE_ID   optional *variable*: your bundle identifier
+#                   (preset: com.example.thewaiting)
 
 name: iOS IPA (unsigned)
 
@@ -90,14 +92,14 @@ jobs:
       - name: Report missing iOS settings
         env:
           BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
-          TEAM_ID: ${{ vars.IOS_TEAM_ID }}
+          TEAM_ID: ${{ secrets.IOS_TEAM_ID || vars.IOS_TEAM_ID }}
         run: |
           {
             echo "### iOS settings used"
             if [ -n "$BUNDLE_ID" ]; then echo "- Bundle identifier: \`$BUNDLE_ID\` (repository variable)";
             else echo "- ⚠️ Bundle identifier: preset placeholder \`com.example.thewaiting\` — set the \`IOS_BUNDLE_ID\` variable before signing"; fi
-            if [ -n "$TEAM_ID" ]; then echo "- Team ID: set (repository variable)";
-            else echo "- Team ID: not set (not needed unless Godot refuses the export)"; fi
+            if [ -n "$TEAM_ID" ]; then echo "- Team ID: set";
+            else echo "- ❌ Team ID: not set — Godot 4.7.2 will refuse the export. Add the repository secret \`IOS_TEAM_ID\`."; fi
             echo "- App icon 1024×1024: not set in the preset (Godot falls back to the project icon)"
             echo "- Signing: none — the IPA is unsigned"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -105,7 +107,7 @@ jobs:
       - name: Export the Xcode project and build the unsigned IPA
         env:
           BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
-          TEAM_ID: ${{ vars.IOS_TEAM_ID }}
+          TEAM_ID: ${{ secrets.IOS_TEAM_ID || vars.IOS_TEAM_ID }}
         run: |
           export GODOT="$HOME/godot/Godot.app/Contents/MacOS/Godot"
           chmod +x tools/ios/build_unsigned_ipa.sh

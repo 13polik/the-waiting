@@ -52,6 +52,10 @@ func _ready() -> void:
 			mode = "ending-check"
 		elif arg == "--selftest-story":
 			mode = "story"
+		elif arg == "--selftest-mods-more":
+			mode = "mods-more"
+		elif arg == "--selftest-away=check":
+			mode = "away-check"
 	match mode:
 		"fps": _fps()
 		"lifecycle": _lifecycle()
@@ -65,6 +69,8 @@ func _ready() -> void:
 		"ending": _ending()
 		"ending-check": _ending_check()
 		"story": _story()
+		"mods-more": _mods_more()
+		"away-check": _away_check()
 		"write": _persist_write()
 		"check": _persist_check()
 		_: _full()
@@ -845,6 +851,39 @@ func _mods() -> void:
 
 	ModManager.set_enabled("glimmer_grotto", false)
 	_check(ModManager.room_ids().is_empty() and ItemsReg.order().size() == ItemsReg.ORDER.size(), "switched off, the mod is gone")
+
+	# 0.8: the other bundled examples, one at a time, each through its own side passage.
+	var examples := {"mushroom_hollow": ["hall", "hollow", "spore", 1250.0], "sunken_lake": ["garden", "lake", "pearl", 1150.0],
+		"old_archive": ["alcove", "archive", "map", 720.0], "quiet_shrine": ["beyond", "shrine", "warm_stone", 1200.0]}
+	for id in examples:
+		var e: Array = examples[id]
+		var m: Dictionary = {}
+		for mm in ModManager.mods:
+			if mm["id"] == id:
+				m = mm
+		_check(not m.is_empty() and m["ok"] and not m["enabled"], "%s is installed, valid and off %s" % [id, str(m.get("errors", ""))])
+		ModManager.set_enabled(id, true)
+		var room := "mod:%s:%s" % [id, e[1]]
+		_check(ModManager.anchor_room(e[0]) == room, "%s hangs off %s" % [id, e[0]])
+		main.travel(e[0], "")
+		await _wait_room(e[0], 10.0)
+		await _wait(0.8)
+		var door := _find("side:" + room)
+		_check(door != null, "%s: the side passage is there" % id)
+		if door != null:
+			_teleport(ModManager.ANCHORS[e[0]] - 60.0)
+			await _wait(0.3)
+			main.player.interaction.examine(door)
+			await _wait(0.3)
+			await _read_to_end()
+		await _wait_room(room, 10.0)
+		_check(main.room.room_id == room, "%s: the room opens" % id)
+		await _wait(1.2)
+		await _shot("m_" + id)
+		_teleport(float(e[3]))
+		await _examine_id("item_mod:%s:%s" % [id, e[2]])
+		_check(WorldManager.has_item("mod:%s:%s" % [id, e[2]]), "%s: its item can be taken" % id)
+		ModManager.set_enabled(id, false)
 	main.travel("home", "")
 	await _wait_room("home", 10.0)
 	await _press_action("inventory")
@@ -1118,3 +1157,95 @@ func _meet(room_id: String) -> void:
 	_check(int(WorldManager.get_flag("lamp_talks", 0)) == before + 1, "a meeting in %s" % room_id)
 	await _wait(2.8)
 	_check(main.room.get_node_or_null("Props/Lamplighter") == null, "and then the Lamplighter is gone")
+
+
+const AwayData := preload("res://scripts/data/away.gd")
+const BooksData := preload("res://scripts/data/books.gd")
+
+
+## 0.8: mods that are not places — a long book (850 pages, 50 a day) and
+## things the creature does while the player is away.
+func _mods_more() -> void:
+	await _wait(1.5)
+	var by_id := {}
+	for m in ModManager.mods:
+		by_id[m["id"]] = m
+	for id in ["long_almanac", "quiet_hours"]:
+		_check(by_id.has(id) and by_id[id]["ok"], "%s is installed and valid %s" % [id, str(by_id.get(id, {}).get("errors", ""))])
+	ModManager.set_enabled("long_almanac", true)
+	ModManager.set_enabled("quiet_hours", true)
+	var book := "mod:long_almanac:almanac"
+	var info := BooksData.info(book)
+	_check(int(info.get("pages", 0)) == 850 and int(info.get("per_day", 0)) == 50 and int(info.get("sittings", 0)) == 17, "the almanac: 850 pages, 50 a day, 17 days")
+	_check(ModManager.away_activities().size() == 10, "away activities from both mods (%d)" % ModManager.away_activities().size())
+	main.travel("hall", "")
+	await _wait_room("hall", 10.0)
+	await _wait(0.8)
+	_teleport(500.0)
+	await _examine_id("item_" + book)
+	_check(WorldManager.has_item(book), "the almanac is found in the hall")
+	await _press_action("inventory")
+	var satchel := await _wait_node_named("InventoryScreen")
+	if satchel != null:
+		await _click(satchel.find_child("Item_mod_long_almanac_almanac", true, false))
+		var read: Button = satchel.find_child("Read", true, false)
+		_check(read != null and read.visible, "the mod book can be read")
+		await _click(read)
+		var screen := await _wait_node_named("BookScreen")
+		if screen != null:
+			await _click(screen.find_child("ReadOn", true, false))
+			await _wait(0.5)
+			_check(BookProgress.pages_read(book) == 50, "fifty pages read (%d)" % BookProgress.pages_read(book))
+			var status: Label = screen.find_child("Status", true, false)
+			_check(status != null and status.text.contains("850"), "out of 850 (%s)" % (status.text if status != null else ""))
+			await _shot("x01_mod_book")
+			await _click(screen.find_child("Back", true, false))
+			await _wait(0.5)
+		if is_instance_valid(satchel):
+			await _click(satchel.find_child("Back", true, false))
+			await _wait(0.5)
+	for i in 20:
+		TimeManager.debug_add_seconds(DAY_SECONDS)
+		BookProgress.read_next(book)
+	_check(BookProgress.finished(book) and BookProgress.pages_read(book) == 850, "after seventeen days of reading, all 850 pages")
+	# Picking an activity.
+	_check(AwayData.pick("home", 600.0, [], 3).is_empty(), "a short absence: nothing to tell")
+	var a := AwayData.pick("home", 7200.0, ModManager.away_activities(), 5)
+	_check(not a.is_empty() and Loc.t(a["text"]) != a["text"], "a long absence: something to tell (%s)" % Loc.t(a.get("text", "")))
+	var seen := {}
+	for s in 40:
+		seen[AwayData.pick("home", 7200.0, ModManager.away_activities(), s)["text"]] = true
+	_check(seen.size() >= 8, "many different activities (%d)" % seen.size())
+	main.travel("home", "")
+	await _wait_room("home", 10.0)
+	_teleport(1500.0)
+	await _wait(0.4)
+	# Come back "an hour later": the second launch (--selftest-away=check).
+	_check(SaveManager.save_now("away-write"), "save succeeds")
+	SaveManager.session_active = false
+	var path := SaveManager.save_file_path()
+	var r := SaveStore.read(path)
+	if r["ok"]:
+		var payload: Dictionary = r["payload"]
+		payload["time"]["anchor"] = float(payload["time"]["anchor"]) - 3600.0
+		_check(SaveStore.write(path, payload) == OK, "the save is moved an hour back")
+	_finish()
+
+
+## Second launch: an hour has passed, so the creature is found busy somewhere.
+func _away_check() -> void:
+	await _wait(1.0)
+	_check(TimeManager.clock.tamper_events == 0 and not TimeManager.is_jailed(), "an honest absence is not tampering")
+	await _wait_until(func() -> bool: return UIManager.is_text_open(), 6.0)
+	_check(UIManager.is_text_open() and UIManager._title.text == Loc.t("AWAY_TITLE").to_upper(), "on return, what the creature was doing")
+	var a: Dictionary = main.away_activity
+	_check(not a.is_empty() and UIManager._body.text == Loc.t(a["text"]), "the line matches the activity (%s)" % Loc.t(a.get("text", "")))
+	if a.has("x"):
+		_check(absf(main.player.global_position.x - float(a["x"])) < 40.0, "found where it happened (%.0f)" % main.player.global_position.x)
+	else:
+		_check(absf(main.player.global_position.x - 1500.0) < 2.0, "an activity done anywhere: found where it was left")
+	await _wait(1.0)
+	await _shot("x02_away")
+	await _read_to_end()
+	_check(int(WorldManager.get_flag("away_count", 0)) == 1, "counted once")
+	_finish()

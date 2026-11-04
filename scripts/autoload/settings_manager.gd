@@ -21,6 +21,9 @@ const DEFAULTS := {
 	## mod id → on/off (see ModManager).
 	"mods_enabled": {},
 	"mods_example_installed": false,
+	## Bundled example mods already copied to the mods folder (each only once,
+	## so one the player deletes stays deleted).
+	"mods_examples_installed": [],
 }
 const TEXT_SCALES := [0.85, 1.0, 1.2]
 
@@ -53,9 +56,11 @@ func set_value(key: String, value: Variant) -> void:
 func reset() -> void:
 	var mods: Variant = values.get("mods_enabled", {})
 	var example: Variant = values.get("mods_example_installed", false)
+	var examples: Variant = values.get("mods_examples_installed", [])
 	values = DEFAULTS.duplicate(true)
 	values["mods_enabled"] = mods
 	values["mods_example_installed"] = example
+	values["mods_examples_installed"] = examples
 	for key in values:
 		_apply(key)
 	save()
@@ -103,6 +108,12 @@ func _sanitize(key: String, value: Variant) -> Variant:
 			return DEFAULTS[key]
 		"fullscreen", "mods_example_installed":
 			return bool(value) if typeof(value) == TYPE_BOOL else DEFAULTS[key]
+		"mods_examples_installed":
+			var list: Array = []
+			if typeof(value) == TYPE_ARRAY:
+				for v in value:
+					list.append(str(v))
+			return list
 		"mods_enabled":
 			var out := {}
 			if typeof(value) == TYPE_DICTIONARY:

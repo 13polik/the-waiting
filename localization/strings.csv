@@ -419,3 +419,19 @@ LAMP_12_2,Every lamp I ever lit was for this: someone walking through.,"Każda l
 LAMP_12_3,"I can put my lantern down now. Go on, into the light. I'll stay a while and watch.","Mogę już odstawić latarnię. Idź, w światło. Zostanę chwilę i popatrzę."
 ENDING_BOOKS,Book pages read: %d of %d,Przeczytane strony książek: %d z %d
 ENDING_LAMP,Meetings with the Lamplighter: %d of %d,Spotkania z Latarnikiem: %d z %d
+BOOK_READ_N,Read %d pages,Przeczytaj %d stron
+AWAY_TITLE,While you were away,Pod twoją nieobecność
+AWAY_NEST,"A long nap in the nest, curled up under the blanket. The moss is still warm from it.","Długa drzemka w gnieździe, w kłębku pod kocem. Mech wciąż jest od niej ciepły."
+AWAY_TALLY,"A long while at the tally wall, running a finger along the marks and counting them again.","Długa chwila przy ścianie z kreskami: palec sunie po znakach, liczenie od nowa."
+AWAY_POOL,"Sitting by the still pool, watching the drops fall and the rings spread, one after another.","Siedzenie nad cichą sadzawką, patrzenie, jak spadają krople i rozchodzą się kręgi, jeden po drugim."
+AWAY_DOOR,"Leaning against the door, listening to it breathe. It breathes a little slower than yesterday.",Opieranie się o drzwi i słuchanie ich oddechu. Oddychają trochę wolniej niż wczoraj.
+AWAY_CAPS,"Keeping the pale caps company, without looking at them, so that they could grow.","Dotrzymywanie towarzystwa bladym kapeluszom — bez patrzenia na nie, żeby mogły rosnąć."
+AWAY_CAIRN,"Taking the cairn apart, stone by stone, and building it again exactly as it was.",Rozbieranie kopca kamień po kamieniu i układanie go z powrotem dokładnie tak samo.
+AWAY_SHELF,"Dusting the shelf, and standing the books up straight, spines out, in the right order.","Odkurzanie półki i ustawianie książek prosto, grzbietami na zewnątrz, po kolei."
+AWAY_READ,"Sitting by the nest with a book open, not reading, just looking at the shapes of the words.","Siedzenie przy gnieździe z otwartą książką — bez czytania, tylko patrzenie na kształty słów."
+AWAY_DARK,"A long, quiet look into the dark. The dark looked back, kindly.","Długie, ciche patrzenie w ciemność. Ciemność odwzajemniła spojrzenie, życzliwie."
+AWAY_LISTEN,"Very still, listening to the whole cave at once: water, stone, breath.","Całkiem nieruchomo, słuchając całej jaskini naraz: wody, kamienia, oddechu."
+AWAY_CHIMES,"Touching the hanging stones, one at a time, very gently, so that only the hall could hear.","Dotykanie wiszących kamieni, po jednym, bardzo delikatnie, żeby usłyszała to tylko hala."
+AWAY_MOSS,"Lying in the warm moss of the garden, under the grey light, doing nothing at all.","Leżenie w ciepłym mchu ogrodu, w szarym świetle, bez robienia czegokolwiek."
+AWAY_DUST,"Drawing circles in the dust of the Narrow Way, like the circles on the door.","Rysowanie kręgów w pyle Wąskiego Przejścia, takich jak na drzwiach."
+AWAY_DESK,"Sitting at the scribe's desk, with an arm on the worn edge, the way someone else once sat.","Siedzenie przy biurku skryby, z ramieniem na wytartej krawędzi, tak jak kiedyś siedział ktoś inny."

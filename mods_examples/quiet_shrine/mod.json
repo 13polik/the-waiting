@@ -1,0 +1,62 @@
+{
+	"format": 1,
+	"id": "quiet_shrine",
+	"name": { "en": "The Quiet Shrine", "pl": "Cicha Kapliczka" },
+	"description": {
+		"en": "Only for those who have waited all four hundred days: a small bright shrine just beyond the door, where waiters leave something warm behind.",
+		"pl": "Tylko dla tych, którzy przeczekali wszystkie czterysta dni: mała, jasna kapliczka tuż za drzwiami, gdzie czekający zostawiają coś ciepłego."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"items": {
+		"warm_stone": {
+			"art": "fragment",
+			"title": { "en": "Warm Stone", "pl": "Ciepły kamień" },
+			"description": {
+				"en": "A flat stone, warm all the way through. It holds the warmth of every hand that has held it.",
+				"pl": "Płaski kamień, ciepły na wylot. Trzyma ciepło każdej dłoni, która go trzymała."
+			},
+			"found": [
+				{ "en": "Among the offerings, one stone is still warm, as if someone had only just let go of it.", "pl": "Wśród darów jeden kamień jest wciąż ciepły, jakby ktoś dopiero co go wypuścił." },
+				{ "en": "You take it, and leave a little of your own warmth in its place.", "pl": "Zabierasz go i zostawiasz w jego miejscu trochę własnego ciepła." }
+			]
+		}
+	},
+	"rooms": {
+		"shrine": {
+			"title": { "en": "The Quiet Shrine", "pl": "Cicha Kapliczka" },
+			"anchor": "beyond",
+			"width": 1600,
+			"floor": [[0, 800], [500, 790], [1000, 780], [1600, 784]],
+			"ceiling": [[0, 300], [500, 220], [1000, 200], [1600, 260]],
+			"palette": { "light": [0.62, 0.58, 0.5], "stone": [0.38, 0.34, 0.29], "wash": [0.36, 0.32, 0.26] },
+			"objects": [
+				{
+					"kind": "shaft", "x": 700,
+					"title": { "en": "Daylight", "pl": "Światło dnia" },
+					"text": [
+						{ "en": "Real daylight, falling through a round hole high above. It is warm on your hood.", "pl": "Prawdziwe światło dnia, wpadające przez okrągły otwór wysoko w górze. Grzeje kaptur." },
+						{ "en": "After four hundred days, it is almost too much. Almost.", "pl": "Po czterystu dniach to prawie za dużo. Prawie." }
+					],
+					"again": [ { "en": "You stand in it a little longer. There is no hurry now.", "pl": "Stoisz w nim trochę dłużej. Teraz nie ma już pośpiechu." } ]
+				},
+				{ "kind": "shaft", "x": 1150 },
+				{
+					"kind": "moss", "x": 950,
+					"title": { "en": "The Offerings", "pl": "Dary" },
+					"text": [
+						{ "en": "Small things laid on the moss: smooth pebbles, a dried bloom, a bent nail, a bead of glass.", "pl": "Drobiazgi ułożone na mchu: gładkie kamyki, suszony kwiat, wygięty gwóźdź, szklany koralik." },
+						{ "en": "Each from someone who waited, and was glad when it was over.", "pl": "Każdy od kogoś, kto czekał — i ucieszył się, kiedy było po wszystkim." }
+					],
+					"again": [ { "en": "There is room for one more.", "pl": "Jest miejsce na jeszcze jeden." } ]
+				},
+				{
+					"kind": "pool", "x": 1350,
+					"title": { "en": "The Basin", "pl": "Misa" },
+					"text": [ { "en": "A stone basin of clear water. In it, for the first time, you see your own light reflected from above.", "pl": "Kamienna misa z czystą wodą. Pierwszy raz widać w niej własne światło odbite od góry." } ]
+				}
+			],
+			"items": [ { "item": "warm_stone", "x": 1200 } ]
+		}
+	}
+}

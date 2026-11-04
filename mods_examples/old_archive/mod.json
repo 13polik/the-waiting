@@ -1,0 +1,70 @@
+{
+	"format": 1,
+	"id": "old_archive",
+	"name": { "en": "The Old Archive", "pl": "Stare Archiwum" },
+	"description": {
+		"en": "Behind a crack in the Scribe's Alcove: the place where the scribe kept what could not be kept on paper. Tallies, tablets, and a torn map.",
+		"pl": "Za szczeliną w Alkowie Skryby: miejsce, gdzie skryba przechowywał to, czego nie dało się zapisać na papierze. Kreski, tabliczki i podarta mapa."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"items": {
+		"map": {
+			"art": "pages",
+			"title": { "en": "Torn Map", "pl": "Podarta mapa" },
+			"description": {
+				"en": "Half a map of the tunnels, drawn in the scribe's hand. Your home is on it, marked with a small circle. The other half is missing.",
+				"pl": "Połowa mapy tuneli, narysowana ręką skryby. Jest na niej twój dom, oznaczony małym kółkiem. Drugiej połowy brak."
+			},
+			"found": [
+				{ "en": "Tucked behind a tablet, a folded sheet, torn down the middle.", "pl": "Za tabliczką złożona kartka, przedarta przez środek." },
+				{ "en": "A map. Someone wanted to know the way. Or to show it.", "pl": "Mapa. Ktoś chciał znać drogę. Albo ją pokazać." }
+			]
+		},
+		"quill": {
+			"art": "wing",
+			"title": { "en": "Grey Quill", "pl": "Szare pióro" },
+			"description": {
+				"en": "A long grey quill, its tip still dark with ink. It has written a great deal.",
+				"pl": "Długie szare pióro, z czubkiem wciąż ciemnym od atramentu. Napisało bardzo dużo."
+			},
+			"found": [
+				{ "en": "A quill lies across the last tablet, as if put down only for a moment.", "pl": "Na ostatniej tabliczce leży pióro, jakby odłożone tylko na chwilę." }
+			]
+		}
+	},
+	"rooms": {
+		"archive": {
+			"title": { "en": "The Old Archive", "pl": "Stare Archiwum" },
+			"anchor": "alcove",
+			"width": 1800,
+			"floor": [[0, 806], [500, 812], [1000, 806], [1800, 800]],
+			"ceiling": [[0, 430], [600, 400], [1200, 420], [1800, 450]],
+			"palette": { "light": [0.3, 0.28, 0.27], "stone": [0.2, 0.19, 0.18], "wash": [0.1, 0.09, 0.09] },
+			"objects": [
+				{
+					"kind": "marks", "x": 520,
+					"title": { "en": "Rows of Tallies", "pl": "Rzędy kresek" },
+					"text": [
+						{ "en": "Tallies in sevens, wall after wall. More days than four hundred. Many more.", "pl": "Kreski po siedem, ściana za ścianą. Więcej dni niż czterysta. O wiele więcej." },
+						{ "en": "These are not one waiter's days. They are everyone's.", "pl": "To nie są dni jednego czekającego. To dni wszystkich." }
+					],
+					"again": [ { "en": "Somewhere among them, perhaps, a row is waiting for yours.", "pl": "Gdzieś wśród nich może czeka rząd na twoje." } ]
+				},
+				{
+					"kind": "pillar", "x": 1050,
+					"title": { "en": "Fallen Tablets", "pl": "Przewrócone tabliczki" },
+					"text": [ { "en": "Stone tablets, fallen in a row. Each is carved with a circle and a name you cannot read.", "pl": "Kamienne tabliczki, przewrócone rzędem. Na każdej wyryty krąg i imię, którego nie da się odczytać." } ],
+					"again": [ { "en": "The last tablet has a circle, and no name yet.", "pl": "Ostatnia tabliczka ma krąg, ale jeszcze nie ma imienia." } ]
+				},
+				{
+					"kind": "fossil", "x": 1450,
+					"title": { "en": "The Paperweight", "pl": "Przycisk do papieru" },
+					"text": [ { "en": "A spiral shell set on a ledge, smoothed by a hand that rested on it many times.", "pl": "Spiralna muszla na półce skalnej, wygładzona przez dłoń, która wiele razy na niej spoczywała." } ]
+				},
+				{ "kind": "marks", "x": 1300 }
+			],
+			"items": [ { "item": "map", "x": 720 }, { "item": "quill", "x": 1560 } ]
+		}
+	}
+}

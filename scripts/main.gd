@@ -20,6 +20,7 @@ const ScreenEffects := preload("res://scripts/world/screen_effects.gd")
 const PauseMenu := preload("res://scripts/ui/pause_menu.gd")
 const InventoryScreen := preload("res://scripts/ui/inventory_screen.gd")
 const EndingScreen := preload("res://scripts/ui/ending_screen.gd")
+const Away := preload("res://scripts/data/away.gd")
 const Loc := preload("res://scripts/core/loc.gd")
 const MENU_SCENE := "res://scenes/main_menu.tscn"
 
@@ -39,6 +40,8 @@ var _leaving: bool = false
 var _travelling: bool = false
 ## Tampering was caught (0.5): go to the dungeon as soon as nothing is open.
 var _jail_pending: bool = false
+## What the creature was found doing at the start of this session ({} if nothing).
+var away_activity: Dictionary = {}
 
 
 func _ready() -> void:
@@ -63,6 +66,16 @@ func _ready() -> void:
 	if forced_jail:
 		x = room.entry("cell")["x"]
 		spawn["facing"] = 1
+	# 0.8: after a long absence, the creature is found where it spent the time.
+	var away: Dictionary = {}
+	if not forced_jail and not SaveManager.is_new_game and not TimeManager.is_jailed():
+		var n := int(WorldManager.get_flag("away_count", 0))
+		away = Away.pick(room.room_id, TimeManager.offline_seconds_on_launch, ModManager.away_activities(), TimeManager.day_index() * 7 + n)
+		away_activity = away
+		if not away.is_empty():
+			WorldManager.set_flag("away_count", n + 1)
+			if away.has("x"):
+				x = clampf(float(away["x"]), room.walkable_range().x, room.walkable_range().y)
 	player.position = Vector2(x, room.floor_y(x) - 1.0)
 	player.facing = spawn["facing"]
 	room.actor_layer.add_child(player)
@@ -114,6 +127,8 @@ func _ready() -> void:
 		UIManager.show_place(room.title_key, false)
 	if not TimeManager.last_tamper.is_empty():
 		_tell_tamper.call_deferred(2.6)
+	elif not away.is_empty():
+		_tell_away.call_deferred(away["text"])
 
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--selftest") and not arg.begins_with("--selftest-menu"):
@@ -172,6 +187,13 @@ func _imprison() -> void:
 	AudioManager.play("rumble", -3.0, 0.6)
 	await travel("dungeon", "cell")
 	_tell_tamper(0.8)
+
+
+func _tell_away(text_key: String) -> void:
+	await get_tree().create_timer(2.4).timeout
+	if not is_inside_tree() or _leaving or UIManager.is_text_open():
+		return
+	UIManager.show_text("AWAY_TITLE", [text_key])
 
 
 ## The voice of the door: what happened, and what it cost.

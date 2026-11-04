@@ -11,12 +11,14 @@ var book_id: String = "book_door"
 var _list: VBoxContainer
 var _status: Label
 var _read: Button
+var _info: Dictionary
 
 
 func _build() -> void:
 	panel_width = 720.0
 	name = "BookScreen"
-	add_title(Books.BOOKS[book_id]["title"])
+	_info = Books.info(book_id)
+	add_title(_info["title"])
 	_status = add_paragraph("", false, 15)
 	_status.name = "Status"
 	_status.add_theme_color_override("font_color", UiStyle.DIM)
@@ -36,6 +38,8 @@ func _fill() -> void:
 		_list.remove_child(c)
 		c.queue_free()
 	var n := BookProgress.sittings(book_id)
+	var per := int(_info["per_day"])
+	var total := int(_info["pages"])
 	if n == 0:
 		var first := UiStyle.label("BOOK_UNOPENED", 17, UiStyle.DIM)
 		first.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -43,10 +47,10 @@ func _fill() -> void:
 		_list.add_child(first)
 	for i in n:
 		var head := UiStyle.label("", 14, UiStyle.FAINT, false)
-		head.text = Loc.t("BOOK_PAGES") % [i * Books.PER_SITTING + 1, (i + 1) * Books.PER_SITTING]
+		head.text = Loc.t("BOOK_PAGES") % [i * per + 1, mini((i + 1) * per, total)]
 		head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_list.add_child(head)
-		var p := UiStyle.label(Books.passage_key(book_id, i + 1), 18, UiStyle.INK)
+		var p := UiStyle.label(_info["passages"][i], 18, UiStyle.INK)
 		p.name = "Passage_%d" % (i + 1)
 		p.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		p.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -54,12 +58,14 @@ func _fill() -> void:
 		_list.add_child(p)
 	var pages := BookProgress.pages_read(book_id)
 	if BookProgress.finished(book_id):
-		_status.text = Loc.t("BOOK_FINISHED") % Books.PAGES
+		_status.text = Loc.t("BOOK_FINISHED") % total
 	elif BookProgress.read_today(book_id):
-		_status.text = (Loc.t("BOOK_PROGRESS") % [pages, Books.PAGES]) + "\n" + Loc.t("BOOK_TOMORROW")
+		_status.text = (Loc.t("BOOK_PROGRESS") % [pages, total]) + "\n" + Loc.t("BOOK_TOMORROW")
 	else:
-		_status.text = Loc.t("BOOK_PROGRESS") % [pages, Books.PAGES]
+		_status.text = Loc.t("BOOK_PROGRESS") % [pages, total]
 	_read.visible = BookProgress.can_read(book_id)
+	_read.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_read.text = Loc.t("BOOK_READ_N") % mini(per, total - pages)
 	UiStyle.rescale(_list)
 	await get_tree().process_frame
 	if is_instance_valid(box):

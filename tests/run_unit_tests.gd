@@ -12,6 +12,7 @@ const Items := preload("res://scripts/data/items.gd")
 const Rooms := preload("res://scripts/world/rooms.gd")
 const Books := preload("res://scripts/data/books.gd")
 const Visits := preload("res://scripts/data/lamplighter_visits.gd")
+const Away := preload("res://scripts/data/away.gd")
 const T0 := 1_800_000_000.0
 const DAY := 86400.0
 
@@ -336,6 +337,8 @@ func _test_translations_complete() -> void:
 			"OBJ_SHELF_COUNT", "OBJ_SHELF_FULL", "OBJ_LAMP_LIT_1", "OBJ_LAMP_LIT_2", "OBJ_LAMP_LIT_R", "LAMP_NEAR",
 			"ENDING_BOOKS", "ENDING_LAMP"]:
 		check(keys.has(k), "0.7 key %s exists" % k)
+	for k in Away.all_keys() + ["BOOK_READ_N"]:
+		check(keys.has(k), "0.8 key %s exists" % k)
 	check(Books.SITTINGS * Books.PER_SITTING == 300, "each book has 300 pages")
 	check(Visits.VISITS.size() == 12, "twelve meetings with the Lamplighter")
 	check(Rooms.exists("dungeon") and not Rooms.ORDER.has("dungeon"), "the dungeon exists but is not a place to find")

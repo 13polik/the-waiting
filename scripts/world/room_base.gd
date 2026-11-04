@@ -145,6 +145,7 @@ func _ready() -> void:
 	add_child(props_layer)
 	_add_props(props_layer)
 	_add_mod_passage(props_layer)
+	_add_mod_items(props_layer)
 	_add_visitor(props_layer)
 	_add_exits(props_layer)
 
@@ -199,6 +200,13 @@ func exit_at(world_pos: Vector2) -> Node:
 
 
 ## Re-checks exits that open with a world flag (e.g. a hidden passage).
+## 0.8: things mods leave in this room (their books, for example).
+func _add_mod_items(parent: Node) -> void:
+	for p in ModManager.placements_in(room_id):
+		var x := clampf(float(p["x"]), left_limit + 40.0, right_limit - 40.0)
+		add_collectible(parent, p["item"], Vector2(x, floor_y(x) - 6.0), {"stand": 55.0})
+
+
 ## The Lamplighter (0.7), when a meeting is due here today.
 func _add_visitor(parent: Node) -> void:
 	var Lamplighter: GDScript = load("res://scripts/world/props/lamplighter.gd")

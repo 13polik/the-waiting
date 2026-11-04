@@ -1,0 +1,61 @@
+{
+	"format": 1,
+	"id": "mushroom_hollow",
+	"name": { "en": "The Mushroom Hollow", "pl": "Grzybowa Kotlina" },
+	"description": {
+		"en": "A warm hollow off the Hall of Echoes, its floor carpeted with thousands of tiny glowing caps, and something small that smells of rain.",
+		"pl": "Ciepła kotlina obok Hali Ech, z ziemią pokrytą tysiącami maleńkich świecących kapeluszy, i coś małego, co pachnie deszczem."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"items": {
+		"spore": {
+			"art": "bloom",
+			"title": { "en": "Drifting Spore", "pl": "Wędrujący zarodnik" },
+			"description": {
+				"en": "A soft round spore that floats a finger's width above your palm. It hums when it is happy.",
+				"pl": "Miękki, okrągły zarodnik, który unosi się na palec nad dłonią. Brzęczy, kiedy jest zadowolony."
+			},
+			"found": [
+				{ "en": "One of the spores has not floated away with the others. It drifts towards you.", "pl": "Jeden zarodnik nie odleciał razem z innymi. Dryfuje w twoją stronę." },
+				{ "en": "It settles in your satchel as if it had always meant to.", "pl": "Układa się w torbie, jakby od zawsze tam chciał być." }
+			]
+		}
+	},
+	"rooms": {
+		"hollow": {
+			"title": { "en": "The Mushroom Hollow", "pl": "Grzybowa Kotlina" },
+			"anchor": "hall",
+			"width": 2100,
+			"floor": [[0, 806], [500, 818], [1000, 808], [1500, 822], [2100, 810]],
+			"ceiling": [[0, 360], [600, 300], [1100, 260], [1600, 300], [2100, 380]],
+			"palette": { "light": [0.32, 0.36, 0.34], "stone": [0.19, 0.21, 0.2], "wash": [0.12, 0.15, 0.14] },
+			"objects": [
+				{
+					"kind": "moss", "x": 560,
+					"title": { "en": "The Cap Carpet", "pl": "Kapeluszowy dywan" },
+					"text": [
+						{ "en": "Thousands of tiny caps cover the floor, glowing from underneath like a field of lanterns turned upside down.", "pl": "Tysiące maleńkich kapeluszy pokrywa ziemię, świecąc od spodu jak pole odwróconych latarni." },
+						{ "en": "Walking across them is like walking across a quiet, green sky.", "pl": "Przejście po nich to jak spacer po cichym, zielonym niebie." }
+					],
+					"again": [ { "en": "Where you walked last time, new ones have already grown.", "pl": "Tam, gdzie ostatnio szły twoje kroki, wyrosły już nowe." } ]
+				},
+				{ "kind": "moss", "x": 1150 },
+				{ "kind": "moss", "x": 1700 },
+				{
+					"kind": "veins", "x": 900,
+					"title": { "en": "Threads of Light", "pl": "Nici światła" },
+					"text": [ { "en": "Fine glowing threads run through the rock, from cap to cap, like roots that carry light instead of water.", "pl": "Przez skałę biegną cienkie świecące nici, od kapelusza do kapelusza, jak korzenie, które zamiast wody niosą światło." } ],
+					"again": [ { "en": "The light moves along them, very slowly, always towards the biggest cap.", "pl": "Światło płynie nimi bardzo powoli, zawsze w stronę największego kapelusza." } ]
+				},
+				{
+					"kind": "trickle", "x": 1450,
+					"title": { "en": "The Warm Drip", "pl": "Ciepła kropla" },
+					"text": [ { "en": "Water drips from the ceiling, warm as breath. The caps lean towards it.", "pl": "Z sufitu kapie woda, ciepła jak oddech. Kapelusze pochylają się w jej stronę." } ]
+				},
+				{ "kind": "shaft", "x": 1100 }
+			],
+			"items": [ { "item": "spore", "x": 1250 } ]
+		}
+	}
+}

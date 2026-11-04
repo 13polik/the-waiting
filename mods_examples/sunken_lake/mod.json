@@ -1,0 +1,60 @@
+{
+	"format": 1,
+	"id": "sunken_lake",
+	"name": { "en": "The Sunken Lake", "pl": "Zatopione Jezioro" },
+	"description": {
+		"en": "Beyond the Still Garden, still water reaches back further than the light. Old water lines on the walls, and a pearl that remembers the surface.",
+		"pl": "Za Cichym Ogrodem nieruchoma woda sięga dalej niż światło. Na ścianach stare ślady wody i perła, która pamięta powierzchnię."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"items": {
+		"pearl": {
+			"art": "stone",
+			"title": { "en": "Lake Pearl", "pl": "Jeziorna perła" },
+			"description": {
+				"en": "A pale pearl, cool and heavy. Held to your ear, it sounds like rain on a lake far above.",
+				"pl": "Blada perła, chłodna i ciężka. Przyłożona do ucha brzmi jak deszcz nad jeziorem daleko w górze."
+			},
+			"found": [
+				{ "en": "At the water's edge, something round and pale catches your light.", "pl": "Na brzegu wody coś okrągłego i bladego łapie twoje światło." },
+				{ "en": "A pearl. The lake gives it up without a ripple.", "pl": "Perła. Jezioro oddaje ją bez jednej zmarszczki." }
+			]
+		}
+	},
+	"rooms": {
+		"lake": {
+			"title": { "en": "The Sunken Lake", "pl": "Zatopione Jezioro" },
+			"anchor": "garden",
+			"width": 2400,
+			"floor": [[0, 800], [600, 820], [1200, 830], [1800, 816], [2400, 804]],
+			"ceiling": [[0, 400], [700, 340], [1400, 300], [2000, 340], [2400, 420]],
+			"palette": { "light": [0.26, 0.31, 0.38], "stone": [0.16, 0.18, 0.22], "wash": [0.1, 0.13, 0.18] },
+			"objects": [
+				{
+					"kind": "pool", "x": 900,
+					"title": { "en": "The Still Water", "pl": "Nieruchoma woda" },
+					"text": [
+						{ "en": "The water is so still that the ceiling lies in it, upside down, perfectly.", "pl": "Woda jest tak nieruchoma, że leży w niej sufit, do góry nogami, idealnie." },
+						{ "en": "Somewhere under it, very deep, a faint light is waiting too.", "pl": "Gdzieś pod nią, bardzo głęboko, czeka też słabe światło." }
+					],
+					"again": [ { "en": "The light under the water has not moved. Neither have you.", "pl": "Światło pod wodą się nie poruszyło. Ty też nie." } ]
+				},
+				{ "kind": "pool", "x": 1700 },
+				{
+					"kind": "marks", "x": 1300,
+					"title": { "en": "Water Lines", "pl": "Ślady wody" },
+					"text": [ { "en": "Lines on the rock, one above another: how high the lake once stood. The highest is above your head.", "pl": "Linie na skale, jedna nad drugą: tak wysoko stało kiedyś jezioro. Najwyższa jest ponad twoją głową." } ],
+					"again": [ { "en": "The lake is slowly going somewhere. Perhaps it is waiting too.", "pl": "Jezioro powoli gdzieś odchodzi. Może też na coś czeka." } ]
+				},
+				{
+					"kind": "trickle", "x": 2050,
+					"title": { "en": "The Feeding Stream", "pl": "Strumień" },
+					"text": [ { "en": "A thin stream runs down the wall into the lake, as quietly as it can.", "pl": "Cienka strużka spływa po ścianie do jeziora, najciszej, jak potrafi." } ]
+				},
+				{ "kind": "shaft", "x": 1400 }
+			],
+			"items": [ { "item": "pearl", "x": 1150 } ]
+		}
+	}
+}

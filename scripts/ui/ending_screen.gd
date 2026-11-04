@@ -60,7 +60,7 @@ static func summary() -> PackedStringArray:
 			carried += 1
 	lines.append(Loc.t("ENDING_ITEMS") % [carried, total_items.size()])
 	lines.append(Loc.t("ENDING_PAGES") % [Notes.readable(), Notes.PAGES.size()])
-	lines.append(Loc.t("ENDING_BOOKS") % [BookProgress.total_pages_read(), Books.PAGES * Books.ORDER.size()])
+	lines.append(Loc.t("ENDING_BOOKS") % [BookProgress.total_pages_read(), BookProgress.total_pages()])
 	lines.append(Loc.t("ENDING_LAMP") % [mini(int(WorldManager.get_flag("lamp_talks", 0)), Visits.VISITS.size()), Visits.VISITS.size()])
 	var stage := BloomSprout.stage()
 	lines.append(Loc.t("ENDING_BLOOM_GROWN" if stage >= 3 else ("ENDING_BLOOM_GROWING" if stage >= 0 else "ENDING_BLOOM_NONE")))

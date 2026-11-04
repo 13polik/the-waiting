@@ -3,6 +3,12 @@
 A slow, atmospheric exploration game about a small hooded creature — the
 Wick — waiting four hundred real days beneath the world, beside the place it
 calls The Nest. Godot 4.7, GDScript, iOS-first, landscape, touch-first.
+Version 0.8: more mods, and not only places. Mods can now add books of any
+length (the bundled *Long Almanac*: 850 pages, fifty a day) and things the
+creature is found doing when you come back after a while — the game itself has
+fourteen of those too. Seven example mods come bundled, all off by default
+([docs/MODDING.md](docs/MODDING.md)).
+
 Version 0.7: three books of 300 pages each (twenty pages a day), a home
 that looks lived in (woven nest, a shelf the books stand on, a jar of glowing
 caps, roots), and the Lamplighter — met twelve times over the 400 days — who
@@ -89,6 +95,8 @@ godot --headless --path . -- --profile=menutest --reset-save --reset-settings --
 godot --headless --path . -- --profile=menutest --selftest-menu=settings-check
 ```
 
+More mods (book, away activities): `-- --profile=awaytest --reset-save --selftest-mods-more`,
+then `-- --profile=awaytest --selftest-away=check` (an hour later).
 Books, home, Lamplighter: `-- --profile=storytest --reset-save --selftest-story`.
 The ending: `-- --profile=endtest --reset-save --selftest-ending`, then
 `-- --profile=endtest --selftest-ending=check`.

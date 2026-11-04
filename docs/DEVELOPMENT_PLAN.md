@@ -148,6 +148,10 @@ up to).
 
 ## Milestones
 
+0. **0.8 (done)** — mods beyond places: `books` (any length, pages per day)
+   and `away` activities (also fourteen in the game, `data/away.gd`, shown on
+   return after 30 minutes); anchors in the alcove and beyond the door;
+   seven bundled examples, each installed once.
 0. **0.7 (done)** — books (`data/books.gd`, `data/book_progress.gd`,
    `ui/book_screen.gd`): 300 pages, 20 per sitting, one sitting per book per
    day; found in the Narrow Way, the Still Garden and (left by the Lamplighter)

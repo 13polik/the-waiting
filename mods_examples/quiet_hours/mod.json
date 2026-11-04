@@ -1,0 +1,21 @@
+{
+	"format": 1,
+	"id": "quiet_hours",
+	"name": { "en": "Quiet Hours", "pl": "Ciche Godziny" },
+	"description": {
+		"en": "An example mod with no places and no items: only more things the creature does while you are away.",
+		"pl": "Przykładowy mod bez miejsc i bez przedmiotów: tylko więcej rzeczy, które postać robi pod twoją nieobecność."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"away": [
+		{ "text": { "en": "Humming, very softly, a tune that the hanging stones taught it once.", "pl": "Nucenie, bardzo cicho, melodii, której nauczyły kiedyś wiszące kamienie." }, "room": "home", "x": 900 },
+		{ "text": { "en": "Building a tower of tiny pebbles beside the cairn. It fell over at seven. It always falls over at seven.", "pl": "Budowanie wieży z maleńkich kamyczków obok kopca. Przewróciła się przy siódmym. Zawsze przewraca się przy siódmym." }, "room": "home", "x": 1380 },
+		{ "text": { "en": "Tidying the nest: shaking out the blanket, plumping the pillow, putting the moss back where it belongs.", "pl": "Porządki w gnieździe: wytrzepanie koca, poprawienie poduszki, ułożenie mchu na swoim miejscu." }, "room": "home", "x": 1000 },
+		{ "text": { "en": "Watching the jar of glowing caps for a long time. One of them turned to look back.", "pl": "Długie przyglądanie się słoikowi ze świecącymi grzybami. Jeden z nich odwrócił się, żeby popatrzeć z powrotem." }, "room": "home", "x": 900 },
+		{ "text": { "en": "Polishing the lantern-bulb with a corner of the hood, until it shone a little brighter.", "pl": "Polerowanie latarni rogiem kaptura, aż zaświeciła odrobinę jaśniej." } },
+		{ "text": { "en": "Counting the drops from the ceiling. Four thousand and something. Then losing count, happily.", "pl": "Liczenie kropli spadających z sufitu. Cztery tysiące z kawałkiem. A potem gubienie rachunku, z ulgą." } },
+		{ "text": { "en": "Listening at the crevice to the Narrow Way. The draft carried a smell of lamp oil. Someone passed by.", "pl": "Nasłuchiwanie przy szczelinie do Wąskiego Przejścia. Przeciąg niósł zapach oliwy do lamp. Ktoś przechodził obok." }, "room": "home", "x": 2900 },
+		{ "text": { "en": "A dream about the world above. There was a sky in it. It was grey, and that was fine.", "pl": "Sen o świecie na górze. Było w nim niebo. Szare — i to było w porządku." } }
+	]
+}

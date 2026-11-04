@@ -1,0 +1,52 @@
+{
+	"format": 1,
+	"id": "long_almanac",
+	"name": { "en": "The Long Almanac", "pl": "Długi Almanach" },
+	"description": {
+		"en": "An example book mod: an almanac of 850 pages, read fifty pages a day (seventeen days). It lies in the Hall of Echoes. The creature also takes to reading it while you are away.",
+		"pl": "Przykładowy mod z książką: almanach na 850 stron, czytany po pięćdziesiąt stron dziennie (siedemnaście dni). Leży w Hali Ech. Pod twoją nieobecność postać też do niego zagląda."
+	},
+	"author": "THE WAITING",
+	"version": "1.0",
+	"books": {
+		"almanac": {
+			"art": "book_tales",
+			"title": { "en": "The Long Almanac", "pl": "Długi Almanach" },
+			"description": {
+				"en": "A huge almanac of 850 pages: the seasons of a world above that you have never seen, written down for those below. Fifty pages a day.",
+				"pl": "Ogromny almanach na 850 stron: pory roku świata na górze, którego nigdy nie było widać, spisane dla tych na dole. Pięćdziesiąt stron dziennie."
+			},
+			"found": [
+				{ "en": "Wedged between two stones, a book so thick it could be a stone itself.", "pl": "Wciśnięta między dwa kamienie książka tak gruba, że sama mogłaby być kamieniem." },
+				{ "en": "Eight hundred and fifty pages. Fifty a day. It will keep you company for a while.", "pl": "Osiemset pięćdziesiąt stron. Pięćdziesiąt dziennie. Dotrzyma towarzystwa na jakiś czas." }
+			],
+			"pages": 850,
+			"per_day": 50,
+			"room": "hall",
+			"x": 420,
+			"passages": [
+				{ "en": "The almanac begins with the first day of spring, up above. Snow goes soft, it says, and the ground begins to breathe.", "pl": "Almanach zaczyna się od pierwszego dnia wiosny, tam w górze. Śnieg mięknie, piszą, a ziemia zaczyna oddychać." },
+				{ "en": "Spring rain, it says, falls for days and no one minds. The rivers get louder. The birds come back from somewhere.", "pl": "Wiosenny deszcz, piszą, pada całymi dniami i nikomu to nie przeszkadza. Rzeki robią się głośniejsze. Ptaki skądś wracają." },
+				{ "en": "A whole chapter on the first green: leaves too small to see, then suddenly everywhere. Things that wait all winter know exactly when.", "pl": "Cały rozdział o pierwszej zieleni: liście zbyt małe, by je dostrzec, a potem nagle wszędzie. Rzeczy, które czekają całą zimę, wiedzą dokładnie kiedy." },
+				{ "en": "The days grow longer above, the almanac says. Light comes earlier and stays later. You try to imagine light that stays.", "pl": "Dni na górze się wydłużają, piszą. Światło przychodzi wcześniej i zostaje dłużej. Próbujesz wyobrazić sobie światło, które zostaje." },
+				{ "en": "Summer: warm stones, long evenings, insects that sing in the grass. The writer clearly loved summer, and was a little sad that it ends.", "pl": "Lato: ciepłe kamienie, długie wieczory, owady śpiewające w trawie. Autor wyraźnie kochał lato i trochę smucił się, że się kończy." },
+				{ "en": "On the longest day, it says, no one up there sleeps until very late. They sit outside and watch the light go slowly.", "pl": "W najdłuższy dzień, piszą, nikt tam na górze nie kładzie się spać aż do późna. Siedzą na zewnątrz i patrzą, jak światło powoli odchodzi." },
+				{ "en": "Storms in summer: the sky goes dark in the middle of the day, and then breaks open. Afterwards everything smells new.", "pl": "Letnie burze: w środku dnia niebo ciemnieje, a potem pęka. Po wszystkim wszystko pachnie nowością." },
+				{ "en": "The fruit chapter is long and very hungry. You did not know there were so many kinds of round, sweet things.", "pl": "Rozdział o owocach jest długi i bardzo głodny. Kto by pomyślał, że jest tyle rodzajów okrągłych, słodkich rzeczy." },
+				{ "en": "Then autumn. The leaves turn the colours of the blanket in your nest and let go, one by one, without hurry.", "pl": "Potem jesień. Liście przybierają kolory koca z twojego gniazda i puszczają się, jeden po drugim, bez pośpiechu." },
+				{ "en": "Autumn is for gathering, it says: putting things away for later, the way you put days away on the tally wall.", "pl": "Jesień jest od zbierania, piszą: odkładania rzeczy na później — tak jak odkłada się dni na ścianie z kreskami." },
+				{ "en": "Fog, for pages and pages. Up above, sometimes, the world goes grey and soft, a little like the light through your crack.", "pl": "Mgła, przez wiele stron. Tam w górze świat czasem robi się szary i miękki, trochę jak światło przez twoją szczelinę." },
+				{ "en": "The first frost. The writer describes it so carefully that the page itself feels cold under your hand.", "pl": "Pierwszy przymrozek. Autor opisuje go tak starannie, że sama strona wydaje się zimna pod dłonią." },
+				{ "en": "Winter: everything above goes quiet and white and still. They wait for spring, it says. Everyone up there waits for something.", "pl": "Zima: wszystko na górze cichnie, bieleje i nieruchomieje. Czekają na wiosnę, piszą. Każdy tam na górze na coś czeka." },
+				{ "en": "The longest night. They light small fires and tell each other stories until it is over. It is always over in the end.", "pl": "Najdłuższa noc. Rozpalają małe ogniska i opowiadają sobie historie, aż minie. W końcu zawsze mija." },
+				{ "en": "Snow, page after page, and under it the ground sleeping, and under that, somewhere, caves like yours.", "pl": "Śnieg, strona za stroną, pod nim śpiąca ziemia, a pod nią, gdzieś, jaskinie takie jak twoja." },
+				{ "en": "Near the end, the almanac starts again: the snow goes soft, the ground begins to breathe. The year goes round like the circles on the door.", "pl": "Pod koniec almanach zaczyna się od nowa: śnieg mięknie, ziemia zaczyna oddychać. Rok obraca się jak kręgi na drzwiach." },
+				{ "en": "The last page: 'For whoever reads this below. Every season up here was waited for by someone. So is yours.'", "pl": "Ostatnia strona: „Dla tego, kto czyta to na dole. Na każdą porę roku tutaj ktoś czekał. Na twoją też”." }
+			]
+		}
+	},
+	"away": [
+		{ "text": { "en": "Lying in the nest with the Long Almanac open on your chest, reading about snow.", "pl": "Leżenie w gnieździe z Długim Almanachem otwartym na piersi i czytanie o śniegu." }, "room": "home", "x": 1000, "needs_item": "almanac" },
+		{ "text": { "en": "Trying to imagine summer, with the help of the almanac. It did not quite work. It was nice anyway.", "pl": "Próby wyobrażenia sobie lata, z pomocą almanachu. Nie do końca się udało. I tak było miło." }, "needs_item": "almanac" }
+	]
+}

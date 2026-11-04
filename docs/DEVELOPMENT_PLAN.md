@@ -86,19 +86,38 @@ up to).
 * **While closed / backgrounded:** on launch and on `APPLICATION_RESUMED` the
   clock credits `now - anchor` from the wall clock (UTC Unix time, so time-zone
   changes are irrelevant).
-* **Clock set backwards:** the anchor never moves back. Progress cannot be
-  rewound, no time is credited until real time passes the anchor again, and a
-  rollback event is recorded. If the clock was *accidentally* reset (e.g. to
-  1970) and later corrected, the real elapsed time is credited — nothing lost.
+* **Clock set backwards by up to an hour:** the anchor never moves back. No
+  time is credited until real time passes the anchor again, and a rollback
+  event is recorded.
+* **Clock set backwards by more than an hour (0.5): tampering.** This is what
+  "set the date forward, play, set it back" leaves behind. The time credited
+  ahead of the clock is taken back off `elapsed`, counting restarts from the
+  clock as it is, and the creature is jailed (below).
 * **Unannounced suspension** (device sleep without a notification): detected
   when the wall clock runs ahead of the anchor by more than 2 s, then credited.
 * **Developer skips** (debug builds) go into a separate `debug_offset`. The
   world responds to `elapsed + debug_offset`; the real clock and anchor
   never move.
-* **Known limitation:** a clock set *forward* while the game is closed cannot be
-  detected offline. This is the same trade-off every offline real-time game
-  makes. A later milestone can add an optional, privacy-respecting network
-  time check that only ever *removes* suspicious time.
+* **Trusted time (0.5):** when there is a network, `TimeManager` sends a HEAD
+  request to `https://www.apple.com/` (fallback `https://www.google.com/`)
+  a few seconds after launch, on every resume and every 20 minutes, and reads
+  only the `Date` header. Nothing about the player is sent. `TimeClock.apply_network`
+  checks that no more waiting was credited since the last check than really
+  passed (first check: the anchor is not past the true time). More than an
+  hour over is tampering. Offline the game works as before; a clock moved
+  forward while closed and offline is caught at the next online check.
+  The check only ever *removes* time. Automated tests pass `--selftest*`
+  (or `--no-net-time`) and never touch the network; `tests/net_time_probe.gd`
+  checks the real source by hand.
+* **The dungeon:** when tampering is caught the skipped time is taken back,
+  `jail_until = simulated + 86 400` is saved in the time section, and the
+  session moves to the Dungeon (`rooms/dungeon.gd`, not one of the places to
+  find). The bars are solid and the exit is shut until a day of waiting has
+  passed (`TimeManager.jail_released`); a new offence restarts the day. After
+  a punished forward jump, putting the device clock right again is forgiven
+  (`pardon_back`). Debug builds: Developer tools → "Tamper" simulates it.
+* **Known limitation:** a device clock that is genuinely more than an hour
+  wrong in the future looks like tampering on the first online check.
 
 1 game day = 86 400 real seconds; the wait is 400 days.
 
@@ -129,6 +148,9 @@ up to).
 
 ## Milestones
 
+0. **0.5 (done)** — time tampering detection (clock rollbacks offline,
+   trusted network time online); skipped time is taken back and the creature
+   spends a day in the Dungeon behind bars.
 0. **0.4 (done)** — daily content: the old passage (one stone per real day,
    seven days) opens into the Scribe's Alcove; twelve pages, one more readable
    each day, in a reader in the satchel; the pale bloom planted in the garden

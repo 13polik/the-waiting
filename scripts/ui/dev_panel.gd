@@ -67,6 +67,11 @@ func _ready() -> void:
 	clear.custom_minimum_size = Vector2(118, 44)
 	clear.pressed.connect(TimeManager.debug_clear_offset)
 	grid.add_child(clear)
+	var tamper := WaitingButton.make("DEV_TAMPER", 17, HORIZONTAL_ALIGNMENT_CENTER)
+	tamper.name = "Tamper"
+	tamper.custom_minimum_size = Vector2(118, 44)
+	tamper.pressed.connect(TimeManager.debug_tamper)
+	grid.add_child(tamper)
 
 	var note := UiStyle.label("DEV_NOTE", 13, UiStyle.FAINT)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

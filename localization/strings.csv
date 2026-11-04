@@ -260,3 +260,18 @@ MODS_ENABLED,On,Włączony
 MODS_DISABLED,Off,Wyłączony
 MODS_BROKEN,Cannot load: %s,Nie można wczytać: %s
 MODS_BY,by %s · v%s,autor: %s · v%s
+ROOM_DUNGEON,The Dungeon,Lochy
+TAMPER_TITLE,The door noticed,Drzwi to wyczuły
+TAMPER_1,"Someone moved time. The door felt the days go by that were never waited, and it closed its hand.","Ktoś przesunął czas. Drzwi poczuły dni, na które nikt nie czekał, i zacisnęły dłoń."
+TAMPER_2,The skipped time does not count: %s taken back.,Przewinięty czas się nie liczy: odebrano %s.
+TAMPER_3,"Now you wait here, behind bars, for one whole day. Only then will they lift.","Teraz czekasz tutaj, za kratą, cały jeden dzień. Dopiero wtedy się podniesie."
+OBJ_BARS_TITLE,The Bars,Krata
+OBJ_BARS_1,"Cold bars, thick as an arm, sunk deep into the rock. They do not move.","Zimne pręty, grube jak ramię, wbite głęboko w skałę. Nie drgną."
+OBJ_BARS_WAIT,"They will lift in %s. Not a moment sooner, whatever the clock says.","Podniosą się za %s. Ani chwili wcześniej, cokolwiek mówi zegar."
+OBJ_BARS_OPEN,The bars have gone up into the rock. The way east is free.,Krata schowała się w skale. Droga na wschód jest wolna.
+OBJ_CELLMARKS_TITLE,Scratches,Rysy
+OBJ_CELLMARKS_1,"Rows of short scratches, made by small hands or claws.","Rzędy krótkich rys, zrobionych małymi dłońmi albo pazurami."
+OBJ_CELLMARKS_2,Others were here before you. Others who could not wait.,"Ktoś był tu wcześniej. Ktoś, kto nie umiał czekać."
+OBJ_CELLMARKS_R1,You could add one of your own. You do not.,Można by dodać własną. Nie dodajesz.
+JAIL_RELEASED,The bars lift. You may go home.,Krata się podnosi. Można wracać do domu.
+DEV_TAMPER,Tamper,Oszustwo

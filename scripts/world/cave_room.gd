@@ -55,7 +55,7 @@ func _configure() -> void:
 	fg_humps = [[60.0, 880.0, 200.0], [560.0, 920.0, 150.0], [1180.0, 960.0, 110.0], [1980.0, 930.0, 170.0], [2700.0, 950.0, 140.0], [3150.0, 860.0, 240.0]]
 	fg_spikes = [[1320.0, 410.0, 46.0], [2440.0, 380.0, 38.0], [380.0, 360.0, 30.0]]
 	sound_space = "home"
-	entries = {"from_narrow": {"x": 2925.0, "facing": -1}, "from_alcove": {"x": 420.0, "facing": 1}}
+	entries = {"from_narrow": {"x": 2925.0, "facing": -1}, "from_alcove": {"x": 420.0, "facing": 1}, "from_dungeon": {"x": 1000.0, "facing": 1}}
 	exit_specs = [
 		{"id": "east", "x0": 2962.0, "x1": 3020.0, "side": "right", "to_room": "narrow", "to_entry": "from_home"},
 		{"id": "west", "x0": 296.0, "x1": 340.0, "side": "left", "to_room": "alcove", "to_entry": "from_home", "flag": FLAG_PASSAGE_OPEN},

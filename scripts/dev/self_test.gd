@@ -42,6 +42,10 @@ func _ready() -> void:
 			mode = "days"
 		elif arg == "--selftest-mods":
 			mode = "mods"
+		elif arg == "--selftest-jail":
+			mode = "jail"
+		elif arg == "--selftest-jail=check":
+			mode = "jail-check"
 	match mode:
 		"fps": _fps()
 		"lifecycle": _lifecycle()
@@ -50,6 +54,8 @@ func _ready() -> void:
 		"world-check": _world_check()
 		"days": _days()
 		"mods": _mods()
+		"jail": _jail()
+		"jail-check": _jail_check()
 		"write": _persist_write()
 		"check": _persist_check()
 		_: _full()
@@ -841,4 +847,82 @@ func _mods() -> void:
 	_check(SaveManager.save_now("mods-test"), "the save still works")
 	var saved := SaveStore.read(SaveManager.save_file_path())
 	_check(saved["ok"] and Array(saved["payload"]["world"]["inventory"]).has("mod:glimmer_grotto:glass_pebble"), "the mod's item is kept in the save for later")
+	_finish()
+
+
+const JAIL_FILE := "user://selftest_jail_expect.json"
+
+
+## 0.5: a trusted time five days behind the device clock means the clock was
+## moved forward. The skipped days are taken back, the creature is taken to
+## the dungeon and cannot leave for a day. Then (second launch) the bars lift.
+func _jail() -> void:
+	var p = main.player
+	await _wait(1.5)
+	_check(main.room.room_id == "home" and not TimeManager.is_jailed(), "a new game starts at home, free")
+	var before := TimeManager.clock.elapsed
+	TimeManager.apply_network_time(Time.get_unix_time_from_system() - 5.0 * DAY_SECONDS)
+	_check(TimeManager.is_jailed(), "a clock five days ahead is caught")
+	_check(TimeManager.clock.elapsed <= before + 5.0, "the skipped days are not counted (%.0f s)" % TimeManager.clock.elapsed)
+	await _wait_room("dungeon", 10.0)
+	_check(main.room.room_id == "dungeon", "the creature is taken to the dungeon")
+	await _wait_until(func() -> bool: return UIManager.is_text_open(), 6.0)
+	_check(UIManager.is_text_open() and UIManager._title.text == Loc.t("TAMPER_TITLE").to_upper(), "the door says what happened")
+	await _wait(0.6)
+	await _shot("j01_caught")
+	await _read_to_end()
+	_check(absf(TimeManager.jail_remaining() - DAY_SECONDS) < 120.0, "for one day (%.0f s)" % TimeManager.jail_remaining())
+	_check(not WorldManager.get_flag("dungeon_open", true), "the way out is shut")
+	# Try to walk out.
+	_teleport(1000.0)
+	Input.action_press("move_right")
+	await _wait(3.0)
+	Input.action_release("move_right")
+	_check(main.room.room_id == "dungeon" and p.global_position.x < main.room.BARS_X - 40.0, "the bars hold (%.0f)" % p.global_position.x)
+	await _examine_id("bars")
+	_check(WorldManager.examine_count("bars") == 1, "the bars can be examined")
+	_teleport(500.0)
+	await _examine_id("cell_marks")
+	await _wait(0.5)
+	await _shot("j02_cell")
+	# A second offence while jailed starts the day again.
+	TimeManager.debug_add_seconds(3600.0)
+	TimeManager.debug_tamper()
+	await _wait(1.0)
+	await _read_to_end()
+	_check(absf(TimeManager.jail_remaining() - DAY_SECONDS) < 120.0 and TimeManager.clock.tamper_events == 2, "a second offence restarts the day")
+	_check(SaveManager.save_now("jail-test"), "save succeeds")
+	var saved := SaveStore.read(SaveManager.save_file_path())
+	_check(saved["ok"] and float(saved["payload"]["time"]["jail_until"]) > 0.0 and saved["payload"]["player"]["room"] == "dungeon", "the jail is saved")
+	# The satchel does not list the dungeon as a place found.
+	await _press_action("inventory")
+	var satchel := await _wait_node_named("InventoryScreen")
+	if satchel != null:
+		_check(not String(satchel.find_child("Places", true, false).text).contains(Loc.t("ROOM_DUNGEON")), "the dungeon is not a place to find")
+		await _click(satchel.find_child("Back", true, false))
+		await _wait(0.5)
+	var f := FileAccess.open(JAIL_FILE, FileAccess.WRITE)
+	f.store_string(JSON.stringify({"tampers": TimeManager.clock.tamper_events}))
+	f.close()
+	_finish()
+
+
+## Second launch after _jail: still in the cell; after a day the bars lift.
+func _jail_check() -> void:
+	var p = main.player
+	await _wait(1.5)
+	_check(main.room.room_id == "dungeon" and TimeManager.is_jailed(), "the game resumes in the cell")
+	_check(main.room.is_gate_closed(), "the bars are still down")
+	await _read_to_end()
+	TimeManager.debug_add_seconds(DAY_SECONDS + 10.0)
+	await _wait(1.0)
+	_check(not TimeManager.is_jailed(), "after a day, free")
+	_check(WorldManager.get_flag("dungeon_open", false), "the way out opens")
+	await _wait(4.5)
+	await _shot("j03_free")
+	_check(not main.room.is_gate_closed(), "the bars are no longer solid")
+	await _walk_into("home", "move_right", 1000.0)
+	_check(main.room.room_id == "home", "the way east leads home")
+	_check(absf(p.global_position.x - 1000.0) < 80.0, "home, by the nest (%.0f)" % p.global_position.x)
+	_check(TimeManager.clock.tamper_events == 2, "offences are remembered")
 	_finish()

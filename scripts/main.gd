@@ -19,6 +19,7 @@ const WorldInput := preload("res://scripts/input/world_input.gd")
 const ScreenEffects := preload("res://scripts/world/screen_effects.gd")
 const PauseMenu := preload("res://scripts/ui/pause_menu.gd")
 const InventoryScreen := preload("res://scripts/ui/inventory_screen.gd")
+const Loc := preload("res://scripts/core/loc.gd")
 const MENU_SCENE := "res://scenes/main_menu.tscn"
 
 signal room_changed(room_id: String)
@@ -35,6 +36,8 @@ var _pause: Node = null
 var _satchel: Node = null
 var _leaving: bool = false
 var _travelling: bool = false
+## Tampering was caught (0.5): go to the dungeon as soon as nothing is open.
+var _jail_pending: bool = false
 
 
 func _ready() -> void:
@@ -43,6 +46,10 @@ func _ready() -> void:
 	var room_id := str(WorldManager.player_state.get("room", "home"))
 	if not Rooms.exists(room_id):
 		room_id = "home"
+	# The clock was moved (caught now or before): the session begins in the cell.
+	var forced_jail := TimeManager.is_jailed() and room_id != "dungeon"
+	if forced_jail:
+		room_id = "dungeon"
 	room = Rooms.create(room_id)
 	add_child(room)
 
@@ -52,6 +59,9 @@ func _ready() -> void:
 	var x: float = spawn["x"]
 	if room.exit_at(Vector2(x, room.floor_y(x) - 40.0)) != null:
 		x = room.spawn_x  # Never wake up standing in a doorway.
+	if forced_jail:
+		x = room.entry("cell")["x"]
+		spawn["facing"] = 1
 	player.position = Vector2(x, room.floor_y(x) - 1.0)
 	player.facing = spawn["facing"]
 	room.actor_layer.add_child(player)
@@ -86,6 +96,7 @@ func _ready() -> void:
 	UIManager.pause_requested.connect(open_pause)
 	UIManager.inventory_requested.connect(open_satchel)
 	room.exit_reached.connect(travel)
+	TimeManager.tamper_detected.connect(_on_tamper)
 	AudioManager.start_ambience()
 	AudioManager.set_space(room.sound_space)
 	WorldManager.enter_room(room.room_id)
@@ -99,6 +110,8 @@ func _ready() -> void:
 		SaveManager.is_new_game = false
 	if room.room_id != "home" and not new_game:
 		UIManager.show_place(room.title_key, false)
+	if not TimeManager.last_tamper.is_empty():
+		_tell_tamper.call_deferred(2.6)
 
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--selftest") and not arg.begins_with("--selftest-menu"):
@@ -110,6 +123,41 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	SaveManager.session_active = false
+
+
+func _process(_delta: float) -> void:
+	if _jail_pending and not _travelling and not _leaving and not get_tree().paused and not UIManager.is_text_open():
+		_jail_pending = false
+		_imprison()
+
+
+func _on_tamper(_skipped: float, _source: String) -> void:
+	if room != null and room.room_id == "dungeon":
+		_tell_tamper(0.3)  # Already here: the day starts again.
+	else:
+		_jail_pending = true
+
+
+func _imprison() -> void:
+	AudioManager.play("rumble", -3.0, 0.6)
+	await travel("dungeon", "cell")
+	_tell_tamper(0.8)
+
+
+## The voice of the door: what happened, and what it cost.
+func _tell_tamper(delay: float) -> void:
+	var t: Dictionary = TimeManager.last_tamper
+	TimeManager.last_tamper = {}
+	if t.is_empty():
+		return
+	await get_tree().create_timer(delay).timeout
+	if not is_inside_tree() or _leaving:
+		return
+	var lines: Array = ["TAMPER_1"]
+	if float(t.get("skipped", 0.0)) >= 60.0:
+		lines.append(["TAMPER_2", Loc.duration(float(t["skipped"]))])
+	lines.append("TAMPER_3")
+	UIManager.show_text("TAMPER_TITLE", lines)
 
 
 func is_travelling() -> bool:

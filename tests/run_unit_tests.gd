@@ -21,6 +21,8 @@ func _initialize() -> void:
 	_test_clock_basics()
 	_test_clock_offline()
 	_test_clock_rollback()
+	_test_tamper_offline()
+	_test_tamper_network()
 	_test_clock_running_is_immune_to_clock_changes()
 	_test_clock_suspension()
 	_test_clock_serialisation()
@@ -80,8 +82,8 @@ func _test_clock_rollback() -> void:
 	var c := TimeClock.new()
 	c.start_new(T0)
 	c.catch_up(T0 + 1000.0)
-	# Device clock set back a whole day, game relaunched.
-	var credited := c.catch_up(T0 + 1000.0 - DAY)
+	# Device clock set back half an hour (within tolerance), game relaunched.
+	var credited := c.catch_up(T0 + 1000.0 - 1800.0)
 	check(credited == 0.0, "no time credited when clock is behind")
 	check(near(c.elapsed, 1000.0), "progress not rewound")
 	check(c.rollback_events == 1, "rollback recorded")
@@ -100,6 +102,91 @@ func _test_clock_rollback() -> void:
 	c3.start_new(T0)
 	c3.catch_up(T0 - 1.0)
 	check(c3.rollback_events == 0, "small jitter ignored")
+
+
+func _test_tamper_offline() -> void:
+	print("tamper: clock set forward, then back")
+	var c := TimeClock.new()
+	c.start_new(T0)
+	c.catch_up(T0 + 3600.0)  # An honest hour.
+	# Clock set ten days ahead: offline this cannot be told from waiting.
+	c.catch_up(T0 + 3600.0 + 10.0 * DAY)
+	check(near(c.elapsed, 3600.0 + 10.0 * DAY), "a forward jump is credited at first")
+	check(not c.is_jailed(), "not caught yet")
+	# ...and put back: now the jump shows.
+	c.catch_up(T0 + 3700.0)
+	check(near(c.elapsed, 3700.0, 1.0), "the skipped ten days are taken back (%.1f)" % c.elapsed)
+	check(c.tamper_events == 1 and c.is_jailed(), "the creature is jailed")
+	check(near(c.jail_remaining(), TimeClock.JAIL_SECONDS, 1.0), "for one day")
+	var t := c.take_tamper()
+	check(t.get("source") == "rollback" and near(float(t.get("skipped", 0.0)), 10.0 * DAY - 100.0, 1.0), "the offence is reported once")
+	check(c.take_tamper().is_empty(), "and only once")
+	check(near(c.anchor, T0 + 3700.0), "counting goes on from the clock as it is")
+	c.catch_up(T0 + 3700.0 + 0.5 * DAY)
+	check(c.is_jailed(), "still jailed after half a day")
+	c.catch_up(T0 + 3700.0 + DAY + 1.0)
+	check(not c.is_jailed(), "free after a day of waiting")
+	# Small rollbacks are never punished.
+	var c2 := TimeClock.new()
+	c2.start_new(T0)
+	c2.catch_up(T0 + 5000.0)
+	c2.catch_up(T0 + 5000.0 - 3000.0)
+	check(c2.tamper_events == 0 and not c2.is_jailed(), "less than an hour back is not tampering")
+	# Developer skips never count as tampering.
+	var c3 := TimeClock.new()
+	c3.start_new(T0)
+	c3.add_debug_seconds(30.0 * DAY)
+	c3.catch_up(T0 + 10.0)
+	check(c3.tamper_events == 0, "developer offset is not tampering")
+	# Jail state survives a save.
+	var d := c.to_dict()
+	var c4 := TimeClock.new()
+	c4.start_new(T0)
+	c4.debug_tamper()
+	var c5 := TimeClock.new()
+	check(c5.from_dict(c4.to_dict()) and c5.is_jailed() and c5.tamper_events == 1, "jail survives save/load")
+	check(TimeClock.new().from_dict(d), "tamper fields load")
+	var old := {"total_days": 400, "start_unix": T0, "anchor": T0, "elapsed": 10.0}
+	var c6 := TimeClock.new()
+	check(c6.from_dict(old) and not c6.is_jailed() and c6.tamper_events == 0, "older saves load without tamper fields")
+
+
+func _test_tamper_network() -> void:
+	print("tamper: network time")
+	# Honest player: device and network agree.
+	var c := TimeClock.new()
+	c.start_new(T0)
+	c.catch_up(T0 + 2.0 * DAY)
+	check(c.apply_network(T0 + 2.0 * DAY + 20.0, T0 + 2.0 * DAY) == 0.0 and not c.is_jailed(), "honest clock passes")
+	c.catch_up(T0 + 5.0 * DAY)
+	check(c.apply_network(T0 + 5.0 * DAY - 300.0, T0 + 5.0 * DAY) == 0.0, "honest absence passes (a few minutes of skew)")
+	# Clock set forward while closed, network finds it.
+	var cheat := TimeClock.new()
+	cheat.start_new(T0)
+	cheat.catch_up(T0 + DAY)
+	cheat.apply_network(T0 + DAY, T0 + DAY)
+	cheat.catch_up(T0 + 40.0 * DAY)  # Device says 40 days; really 1 day + 1 hour.
+	var taken := cheat.apply_network(T0 + DAY + 3600.0, T0 + 40.0 * DAY)
+	check(near(taken, 39.0 * DAY - 3600.0, 1.0), "skipped time measured (%.0f)" % taken)
+	check(near(cheat.elapsed, DAY + 3600.0, 1.0), "only real waiting is left (%.0f)" % cheat.elapsed)
+	check(cheat.is_jailed() and cheat.take_tamper().get("source") == "network", "jailed by network check")
+	# Putting the device clock right afterwards is not a second offence.
+	cheat.catch_up(T0 + DAY + 3700.0)
+	check(cheat.tamper_events == 1, "correcting the clock is forgiven")
+	# First ever check, clock already ahead.
+	var first := TimeClock.new()
+	first.start_new(T0)
+	first.catch_up(T0 + 20.0 * DAY)
+	first.apply_network(T0 + 2.0 * DAY, T0 + 20.0 * DAY)
+	check(near(first.elapsed, 2.0 * DAY, 1.0) and first.is_jailed(), "first check catches an earlier jump (%.0f)" % first.elapsed)
+	check(near(TimeClock.parse_http_date("Wed, 04 Nov 2026 10:00:00 GMT"), 1793786400.0), "HTTP date parsed")
+	check(TimeClock.parse_http_date("garbage") < 0.0 and TimeClock.parse_http_date("Thu, 01 Jan 1970 00:00:00 GMT") < 0.0, "bad HTTP dates refused")
+	# Within the hour tolerance: no punishment.
+	var near_ok := TimeClock.new()
+	near_ok.start_new(T0)
+	near_ok.catch_up(T0 + 3000.0)
+	near_ok.apply_network(T0, T0 + 3000.0)
+	check(not near_ok.is_jailed(), "under an hour ahead is tolerated")
 
 
 func _test_clock_running_is_immune_to_clock_changes() -> void:
@@ -232,6 +319,11 @@ func _test_translations_complete() -> void:
 	for base in ["UNIT_DAYS", "UNIT_HOURS", "UNIT_MINUTES", "OBJ_TALLY_COUNT", "OBJ_TALLY_R1"]:
 		for form in ["_ONE", "_FEW", "_MANY"]:
 			check(keys.has(base + form), "plural %s%s exists" % [base, form])
+	for k in ["ROOM_DUNGEON", "TAMPER_TITLE", "TAMPER_1", "TAMPER_2", "TAMPER_3", "OBJ_BARS_TITLE", "OBJ_BARS_1",
+			"OBJ_BARS_WAIT", "OBJ_BARS_OPEN", "OBJ_CELLMARKS_TITLE", "OBJ_CELLMARKS_1", "OBJ_CELLMARKS_2", "OBJ_CELLMARKS_R1",
+			"JAIL_RELEASED", "DEV_TAMPER"]:
+		check(keys.has(k), "0.5 key %s exists" % k)
+	check(Rooms.exists("dungeon") and not Rooms.ORDER.has("dungeon"), "the dungeon exists but is not a place to find")
 	for i in 12:
 		check(keys.has("NOTE_%d" % (i + 1)), "page NOTE_%d exists" % (i + 1))
 	for k in ["OBJ_PASSAGE_DIG", "OBJ_PASSAGE_COUNT", "OBJ_PASSAGE_TOMORROW", "OBJ_PASSAGE_OPENED", "OBJ_PASSAGE_OPEN_R",

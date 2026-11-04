@@ -26,6 +26,8 @@ const FLAG_PASSAGE_LAST_DAY := "passage_last_day"
 const FLAG_PASSAGE_OPEN := "passage_open"
 
 var passage: Node2D
+var door: Node2D
+const FLAG_DOOR_SEEN_OPEN := "door_seen_open"
 
 var tally: Node2D
 var caps: Node2D
@@ -55,7 +57,7 @@ func _configure() -> void:
 	fg_humps = [[60.0, 880.0, 200.0], [560.0, 920.0, 150.0], [1180.0, 960.0, 110.0], [1980.0, 930.0, 170.0], [2700.0, 950.0, 140.0], [3150.0, 860.0, 240.0]]
 	fg_spikes = [[1320.0, 410.0, 46.0], [2440.0, 380.0, 38.0], [380.0, 360.0, 30.0]]
 	sound_space = "home"
-	entries = {"from_narrow": {"x": 2925.0, "facing": -1}, "from_alcove": {"x": 420.0, "facing": 1}, "from_dungeon": {"x": 1000.0, "facing": 1}}
+	entries = {"from_narrow": {"x": 2925.0, "facing": -1}, "from_alcove": {"x": 420.0, "facing": 1}, "from_dungeon": {"x": 1000.0, "facing": 1}, "from_beyond": {"x": 2760.0, "facing": -1}}
 	exit_specs = [
 		{"id": "east", "x0": 2962.0, "x1": 3020.0, "side": "right", "to_room": "narrow", "to_entry": "from_home"},
 		{"id": "west", "x0": 296.0, "x1": 340.0, "side": "left", "to_room": "alcove", "to_entry": "from_home", "flag": FLAG_PASSAGE_OPEN},
@@ -116,10 +118,15 @@ func _add_props(parent: Node) -> void:
 	var caps_i := _interactable(parent, "caps", caps.position, {"stand": 80.0, "hit": Vector2(170, 120), "hit_offset": Vector2(0, -35), "prompt": Vector2(0, -90)})
 	caps_i.dynamic_lines = _caps_lines
 
-	var door := Door.new()
+	door = Door.new()
 	door.position = Vector2(2830, floor_y(2830))
+	door.is_open = TimeManager.is_complete()
 	parent.add_child(door)
-	_interactable(parent, "door", door.position, {"stand": 0.0, "radius": 130.0, "hit": Vector2(260, 400), "hit_offset": Vector2(0, -190), "prompt": Vector2(0, -420)})
+	var door_i := _interactable(parent, "door", door.position, {"stand": 0.0, "radius": 130.0, "hit": Vector2(260, 400), "hit_offset": Vector2(0, -190), "prompt": Vector2(0, -420)})
+	door_i.dynamic_lines = _door_lines
+	door_i.on_examined = _on_door_examined
+	if not TimeManager.wait_completed.is_connected(_on_wait_completed):
+		TimeManager.wait_completed.connect(_on_wait_completed)
 
 	# Beside the door, the rock has split: a crack just wide enough.
 	var crevice := TunnelMouth.new()
@@ -155,6 +162,40 @@ func _caps_lines(count: int) -> Array:
 	if visible < 11:
 		return ["OBJ_CAPS_MORE"]
 	return ["OBJ_CAPS_SPREAD"]
+
+
+## The door: its old words while closed; after four hundred days, the way on.
+func _door_lines(count: int) -> Array:
+	if door.is_open:
+		if not WorldManager.get_flag(FLAG_DOOR_SEEN_OPEN, false):
+			return ["OBJ_DOOR_OPEN_1", "OBJ_DOOR_OPEN_2", "OBJ_DOOR_OPEN_3"]
+		return ["OBJ_DOOR_OPEN_R"]
+	var data: Dictionary = Texts.OBJECTS["door"]
+	if count <= 1:
+		return data["first"]
+	return [data["repeat"][(count - 2) % data["repeat"].size()]]
+
+
+func _on_door_examined(_count: int) -> void:
+	if not door.is_open:
+		return
+	WorldManager.set_flag(FLAG_DOOR_SEEN_OPEN, true)
+	after_text(exit_reached.emit.bind("beyond", "from_door"))
+
+
+func _on_wait_completed() -> void:
+	door.open_now()
+	AudioManager.play("rumble", -2.0, 0.5)
+	await get_tree().create_timer(2.6).timeout
+	if is_instance_valid(door) and door.baked:
+		Baker.rebake(door)
+	elif is_instance_valid(door):
+		door.queue_redraw()
+
+
+func _exit_tree() -> void:
+	if TimeManager.wait_completed.is_connected(_on_wait_completed):
+		TimeManager.wait_completed.disconnect(_on_wait_completed)
 
 
 ## The old passage: one stone may be pulled away each (real) day.

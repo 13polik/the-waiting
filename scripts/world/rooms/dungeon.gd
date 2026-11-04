@@ -66,7 +66,7 @@ func _add_props(parent: Node) -> void:
 	bars.is_open = free
 	parent.add_child(bars)
 	var it := add_interactable(parent, "bars", {"title": "OBJ_BARS_TITLE", "first": [], "repeat": []},
-		Vector2(BARS_X - 60, floor_y(BARS_X)), {"hit": Vector2(170, 420), "hit_offset": Vector2(60, -220), "prompt": Vector2(60, -450), "stand": 0.0, "radius": 120.0})
+		Vector2(BARS_X - 60, floor_y(BARS_X)), {"hit": Vector2(170, 330), "hit_offset": Vector2(60, -170), "prompt": Vector2(60, -380), "stand": 0.0, "radius": 120.0})
 	it.dynamic_lines = _bars_lines
 
 	# The bars are solid while they are down.

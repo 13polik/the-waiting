@@ -198,6 +198,14 @@ func exit_at(world_pos: Vector2) -> Node:
 
 
 ## Re-checks exits that open with a world flag (e.g. a hidden passage).
+## Runs [param f] once the text on screen (if any) has been read.
+func after_text(f: Callable) -> void:
+	if UIManager.is_text_open():
+		await UIManager.text_closed
+	if is_inside_tree():
+		f.call()
+
+
 func refresh_exits() -> void:
 	for e in exits:
 		e.refresh()

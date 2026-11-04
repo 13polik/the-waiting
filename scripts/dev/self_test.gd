@@ -46,6 +46,10 @@ func _ready() -> void:
 			mode = "jail"
 		elif arg == "--selftest-jail=check":
 			mode = "jail-check"
+		elif arg == "--selftest-ending":
+			mode = "ending"
+		elif arg == "--selftest-ending=check":
+			mode = "ending-check"
 	match mode:
 		"fps": _fps()
 		"lifecycle": _lifecycle()
@@ -56,6 +60,8 @@ func _ready() -> void:
 		"mods": _mods()
 		"jail": _jail()
 		"jail-check": _jail_check()
+		"ending": _ending()
+		"ending-check": _ending_check()
 		"write": _persist_write()
 		"check": _persist_check()
 		_: _full()
@@ -925,4 +931,71 @@ func _jail_check() -> void:
 	_check(main.room.room_id == "home", "the way east leads home")
 	_check(absf(p.global_position.x - 1000.0) < 80.0, "home, by the nest (%.0f)" % p.global_position.x)
 	_check(TimeManager.clock.tamper_events == 2, "offences are remembered")
+	_finish()
+
+
+## 0.6: when the four hundred days are over the door opens; through it, the
+## room beyond; walking into the daylight shows the ending.
+func _ending() -> void:
+	var p = main.player
+	await _wait(1.5)
+	_check(main.room.room_id == "home" and not main.room.door.is_open, "the door is shut at first")
+	_teleport(2700.0)
+	await _examine_id("door")
+	_check(main.room.room_id == "home", "a shut door leads nowhere")
+	TimeManager.debug_add_seconds(400.0 * DAY_SECONDS)
+	_check(TimeManager.is_complete(), "four hundred days have passed")
+	_check(main.room.door.is_open, "the door opens")
+	await _wait_until(func() -> bool: return UIManager.is_text_open(), 4.0)
+	_check(UIManager.is_text_open(), "the opening is told")
+	await _read_to_end()
+	await _wait(4.0)
+	await _shot("e01_door_open")
+	await _examine_id("door")
+	await _wait_room("beyond", 10.0)
+	_check(main.room.room_id == "beyond", "the open door leads beyond")
+	_check(WorldManager.discovered.has("beyond"), "the place beyond is found")
+	await _wait(1.5)
+	await _shot("e02_beyond")
+	_teleport(1380.0)
+	await _examine_id("beyond_field")
+	_teleport(900.0)
+	await _examine_id("beyond_air")
+	_teleport(2700.0)
+	await _examine_id("beyond_opening")
+	var ending := await _wait_node_named("EndingScreen")
+	_check(ending != null and get_tree().paused, "walking into the light shows the ending")
+	if ending != null:
+		var stats: Label = ending.find_child("Stats", true, false)
+		_check(stats != null and stats.text.contains(Loc.t("ENDING_HONEST")), "an honest wait is recognised")
+		_check(stats != null and stats.text.contains(Loc.t("ENDING_PLACES") % [2, 6]), "places are counted (%s)" % (stats.text if stats != null else ""))
+		await _shot("e03_ending")
+		await _press_action("ui_cancel")
+		await _wait(0.4)
+		_check(is_instance_valid(ending) and ending.is_inside_tree(), "the ending is not dismissed by Back")
+		await _click(ending.find_child("Stay", true, false))
+		await _wait(0.6)
+	_check(not get_tree().paused, "Stay returns to the world")
+	_check(WorldManager.get_flag("ending_seen", false), "the ending is remembered")
+	await _walk_into("home", "move_left", 400.0)
+	_check(main.room.room_id == "home" and absf(p.global_position.x - 2760.0) < 80.0, "back home, before the door (%.0f)" % p.global_position.x)
+	_check(SaveManager.save_now("ending-test"), "save succeeds")
+	_finish()
+
+
+## Second launch after _ending: the door is still open and the menu knows.
+func _ending_check() -> void:
+	await _wait(1.5)
+	_check(TimeManager.is_complete() and main.room.door.is_open, "the door stays open")
+	_teleport(2700.0)
+	await _examine_id("door")
+	await _wait_room("beyond", 10.0)
+	_check(main.room.room_id == "beyond", "and still leads beyond")
+	_teleport(2700.0)
+	await _examine_id("beyond_opening")
+	var ending := await _wait_node_named("EndingScreen")
+	_check(ending != null, "the ending can be seen again")
+	if ending != null:
+		await _click(ending.find_child("Stay", true, false))
+		await _wait(0.6)
 	_finish()

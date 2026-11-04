@@ -148,6 +148,10 @@ up to).
 
 ## Milestones
 
+0. **0.6 (done)** — the ending: after 400 days `TimeManager.wait_completed`
+   opens the door at home; through it, Beyond the Door (`rooms/beyond_door.gd`);
+   its daylight shows `EndingScreen` (epilogue, places, items, pages, bloom,
+   honesty with time). "Stay" keeps the world open; the menu shows the wait as over.
 0. **0.5 (done)** — time tampering detection (clock rollbacks offline,
    trusted network time online); skipped time is taken back and the creature
    spends a day in the Dungeon behind bars.

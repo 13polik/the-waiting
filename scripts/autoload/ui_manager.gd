@@ -297,7 +297,7 @@ func _show_title_card() -> void:
 
 
 func _update_timer() -> void:
-	_timer_label.text = TimeManager.remaining_text()
+	_timer_label.text = Loc.t("HUD_DONE") if TimeManager.is_complete() else TimeManager.remaining_text()
 
 
 func _notification(what: int) -> void:

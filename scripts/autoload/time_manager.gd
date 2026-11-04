@@ -10,6 +10,8 @@ signal second_ticked
 signal tamper_detected(skipped: float, source: String)
 ## The jail day is over.
 signal jail_released
+## The four hundred days are over (emitted once, when it happens).
+signal wait_completed
 
 ## Trusted time: only the HTTP "Date" header of a HEAD request is read; nothing
 ## is sent but the request itself. Tried in order.
@@ -31,6 +33,7 @@ var _second_acc: float = 0.0
 ## The last offence not yet shown to the player ({} if none).
 var last_tamper: Dictionary = {}
 var _was_jailed: bool = false
+var _was_complete: bool = false
 var _http: HTTPRequest
 var _url_index: int = 0
 var _net_wait: float = 4.0
@@ -67,6 +70,7 @@ func _load_clock() -> void:
 	_last_ticks_usec = Time.get_ticks_usec()
 	_last_day = clock.day_index()
 	_was_jailed = clock.is_jailed()
+	_was_complete = clock.is_complete()
 	_check_tamper()
 
 
@@ -103,6 +107,10 @@ func remaining_text() -> String:
 
 func is_jailed() -> bool:
 	return clock.is_jailed()
+
+
+func is_complete() -> bool:
+	return clock.is_complete()
 
 
 func jail_remaining() -> float:
@@ -154,6 +162,11 @@ func _check_day() -> void:
 	if d != _last_day:
 		_last_day = d
 		day_changed.emit(d)
+	var complete := clock.is_complete()
+	if complete and not _was_complete:
+		_was_complete = true
+		wait_completed.emit()
+	_was_complete = complete
 	var jailed := clock.is_jailed()
 	if _was_jailed and not jailed:
 		_was_jailed = false

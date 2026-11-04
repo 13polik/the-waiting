@@ -6,7 +6,7 @@ extends Node2D
 
 const Painter := preload("res://scripts/world/painter.gd")
 
-const HEIGHT := 520.0
+const HEIGHT := 360.0
 const WIDTH := 150.0
 const BARS := 5
 
@@ -38,7 +38,7 @@ func open(animate: bool = true) -> void:
 
 class _Grid extends Node2D:
 	func _draw() -> void:
-		var h: float = 520.0
+		var h: float = 360.0
 		var w: float = 150.0
 		var ink := Color(0.02, 0.02, 0.025)
 		var metal := Color(0.24, 0.23, 0.25)
@@ -50,6 +50,6 @@ class _Grid extends Node2D:
 			draw_line(Vector2(x - 3, 0), Vector2(x - 3, -h), shine, 2.0, true)
 			# A pointed foot on each bar.
 			draw_colored_polygon(PackedVector2Array([Vector2(x - 7, 4), Vector2(x + 7, 4), Vector2(x, 22)]), metal)
-		for y in [-110.0, -330.0]:
+		for y in [-100.0, -270.0]:
 			draw_line(Vector2(-w * 0.5 - 14, y), Vector2(w * 0.5 + 14, y), ink, 17.0, true)
 			draw_line(Vector2(-w * 0.5 - 14, y), Vector2(w * 0.5 + 14, y), metal, 12.0, true)

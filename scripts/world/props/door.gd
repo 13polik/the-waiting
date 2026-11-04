@@ -11,6 +11,9 @@ const RING_CENTER := Vector2(0, -205)
 
 ## Static drawing is baked into a texture by Baker (see bake_rect).
 var baked: bool = false
+## After four hundred days (0.6) the leaves are gone and warm light fills the
+## doorway. Set before the door enters the tree, or use [method open_now].
+var is_open: bool = false
 
 var _t: float = 0.0
 var _seam: Node2D
@@ -25,6 +28,33 @@ func _ready() -> void:
 	_light = LightTextures.make_light(Color(0.75, 0.32, 0.22), 0.3, 1.8)
 	_light.position = Vector2(0, -180)
 	add_child(_light)
+	if is_open:
+		_set_open_look()
+
+
+## The moment it opens: a slow flood of light; the caller re-bakes the art.
+func open_now() -> void:
+	if is_open:
+		return
+	is_open = true
+	var flash := Node2D.new()
+	flash.material = LightTextures.additive()
+	flash.draw.connect(func() -> void:
+		flash.draw_rect(Rect2(-HALF_W - 30, -HEIGHT - 40, HALF_W * 2 + 60, HEIGHT + 40), Color(1.0, 0.9, 0.7, 1.0)))
+	flash.modulate.a = 0.0
+	add_child(flash)
+	var tw := create_tween()
+	tw.tween_property(flash, "modulate:a", 1.0, 2.5)
+	tw.tween_callback(_set_open_look)
+	tw.tween_property(flash, "modulate:a", 0.0, 3.0)
+	tw.tween_callback(flash.queue_free)
+
+
+func _set_open_look() -> void:
+	_seam.visible = false
+	_light.color = Color(1.0, 0.86, 0.62)
+	_light.energy = 0.9
+	_light.texture_scale = 2.6
 
 
 ## A breath roughly every 13 s: slow in, a pause, slower out.
@@ -39,6 +69,9 @@ func breath() -> float:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if is_open:
+		_light.energy = 0.85 + 0.08 * sin(_t * 0.7)
+		return
 	var b := breath()
 	_seam.modulate.a = 0.15 + 0.6 * b
 	_light.energy = 0.12 + 0.32 * b
@@ -59,8 +92,13 @@ func _draw() -> void:
 		Vector2(HALF_W - 20, -HEIGHT - 52), Vector2(HALF_W + 34, -HEIGHT - 10), Vector2(HALF_W + 30, 0)])
 	draw_colored_polygon(recess, Color(0.05, 0.048, 0.055))
 	draw_polyline(Painter.closed(recess), Painter.INK, 2.4, true)
+	if is_open:
+		# The leaves have gone into the rock: light from the other side.
+		var gap := PackedVector2Array([Vector2(-HALF_W, 0), Vector2(-HALF_W + 4, -HEIGHT), Vector2(HALF_W - 4, -HEIGHT), Vector2(HALF_W, 0)])
+		Painter.gradient_polygon(self, gap, -HEIGHT, 0, Color(0.98, 0.9, 0.72), Color(0.86, 0.72, 0.5))
+		draw_polyline(Painter.closed(gap), Painter.INK, 2.0, true)
 	# Two leaves of the door.
-	for side: float in [-1.0, 1.0]:
+	for side: float in ([] if is_open else [-1.0, 1.0]):
 		var leaf := PackedVector2Array()
 		var inner := 1.5 * side
 		var outer := HALF_W * side
@@ -99,7 +137,7 @@ func _draw() -> void:
 		draw_colored_polygon(step, Color(0.2, 0.19, 0.19))
 		draw_line(Vector2(-w + 4, y - 9), Vector2(w - 4, y - 9), Color(0.38, 0.36, 0.34, 0.5), 1.0, true)
 		draw_polyline(step, Painter.INK, 1.6, true)
-	for i in 30:
+	for i in (0 if is_open else 30):
 		Painter.crack(self, Vector2(rng.randf_range(-HALF_W, HALF_W), rng.randf_range(-HEIGHT, -20)), rng, 3, 7.0, Color(0.05, 0.05, 0.05, 0.4), 0.9)
 
 

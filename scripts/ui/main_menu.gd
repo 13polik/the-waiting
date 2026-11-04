@@ -202,7 +202,10 @@ func _refresh_status() -> void:
 	continue_button.disabled = not can
 	continue_button.focus_mode = Control.FOCUS_ALL if can else Control.FOCUS_NONE
 	if can:
-		status_label.text = Loc.t("MENU_SAVE_STATUS") % (TimeManager.day_index() + 1)
+		if TimeManager.is_complete():
+			status_label.text = Loc.t("MENU_SAVE_DONE")
+		else:
+			status_label.text = Loc.t("MENU_SAVE_STATUS") % (TimeManager.day_index() + 1)
 	elif SaveManager.blocked_newer_save:
 		status_label.text = Loc.t("MENU_SAVE_TOO_NEW")
 	else:

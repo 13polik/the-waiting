@@ -323,6 +323,12 @@ func _test_translations_complete() -> void:
 			"OBJ_BARS_WAIT", "OBJ_BARS_OPEN", "OBJ_CELLMARKS_TITLE", "OBJ_CELLMARKS_1", "OBJ_CELLMARKS_2", "OBJ_CELLMARKS_R1",
 			"JAIL_RELEASED", "DEV_TAMPER"]:
 		check(keys.has(k), "0.5 key %s exists" % k)
+	for k in ["WAIT_DONE_1", "WAIT_DONE_2", "OBJ_DOOR_OPEN_1", "OBJ_DOOR_OPEN_2", "OBJ_DOOR_OPEN_3", "OBJ_DOOR_OPEN_R",
+			"OBJ_FIELD_TITLE", "OBJ_FIELD_1", "OBJ_FIELD_2", "OBJ_FIELD_R1", "OBJ_AIR_TITLE", "OBJ_AIR_1", "OBJ_AIR_2", "OBJ_AIR_R1",
+			"OBJ_OPENING_TITLE", "OBJ_OPENING_1", "OBJ_OPENING_2", "ENDING_TITLE", "ENDING_1", "ENDING_2", "ENDING_3",
+			"ENDING_DAYS", "ENDING_PLACES", "ENDING_ITEMS", "ENDING_PAGES", "ENDING_BLOOM_GROWN", "ENDING_BLOOM_GROWING",
+			"ENDING_BLOOM_NONE", "ENDING_HONEST", "ENDING_TAMPERED", "ENDING_STAY", "ENDING_MENU", "MENU_SAVE_DONE", "HUD_DONE"]:
+		check(keys.has(k), "0.6 key %s exists" % k)
 	check(Rooms.exists("dungeon") and not Rooms.ORDER.has("dungeon"), "the dungeon exists but is not a place to find")
 	for i in 12:
 		check(keys.has("NOTE_%d" % (i + 1)), "page NOTE_%d exists" % (i + 1))

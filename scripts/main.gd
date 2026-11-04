@@ -19,6 +19,7 @@ const WorldInput := preload("res://scripts/input/world_input.gd")
 const ScreenEffects := preload("res://scripts/world/screen_effects.gd")
 const PauseMenu := preload("res://scripts/ui/pause_menu.gd")
 const InventoryScreen := preload("res://scripts/ui/inventory_screen.gd")
+const EndingScreen := preload("res://scripts/ui/ending_screen.gd")
 const Loc := preload("res://scripts/core/loc.gd")
 const MENU_SCENE := "res://scenes/main_menu.tscn"
 
@@ -95,8 +96,9 @@ func _ready() -> void:
 
 	UIManager.pause_requested.connect(open_pause)
 	UIManager.inventory_requested.connect(open_satchel)
-	room.exit_reached.connect(travel)
+	_hook_room()
 	TimeManager.tamper_detected.connect(_on_tamper)
+	TimeManager.wait_completed.connect(_on_wait_completed)
 	AudioManager.start_ambience()
 	AudioManager.set_space(room.sound_space)
 	WorldManager.enter_room(room.room_id)
@@ -123,6 +125,34 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	SaveManager.session_active = false
+
+
+func _hook_room() -> void:
+	room.exit_reached.connect(travel)
+	if room.has_signal("ending_reached"):
+		room.connect("ending_reached", show_ending)
+
+
+## The four hundred days are over: say so wherever the creature is.
+func _on_wait_completed() -> void:
+	await get_tree().create_timer(1.0).timeout
+	if not is_inside_tree() or _leaving:
+		return
+	UIManager.show_text("OBJ_DOOR_TITLE", ["WAIT_DONE_1", "WAIT_DONE_2"])
+
+
+## Walking into the daylight beyond the door.
+func show_ending() -> Node:
+	if _leaving:
+		return null
+	if not WorldManager.get_flag("ending_seen", false):
+		WorldManager.set_flag("ending_seen", true)
+		WorldManager.set_flag("ending_unix", Time.get_unix_time_from_system())
+	SaveManager.save_now("ending")
+	var screen := EndingScreen.new()
+	screen.game = self
+	menus.add_child(screen)
+	return screen
 
 
 func _process(_delta: float) -> void:
@@ -181,7 +211,7 @@ func travel(to_room: String, to_entry: String) -> void:
 	room = Rooms.create(to_room)
 	add_child(room)
 	move_child(room, 0)
-	room.exit_reached.connect(travel)
+	_hook_room()
 	var e: Dictionary = room.entry(to_entry)
 	var x: float = e["x"]
 	player.position = Vector2(x, room.floor_y(x) - 1.0)

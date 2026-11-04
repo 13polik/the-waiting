@@ -3,6 +3,10 @@
 A slow, atmospheric exploration game about a small hooded creature — the
 Wick — waiting four hundred real days beneath the world, beside the place it
 calls The Nest. Godot 4.7, GDScript, iOS-first, landscape, touch-first.
+Version 0.6: the ending. When the 400 days are over the door opens; beyond
+it lies one last place, and walking into its daylight ends the wait with an
+epilogue and a summary of the journey (the world stays open afterwards).
+
 Version 0.5: time cannot be skipped. Moving the device clock is caught
 (offline: clock put back; online: a trusted network time), the skipped days
 are taken back and the creature spends one real day in the Dungeon.
@@ -78,6 +82,8 @@ godot --headless --path . -- --profile=menutest --reset-save --reset-settings --
 godot --headless --path . -- --profile=menutest --selftest-menu=settings-check
 ```
 
+The ending: `-- --profile=endtest --reset-save --selftest-ending`, then
+`-- --profile=endtest --selftest-ending=check`.
 Tampering and the dungeon: `-- --profile=jailtest --reset-save --selftest-jail`,
 then `-- --profile=jailtest --selftest-jail=check`. Real network time (needs
 internet): `godot --headless --path . --script res://tests/net_time_probe.gd`.

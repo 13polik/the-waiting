@@ -275,3 +275,38 @@ OBJ_CELLMARKS_2,Others were here before you. Others who could not wait.,"Ktoś b
 OBJ_CELLMARKS_R1,You could add one of your own. You do not.,Można by dodać własną. Nie dodajesz.
 JAIL_RELEASED,The bars lift. You may go home.,Krata się podnosi. Można wracać do domu.
 DEV_TAMPER,Tamper,Oszustwo
+ROOM_BEYOND,Beyond the Door,Za Drzwiami
+WAIT_DONE_1,"Somewhere behind you, stone moves against stone. A sound you have never heard, and somehow always knew.","Gdzieś za tobą kamień przesuwa się po kamieniu. Dźwięk, którego nigdy nie było słychać, a jednak zawsze był znajomy."
+WAIT_DONE_2,Four hundred days. The door has stopped breathing. It is open.,Czterysta dni. Drzwi przestały oddychać. Są otwarte.
+OBJ_DOOR_OPEN_1,"The leaves of the door have gone into the rock. Where they were, there is light — warm, like nothing down here.","Skrzydła drzwi schowały się w skale. Tam, gdzie były, jest światło — ciepłe, jak nic tutaj na dole."
+OBJ_DOOR_OPEN_2,Four hundred notches. You never once lost the count. Not really.,Czterysta nacięć. Tak naprawdę ani razu nie zgubiono rachunku.
+OBJ_DOOR_OPEN_3,You step through.,Przechodzisz na drugą stronę.
+OBJ_DOOR_OPEN_R,"The light is still there, waiting for you this time.",Światło wciąż tam jest. Tym razem to ono czeka na ciebie.
+OBJ_FIELD_TITLE,The Field of Blooms,Pole kwiatów
+OBJ_FIELD_1,"Pale blooms, hundreds of them, each like the one you found under the grey light.","Blade kwiaty, setki, każdy jak ten znaleziony pod szarym światłem."
+OBJ_FIELD_2,They are all open. They have all been waiting too.,Wszystkie są rozwinięte. One też czekały.
+OBJ_FIELD_R1,"They turn, very slightly, as you pass.","Obracają się lekko, gdy przechodzisz obok."
+OBJ_AIR_TITLE,The Air,Powietrze
+OBJ_AIR_1,"The air moves here. It comes from somewhere far above, and it smells of rain.","Powietrze się tu porusza. Płynie z daleka, z góry, i pachnie deszczem."
+OBJ_AIR_2,"Your lantern leans towards it, as if it wants to go.","Twoja latarnia pochyla się w jego stronę, jakby chciała iść."
+OBJ_AIR_R1,Rain. You had forgotten the word.,Deszcz. To słowo prawie wyleciało z pamięci.
+OBJ_OPENING_TITLE,The Daylight,Światło dnia
+OBJ_OPENING_1,"At the end of the way, an opening full of daylight.",Na końcu drogi otwór pełen światła dnia.
+OBJ_OPENING_2,You do not hurry. You have learned how to wait. You walk into the light.,Bez pośpiechu. Czekać już umiesz. Wchodzisz w światło.
+ENDING_TITLE,The waiting is over,Koniec czekania
+ENDING_1,"Four hundred days ago a small hooded creature curled up beside a door that breathed, and decided to wait.","Czterysta dni temu mała zakapturzona istota zwinęła się przy drzwiach, które oddychały, i postanowiła czekać."
+ENDING_2,"It waited through grey light and warm water, through knocking it never answered, through days that were all the same and days that were not.","Czekała przez szare światło i ciepłą wodę, przez pukanie, na które nigdy nie odpowiedziała, przez dni takie same i dni zupełnie inne."
+ENDING_3,"Now the door is open, and the waiting has become something else. Thank you for waiting with it.","Teraz drzwi są otwarte, a czekanie stało się czymś innym. Dziękujemy, że czekasz razem z nią."
+ENDING_DAYS,Waited: %s,Przeczekano: %s
+ENDING_PLACES,Places found: %d of %d,Odnalezione miejsca: %d z %d
+ENDING_ITEMS,Things carried: %d of %d,Znalezione rzeczy: %d z %d
+ENDING_PAGES,Pages read: %d of %d,Przeczytane strony: %d z %d
+ENDING_BLOOM_GROWN,The pale bloom grew in the garden.,Blady kwiat wyrósł w ogrodzie.
+ENDING_BLOOM_GROWING,The pale bloom is still growing in the garden.,Blady kwiat wciąż rośnie w ogrodzie.
+ENDING_BLOOM_NONE,The pale bloom was never planted.,Blady kwiat nie został zasadzony.
+ENDING_HONEST,Time was never moved. Every day was really waited.,Czasu nigdy nie przesunięto. Każdy dzień został naprawdę przeczekany.
+ENDING_TAMPERED,Time was moved %d times. The door remembers.,Czas przesuwano %d razy. Drzwi pamiętają.
+ENDING_STAY,Stay a while,Zostań jeszcze
+ENDING_MENU,Main menu,Menu główne
+MENU_SAVE_DONE,The waiting is over. The door is open.,Czekanie dobiegło końca. Drzwi są otwarte.
+HUD_DONE,The door is open,Drzwi są otwarte

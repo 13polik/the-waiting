@@ -5,10 +5,11 @@ extends RefCounted
 ## Rooms from enabled mods hang off side passages in narrow / hall / garden.
 
 const MOD_ROOM_PATH := "res://scripts/world/rooms/mod_room.gd"
-const ORDER := ["home", "narrow", "hall", "garden", "alcove"]
+const ORDER := ["home", "narrow", "hall", "garden", "alcove", "beyond"]
 const TITLES := {
 	"alcove": "ROOM_ALCOVE",
 	"dungeon": "ROOM_DUNGEON",
+	"beyond": "ROOM_BEYOND",
 	"home": "ROOM_HOME",
 	"narrow": "ROOM_NARROW",
 	"hall": "ROOM_HALL",
@@ -20,6 +21,7 @@ const PATHS := {
 	"hall": "res://scripts/world/rooms/echo_hall.gd",
 	"garden": "res://scripts/world/rooms/still_garden.gd",
 	"alcove": "res://scripts/world/rooms/scribes_alcove.gd",
+	"beyond": "res://scripts/world/rooms/beyond_door.gd",
 	# Not in ORDER: only reached by moving the clock (0.5), not a place to find.
 	"dungeon": "res://scripts/world/rooms/dungeon.gd",
 }

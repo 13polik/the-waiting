@@ -108,11 +108,12 @@ func _full() -> void:
 
 	# 5. The world is intact: walk and examine.
 	var x0: float = game.player.global_position.x
-	Input.action_press("move_right")
-	await _wait(1.2)
-	Input.action_release("move_right")
+	# 0.7: the shelf now stands right of the nest; walk left, onto the nest.
+	Input.action_press("move_left")
+	await _wait(0.9)
+	Input.action_release("move_left")
 	await _wait(0.6)
-	_check(game.player.global_position.x > x0 + 40.0, "creature walks")
+	_check(game.player.global_position.x < x0 - 40.0, "creature walks")
 	await _action("interact")
 	await _wait(0.6)
 	_check(UIManager.is_text_open(), "examine works")

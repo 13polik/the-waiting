@@ -148,6 +148,15 @@ up to).
 
 ## Milestones
 
+0. **0.7 (done)** — books (`data/books.gd`, `data/book_progress.gd`,
+   `ui/book_screen.gd`): 300 pages, 20 per sitting, one sitting per book per
+   day; found in the Narrow Way, the Still Garden and (left by the Lamplighter)
+   on the shelf at home. Home makeover (`props/nest.gd`, `props/home_decor.gd`).
+   The Lamplighter (`props/lamplighter.gd`, `data/lamplighter_visits.gd`):
+   twelve meetings from day 1 to the end, one a day at most, placed by
+   `RoomBase._add_visitor`; meeting 4 leaves a book, meeting 5 relights the
+   scribe's lantern. Animated intro (`scenes/intro.tscn`) after the static
+   launch image (`tools/render_splash.gd`).
 0. **0.6 (done)** — the ending: after 400 days `TimeManager.wait_completed`
    opens the door at home; through it, Beyond the Door (`rooms/beyond_door.gd`);
    its daylight shows `EndingScreen` (epilogue, places, items, pages, bloom,

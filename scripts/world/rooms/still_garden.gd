@@ -94,6 +94,7 @@ func _add_props(parent: Node) -> void:
 	parent.add_child(shaft)
 	add_interactable(parent, "skylight", Texts.OBJECTS["skylight"], Vector2(SKY_X - 60, floor_y(SKY_X)), {"hit": Vector2(160, 480), "hit_offset": Vector2(0, -280), "prompt": Vector2(0, -230), "stand": 40.0})
 	add_collectible(parent, "bloom", Vector2(SKY_X + 32, floor_y(SKY_X + 32) - 6), {"stand": 50.0})
+	add_collectible(parent, "book_herbs", Vector2(980, floor_y(980) - 6), {"stand": 55.0})
 
 	pool = Pool.new()
 	pool.position = Vector2(SPRING_X, floor_y(SPRING_X))

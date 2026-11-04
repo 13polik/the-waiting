@@ -310,3 +310,112 @@ ENDING_STAY,Stay a while,Zostań jeszcze
 ENDING_MENU,Main menu,Menu główne
 MENU_SAVE_DONE,The waiting is over. The door is open.,Czekanie dobiegło końca. Drzwi są otwarte.
 HUD_DONE,The door is open,Drzwi są otwarte
+ITEM_BOOK_DOOR_TITLE,The Book of the Door,Księga Drzwi
+ITEM_BOOK_DOOR_DESC,"A heavy book bound in rust-red, three hundred pages about doors like yours and those who waited by them. Twenty pages a day is all the eyes can take.","Ciężka księga w rdzawej oprawie, trzysta stron o drzwiach takich jak twoje i o tych, którzy przy nich czekali. Dwadzieścia stron dziennie to wszystko, co oczy zniosą."
+ITEM_BOOK_DOOR_FOUND_1,"Half buried in the dust, a thick book with a circle on its cover — the same circle as on your door.","W pyle, do połowy zagrzebana, gruba księga z kręgiem na okładce — tym samym, co na twoich drzwiach."
+ITEM_BOOK_DOOR_FOUND_2,Three hundred pages. It will take time. You have time.,Trzysta stron. To zajmie trochę czasu. Czasu akurat masz dużo.
+ITEM_BOOK_HERBS_TITLE,A Herbal of the Dark,Zielnik Ciemności
+ITEM_BOOK_HERBS_DESC,"A green book of three hundred pages: drawings of caps, moss and blooms, and notes in small, careful writing — the same hand as the faded pages.","Zielona księga, trzysta stron: rysunki kapeluszy, mchu i kwiatów, i notatki drobnym, starannym pismem — tą samą ręką co wyblakłe kartki."
+ITEM_BOOK_HERBS_FOUND_1,"Among the moss lies a book, green as the moss itself, its pages pressed flat with dried leaves.","W mchu leży książka, zielona jak sam mech, a między stronami sprasowane suche liście."
+ITEM_BOOK_HERBS_FOUND_2,Someone loved this garden very much.,Ktoś bardzo kochał ten ogród.
+ITEM_BOOK_TALES_TITLE,The Lamplighter's Tales,Opowieści Latarnika
+ITEM_BOOK_TALES_DESC,"A blue book of three hundred pages, smelling of lamp oil: old tales from the tunnels, told by one who has walked them for a very long time.","Niebieska księga, trzysta stron, pachnie oliwą do lamp: stare opowieści z tuneli, spisane przez kogoś, kto chodzi nimi od bardzo dawna."
+ITEM_BOOK_TALES_FOUND_1,"On your shelf, a book that was not there before. Tucked inside the cover: a dry leaf for a bookmark.","Na twojej półce książka, której wcześniej tu nie było. Za okładką suchy liść jako zakładka."
+ITEM_BOOK_TALES_FOUND_2,The Lamplighter kept the promise.,Latarnik dotrzymał słowa.
+SATCHEL_READ_BOOK,Read,Czytaj
+BOOK_READ_ON,Read twenty pages,Przeczytaj dwadzieścia stron
+BOOK_UNOPENED,"The book is still closed. Twenty pages a day — no more, or the words begin to run together.","Książka jest jeszcze zamknięta. Dwadzieścia stron dziennie — nie więcej, bo słowa zaczynają się zlewać."
+BOOK_PAGES,Pages %d–%d,Strony %d–%d
+BOOK_PROGRESS,%d of %d pages read,Przeczytano %d z %d stron
+BOOK_TOMORROW,Enough for today. The next twenty pages tomorrow.,Na dziś wystarczy. Kolejne dwadzieścia stron jutro.
+BOOK_FINISHED,All %d pages read. You close the book gently.,Przeczytano wszystkie %d stron. Zamykasz książkę delikatnie.
+BOOK_DOOR_1,There are many doors under the world. Each was carved for one who would wait. No one remembers who carved them.,"Pod światem jest wiele drzwi. Każde wyrzeźbiono dla kogoś, kto będzie czekał. Nikt nie pamięta, kto je rzeźbił."
+BOOK_DOOR_2,"A door breathes while it waits. Slowly at first, then slower. When it stops breathing, it opens.","Drzwi oddychają, gdy czekają. Najpierw powoli, potem coraz wolniej. Kiedy przestają oddychać — otwierają się."
+BOOK_DOOR_3,The circles on a door are counted from the inside out. The notches around them are the days. There are always four hundred.,Kręgi na drzwiach liczy się od środka. Nacięcia wokół nich to dni. Zawsze jest ich czterysta.
+BOOK_DOOR_4,"A door cannot be forced. Many have tried with stones, with fire, with cleverness. The door only grows heavier.","Drzwi nie da się wyważyć. Wielu próbowało kamieniami, ogniem, sprytem. Drzwi stają się tylko cięższe."
+BOOK_DOOR_5,Those who wait are given a small light. It is not for seeing. It is so that the door can see them.,"Ci, którzy czekają, dostają małe światło. Nie po to, żeby widzieć. Po to, żeby drzwi mogły ich widzieć."
+BOOK_DOOR_6,"Some waiters counted in tens, some in sevens, some not at all. The door does not mind how you count, only that you stay.","Jedni czekający liczyli dziesiątkami, inni siódemkami, inni wcale. Drzwiom nie zależy, jak liczysz, tylko na tym, żeby przy nich zostać."
+BOOK_DOOR_7,Knocking may be heard. It is not to be answered. A door that is answered forgets that it was waiting.,"Może być słychać pukanie. Nie należy odpowiadać. Drzwi, którym się odpowie, zapominają, że czekały."
+BOOK_DOOR_8,There is a story of a waiter who moved the sun. The door noticed. Doors always notice what has not truly passed.,"Jest opowieść o czekającym, który przesunął słońce. Drzwi to zauważyły. Drzwi zawsze zauważają to, co naprawdę nie minęło."
+BOOK_DOOR_9,"Halfway through, every waiter believes the door has forgotten them. It has not. It is only very quiet.","W połowie każdy czekający wierzy, że drzwi o nim zapomniały. Nie zapomniały. Są tylko bardzo ciche."
+BOOK_DOOR_10,"Near each door the stone grows soft and things begin to live: moss, caps, small blooms. Waiting is a kind of warmth.","Przy każdych drzwiach kamień mięknie i zaczyna w nim żyć: mech, kapelusze, małe kwiaty. Czekanie to rodzaj ciepła."
+BOOK_DOOR_11,Some waiters left before the end. Their lights went out where they sat. The door does not blame them. It simply stays closed.,"Niektórzy czekający odeszli przed końcem. Ich światła zgasły tam, gdzie siedzieli. Drzwi nie mają do nich żalu. Po prostu zostają zamknięte."
+BOOK_DOOR_12,"A lamplighter walks between the doors. No one knows how old. It knocks three times, to ask: is someone still here?","Między drzwiami chodzi latarnik. Nikt nie wie, jak stary. Puka trzy razy, żeby zapytać: czy ktoś tu jeszcze jest?"
+BOOK_DOOR_13,"In the last days the door grows warm to the touch, like a hand that has been held for a long time.","W ostatnich dniach drzwi robią się ciepłe w dotyku, jak dłoń trzymana bardzo długo."
+BOOK_DOOR_14,What lies beyond a door is different for each waiter. It is always lighter than they feared.,"To, co jest za drzwiami, jest inne dla każdego czekającego. Zawsze jest jaśniejsze, niż się obawiano."
+BOOK_DOOR_15,"The last page is blank, except for a small circle in the corner. Perhaps it is for you to finish.","Ostatnia strona jest pusta, poza małym kręgiem w rogu. Może to ty masz ją dokończyć."
+BOOK_HERBS_1,Pale caps. They grow near doors and in the corners of eyes. They grow fastest when no one is looking at them.,"Blade kapelusze. Rosną przy drzwiach i w kącikach oczu. Najszybciej rosną, gdy nikt na nie nie patrzy."
+BOOK_HERBS_2,"Glow moss. Warm to the touch, cold to the eye. A bed of it will keep warm for a hundred years if no one tears it.","Świecący mech. Ciepły w dotyku, zimny dla oka. Posłanie z niego grzeje sto lat, jeśli nikt go nie zerwie."
+BOOK_HERBS_3,"The pale bloom. Very rare. It opens only under grey light, and only for one who has stopped hurrying.","Blady kwiat. Bardzo rzadki. Rozwija się tylko w szarym świetle i tylko dla kogoś, kto przestał się spieszyć."
+BOOK_HERBS_4,Water from the warm spring is good for roots and for hands. It is not good for counting: it makes the days feel shorter.,Woda z ciepłego źródła jest dobra dla korzeni i dla dłoni. Nie jest dobra do liczenia: dni wydają się po niej krótsze.
+BOOK_HERBS_5,"Pale roots hang from every ceiling down here. Something above is growing, very slowly, towards us.","Blade korzenie zwisają tu z każdego sklepienia. Coś nad nami rośnie, bardzo powoli, w naszą stronę."
+BOOK_HERBS_6,"A drawing of the cave lichen, careful and a little crooked. Beneath it: 'Eaten by nothing. Patient as stone.'","Rysunek jaskiniowego porostu, staranny i trochę krzywy. Pod spodem: „Nikt go nie zjada. Cierpliwy jak kamień”."
+BOOK_HERBS_7,Caps kept in a glass jar give light for a whole season. Thank them before you close the lid.,"Kapelusze zamknięte w szklanym słoju świecą przez cały sezon. Trzeba im podziękować, zanim zamknie się wieczko."
+BOOK_HERBS_8,"Notes on moths: they come to any light, but they stay only near a steady one.","Notatki o ćmach: przylatują do każdego światła, ale zostają tylko przy spokojnym."
+BOOK_HERBS_9,"The garden was empty once. The first seed came down through the crack in the ceiling, with the first grey light.","Ogród był kiedyś pusty. Pierwsze nasiono spadło przez szczelinę w sklepieniu, razem z pierwszym szarym światłem."
+BOOK_HERBS_10,Dry the leaves of the moss-fern and lay them between pages. They keep the ink from fading. Mostly.,Liście mchowej paproci trzeba wysuszyć i włożyć między strony. Chronią atrament przed blaknięciem. Prawie zawsze.
+BOOK_HERBS_11,"A page of small pressed flowers, each with a date. The dates stop in the middle of the page.","Strona małych sprasowanych kwiatów, przy każdym data. Daty urywają się w połowie strony."
+BOOK_HERBS_12,Nothing grows in a hurry here. Things that grow quickly in the dark are not to be trusted.,"Nic tu nie rośnie w pośpiechu. Rzeczom, które w ciemności rosną szybko, nie należy ufać."
+BOOK_HERBS_13,"If the pale bloom is planted in warm moss and left alone for ten days, it will open bigger than the first. So it is written.","Jeśli blady kwiat zasadzić w ciepłym mchu i zostawić na dziesięć dni, rozwinie się większy niż pierwszy. Tak tu napisano."
+BOOK_HERBS_14,"The last drawing is of a door, with tiny blooms growing along the seam. 'They grow towards the light behind it,' says the note.","Ostatni rysunek przedstawia drzwi, a wzdłuż szczeliny maleńkie kwiaty. „Rosną w stronę światła za nimi” — mówi notatka."
+BOOK_HERBS_15,On the inside of the back cover: 'For whoever waits here after me. Look after the garden. It looked after me.',"Na wewnętrznej stronie tylnej okładki: „Dla tego, kto będzie tu czekał po mnie. Dbaj o ogród. On dbał o mnie”."
+BOOK_TALES_1,"The first tale: of a moth who wanted to carry the sun underground, and carried only a spark — and found the spark was enough.","Pierwsza opowieść: o ćmie, która chciała znieść słońce pod ziemię, a doniosła tylko iskrę — i okazało się, że iskra wystarczy."
+BOOK_TALES_2,"Of the stone that wanted to be a pebble. It waited by the trickle for a thousand years, and became one.","O kamieniu, który chciał być kamykiem. Czekał przy strużce tysiąc lat — i stał się nim."
+BOOK_TALES_3,"Of two waiters at two doors, back to back, who never met but heard each other breathe through the rock.","O dwojgu czekających przy dwojgu drzwiach, plecami do siebie, którzy nigdy się nie spotkali, ale słyszeli przez skałę swój oddech."
+BOOK_TALES_4,"Of the echo that got lost in the hall and has been looking for its voice ever since. If you hear it, say something kind.","O echu, które zgubiło się w hali i od tamtej pory szuka swojego głosu. Kiedy je usłyszysz, powiedz coś miłego."
+BOOK_TALES_5,"Of the creature who counted every day out loud, so that the dark would not forget the number.","O istocie, która liczyła każdy dzień na głos, żeby ciemność nie zapomniała liczby."
+BOOK_TALES_6,"Of the hanging stones: once they were a song, and the song broke, and the pieces still remember the tune.","O wiszących kamieniach: kiedyś były piosenką, piosenka się rozbiła, a kawałki wciąż pamiętają melodię."
+BOOK_TALES_7,"Of the impatient one, who opened a door on the three hundred and ninety-ninth day — and found only more stone.","O niecierpliwym, który otworzył drzwi trzysta dziewięćdziesiątego dziewiątego dnia — i znalazł za nimi tylko więcej kamienia."
+BOOK_TALES_8,Of the lamp that refused to go out until the one who carried it was safe home.,"O lampie, która nie chciała zgasnąć, dopóki ten, kto ją niósł, nie wrócił bezpiecznie do domu."
+BOOK_TALES_9,"Of the garden that grew in a single tear, because someone cried in the dark and the tear was warm.","O ogrodzie, który wyrósł z jednej łzy, bo ktoś zapłakał w ciemności, a łza była ciepła."
+BOOK_TALES_10,"Of the lamplighter who was once small and hooded, with a light on a stalk, and waited by a door of its own.","O latarniku, który kiedyś był mały i zakapturzony, z światełkiem na łodyżce, i czekał przy własnych drzwiach."
+BOOK_TALES_11,"Of how the lamplighter's door opened, and beyond it were all the other tunnels, and all the other lights to tend.","O tym, jak otworzyły się drzwi latarnika, a za nimi były wszystkie inne tunele i wszystkie inne światła do doglądania."
+BOOK_TALES_12,Of the scribe who wrote every day and stopped one day in the middle of a word. The lamplighter still keeps the pen.,"O skrybie, który pisał każdego dnia i pewnego dnia urwał w połowie słowa. Latarnik wciąż przechowuje pióro."
+BOOK_TALES_13,"Of the quietest night in the tunnels, when every door breathed out at once, and the whole underground sighed.","O najcichszej nocy w tunelach, kiedy wszystkie drzwi naraz zrobiły wydech i całe podziemie westchnęło."
+BOOK_TALES_14,"Of what the lamplighter wishes for: to see one door open, just once, from the outside.","O tym, czego latarnik sobie życzy: zobaczyć, jak otwierają się jedne drzwi, choć raz, z zewnątrz."
+BOOK_TALES_15,"The last tale is not finished. The final line reads: 'And the small one waited, and—'. The rest of the page is waiting too.","Ostatnia opowieść nie jest skończona. Ostatnie zdanie brzmi: „A maleństwo czekało, i—”. Reszta strony też czeka."
+OBJ_SHELF_TITLE,The Shelf,Półka
+OBJ_SHELF_EMPTY,"A niche carved into the wall, with a stone ledge. A pebble, a little bowl, a bundle of twigs. Room for books, if you had any.","Nisza wykuta w ścianie, z kamienną półką. Kamyk, miseczka, pęczek gałązek. Jest miejsce na książki, gdyby jakieś były."
+OBJ_SHELF_SOME,"Your books stand on the ledge, spines out.","Twoje książki stoją na półce, grzbietami na zewnątrz."
+OBJ_SHELF_COUNT,%d of %d. There is still room.,%d z %d. Jest jeszcze miejsce.
+OBJ_SHELF_FULL,Three books. The shelf looks as if it was made for exactly these.,"Trzy książki. Półka wygląda, jakby była zrobiona dokładnie dla nich."
+OBJ_LAMP_LIT_1,"The bulb on the dried stalk is glowing again — pale, steady, like your own.","Bulwa na wyschniętej łodydze znów świeci — blado i spokojnie, jak twoja."
+OBJ_LAMP_LIT_2,The alcove feels less empty. As if someone had only stepped out for a moment.,Alkowa wydaje się mniej pusta. Jakby ktoś wyszedł tylko na chwilę.
+OBJ_LAMP_LIT_R,It still burns.,Wciąż świeci.
+LAMP_TITLE,The Lamplighter,Latarnik
+LAMP_GONE,Only a smell of lamp oil is left.,Został tylko zapach oliwy do lamp.
+LAMP_NEAR,"Someone is here, with a lantern.","Ktoś tu jest, z latarnią."
+LAMP_1_1,Ah. A new light in the old tunnels.,Ach. Nowe światło w starych tunelach.
+LAMP_1_2,Don't be afraid. I am the Lamplighter. I walk these ways and look after the lights of those who wait.,"Nie bój się. Jestem Latarnikiem. Chodzę tymi drogami i doglądam świateł tych, którzy czekają."
+LAMP_1_3,"Yours is small, but steady. Good. Steady is what matters.","Twoje jest małe, ale spokojne. Dobrze. Spokój jest najważniejszy."
+LAMP_2_1,"You found the hanging stones. The one before you rang them every evening, to know the hall was still there.","Wiszące kamienie już znasz. Ten, kto był tu przed tobą, dzwonił nimi każdego wieczoru, żeby wiedzieć, że hala wciąż jest."
+LAMP_2_2,"Before you? Yes. Someone waited by your door before. A scribe, who wrote everything down.","Przed tobą? Tak. Ktoś już kiedyś czekał przy twoich drzwiach. Skryba, który wszystko zapisywał."
+LAMP_2_3,"The old passage at your home leads to the scribe's alcove. A stone a day, if you want to see it.","Stare przejście w twoim domu prowadzi do alkowy skryby. Jeden kamień dziennie, jeśli chcesz ją zobaczyć."
+LAMP_3_1,Three knocks. You've heard them? That is me. I knock to ask if someone is still waiting.,"Trzy puknięcia. Słyszysz je czasem? To ja. Pukam, żeby zapytać, czy ktoś jeszcze czeka."
+LAMP_3_2,You never answer. That is right. The door must not be answered. It must be waited for.,Nigdy nie odpowiadasz. I dobrze. Drzwiom się nie odpowiada. Na drzwi się czeka.
+LAMP_3_3,"I keep books, too. Old ones. I'll leave you one before long.",Mam też książki. Stare. Niedługo zostawię ci jedną.
+LAMP_4_1,"This garden grows only for the patient. Moss, caps, the pale bloom. The scribe tended it, once.","Ten ogród rośnie tylko dla cierpliwych. Mech, kapelusze, blady kwiat. Kiedyś zajmowała się nim ręka skryby."
+LAMP_4_2,I have put a book on the shelf in your home. My own tales. Read a little each day — not more.,Położyłem książkę na półce w twoim domu. Moje własne opowieści. Czytaj po trochu każdego dnia — nie więcej.
+LAMP_4_3,"And if you open the old passage, I will meet you in the scribe's alcove. There is something I want to do there.","A kiedy otworzysz stare przejście, spotkamy się w alkowie skryby. Chcę tam coś zrobić."
+LAMP_5_1,"This was the scribe's place. Count the marks: four, where there should have been seven.","To było miejsce skryby. Policz kreski: cztery tam, gdzie powinno być siedem."
+LAMP_5_2,Their light went out before the door opened. Waiting is hard. Not everyone can finish it.,"Światło skryby zgasło, zanim drzwi się otworzyły. Czekanie jest trudne. Nie każdy potrafi je skończyć."
+LAMP_5_3,Let me light it again. Not for them — for you. So you know the dark here can be undone.,"Pozwól, że zapalę je znowu. Nie dla nich — dla ciebie. Żeby było wiadomo, że tutejszą ciemność da się odwrócić."
+LAMP_6_1,A month already. Your light has not flickered once.,To już miesiąc. Twoje światło ani razu nie zamigotało.
+LAMP_6_2,"The door breathes slower now, doesn't it? It is listening to the one who waits.","Drzwi oddychają teraz wolniej, prawda? Słuchają tego, kto czeka."
+LAMP_7_1,I have walked these tunnels longer than I can count. Every door has someone like you.,"Chodzę tymi tunelami dłużej, niż umiem policzyć. Przy każdych drzwiach jest ktoś taki jak ty."
+LAMP_7_2,"Most open their door too soon, or stop waiting. The doors stay shut for them. I hope yours won't.","Większość otwiera drzwi za wcześnie albo przestaje czekać. Dla nich drzwi zostają zamknięte. Mam nadzieję, że twoje nie zostaną."
+LAMP_8_1,One hundred days. I knocked three times last night. You did not answer. Good.,Sto dni. Wczoraj w nocy zapukałem trzy razy. Nie było odpowiedzi. Dobrze.
+LAMP_8_2,"The scribe answered, in the end. Knocked back, just once. The door closed tighter after that.","W końcu padła odpowiedź. Jedno puknięcie, tylko raz. Potem drzwi zamknęły się jeszcze mocniej."
+LAMP_8_3,Don't knock back. Whatever you hear.,Nie odpukuj. Cokolwiek usłyszysz.
+LAMP_9_1,"Have you been reading? The herbal was the scribe's, you know. They loved this garden more than anything.",Czytasz? Zielnik należał do skryby. Ten ogród był dla skryby wszystkim.
+LAMP_9_2,"If you planted the pale bloom, it is the first new one in a hundred years.","Jeśli blady kwiat jest już zasadzony, to pierwszy nowy od stu lat."
+LAMP_10_1,"Halfway. This is the longest part. Nothing changes, and everything does.","Połowa. To najdłuższa część. Nic się nie zmienia, a jednocześnie zmienia się wszystko."
+LAMP_10_2,Ring the hanging stones sometimes. The hall likes to be remembered.,"Zadzwoń czasem wiszącymi kamieniami. Hala lubi, kiedy się o niej pamięta."
+LAMP_11_1,One hundred days left. I won't knock again until the end.,Zostało sto dni. Nie zapukam już aż do końca.
+LAMP_11_2,"When the door opens, I will be there. I have tended doors for longer than anyone, and never once seen one open.","Kiedy drzwi się otworzą, będę tam. Doglądam drzwi dłużej niż ktokolwiek i ani razu nie widziałem, jak się otwierają."
+LAMP_11_3,Keep your light steady. That is all.,Trzymaj swoje światło spokojnie. To wszystko.
+LAMP_12_1,You waited. All of it.,Udało się doczekać. Do samego końca.
+LAMP_12_2,Every lamp I ever lit was for this: someone walking through.,"Każda lampa, jaką zapaliłem, była dla tej chwili: żeby ktoś przeszedł na drugą stronę."
+LAMP_12_3,"I can put my lantern down now. Go on, into the light. I'll stay a while and watch.","Mogę już odstawić latarnię. Idź, w światło. Zostanę chwilę i popatrzę."
+ENDING_BOOKS,Book pages read: %d of %d,Przeczytane strony książek: %d z %d
+ENDING_LAMP,Meetings with the Lamplighter: %d of %d,Spotkania z Latarnikiem: %d z %d

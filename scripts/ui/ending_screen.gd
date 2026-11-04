@@ -8,6 +8,9 @@ const Rooms := preload("res://scripts/world/rooms.gd")
 const Items := preload("res://scripts/data/items.gd")
 const Notes := preload("res://scripts/data/notes.gd")
 const BloomSprout := preload("res://scripts/world/props/bloom_sprout.gd")
+const Books := preload("res://scripts/data/books.gd")
+const BookProgress := preload("res://scripts/data/book_progress.gd")
+const Visits := preload("res://scripts/data/lamplighter_visits.gd")
 
 ## The game scene (for leaving to the menu).
 var game: Node
@@ -57,6 +60,8 @@ static func summary() -> PackedStringArray:
 			carried += 1
 	lines.append(Loc.t("ENDING_ITEMS") % [carried, total_items.size()])
 	lines.append(Loc.t("ENDING_PAGES") % [Notes.readable(), Notes.PAGES.size()])
+	lines.append(Loc.t("ENDING_BOOKS") % [BookProgress.total_pages_read(), Books.PAGES * Books.ORDER.size()])
+	lines.append(Loc.t("ENDING_LAMP") % [mini(int(WorldManager.get_flag("lamp_talks", 0)), Visits.VISITS.size()), Visits.VISITS.size()])
 	var stage := BloomSprout.stage()
 	lines.append(Loc.t("ENDING_BLOOM_GROWN" if stage >= 3 else ("ENDING_BLOOM_GROWING" if stage >= 0 else "ENDING_BLOOM_NONE")))
 	var tampers := TimeManager.clock.tamper_events

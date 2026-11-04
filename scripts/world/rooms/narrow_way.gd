@@ -58,6 +58,7 @@ func _add_props(parent: Node) -> void:
 	var trickle := _detail(parent, "trickle", Vector2(TRICKLE_X, floor_y(TRICKLE_X)))
 	add_interactable(parent, "trickle", Texts.OBJECTS["trickle"], Vector2(TRICKLE_X - 30, floor_y(TRICKLE_X)), {"hit": Vector2(110, 260), "hit_offset": Vector2(30, -190), "prompt": Vector2(30, -300), "stand": 70.0, "radius": 90.0})
 	add_collectible(parent, "stone", Vector2(TRICKLE_X + 4, floor_y(TRICKLE_X) - 4), {"stand": 60.0})
+	add_collectible(parent, "book_door", Vector2(2000, floor_y(2000) - 6), {"stand": 55.0})
 	for p in [fossil, marks, trickle]:
 		queue_bake(p)
 

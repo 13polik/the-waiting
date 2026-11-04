@@ -3,6 +3,13 @@
 A slow, atmospheric exploration game about a small hooded creature — the
 Wick — waiting four hundred real days beneath the world, beside the place it
 calls The Nest. Godot 4.7, GDScript, iOS-first, landscape, touch-first.
+Version 0.7: three books of 300 pages each (twenty pages a day), a home
+that looks lived in (woven nest, a shelf the books stand on, a jar of glowing
+caps, roots), and the Lamplighter — met twelve times over the 400 days — who
+tells the story of the scribe, the knocking and the door, leaves a book, and
+lights the scribe's lantern again. An animated loading screen replaces the
+Godot logo.
+
 Version 0.6: the ending. When the 400 days are over the door opens; beyond
 it lies one last place, and walking into its daylight ends the wait with an
 epilogue and a summary of the journey (the world stays open afterwards).
@@ -82,6 +89,7 @@ godot --headless --path . -- --profile=menutest --reset-save --reset-settings --
 godot --headless --path . -- --profile=menutest --selftest-menu=settings-check
 ```
 
+Books, home, Lamplighter: `-- --profile=storytest --reset-save --selftest-story`.
 The ending: `-- --profile=endtest --reset-save --selftest-ending`, then
 `-- --profile=endtest --selftest-ending=check`.
 Tampering and the dungeon: `-- --profile=jailtest --reset-save --selftest-jail`,

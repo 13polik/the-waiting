@@ -8,6 +8,9 @@ const Texts := preload("res://scripts/data/world_texts.gd")
 const TunnelMouth := preload("res://scripts/world/props/tunnel_mouth.gd")
 const WallDetails := preload("res://scripts/world/props/wall_details.gd")
 const GlowFeatures := preload("res://scripts/world/props/glow_features.gd")
+const FLAG_RELIT := "scribe_lamp_lit"
+
+var _lamp_pos: Vector2
 
 const DESK_X := 1050.0
 ## Day the pages were found (TimeManager.day_index), for the daily reading.
@@ -56,7 +59,14 @@ func _add_props(parent: Node) -> void:
 	parent.add_child(veins)
 
 	var lamp := _detail(parent, "lamp", Vector2(650, floor_y(650)))
-	add_interactable(parent, "lamp", Texts.OBJECTS["lamp"], lamp.position, {"hit": Vector2(200, 80), "hit_offset": Vector2(10, -20), "prompt": Vector2(10, -70), "stand": 90.0})
+	var lamp_i := add_interactable(parent, "lamp", Texts.OBJECTS["lamp"], lamp.position, {"hit": Vector2(200, 80), "hit_offset": Vector2(10, -20), "prompt": Vector2(10, -70), "stand": 90.0})
+	lamp_i.dynamic_lines = _lamp_lines
+	lamp_i.on_examined = func(_c: int) -> void:
+		if WorldManager.get_flag(FLAG_RELIT, false):
+			WorldManager.set_flag("lamp_lit_seen", true)
+	_lamp_pos = lamp.position + Vector2(78, -6)
+	if WorldManager.get_flag(FLAG_RELIT, false):
+		_light_lamp.call_deferred(false)
 	var desk := _detail(parent, "desk", Vector2(DESK_X, floor_y(DESK_X)))
 	add_interactable(parent, "desk", Texts.OBJECTS["desk"], desk.position, {"hit": Vector2(260, 110), "hit_offset": Vector2(-40, -40), "prompt": Vector2(-90, -130), "stand": 150.0, "radius": 170.0})
 	var sevens := _detail(parent, "marks", Vector2(1420, floor_y(1420) - 160))
@@ -76,6 +86,43 @@ func _exit_tree() -> void:
 func _on_item_added(item_id: String) -> void:
 	if item_id == "pages" and WorldManager.get_flag(FLAG_PAGES_DAY) == null:
 		WorldManager.set_flag(FLAG_PAGES_DAY, TimeManager.day_index())
+
+
+## 0.7: the Lamplighter lights the Scribe's lantern again.
+func _light_lamp(animated: bool) -> void:
+	var glow := Node2D.new()
+	glow.name = "LampGlow"
+	glow.position = _lamp_pos
+	glow.material = LightTextures.unshaded()
+	glow.draw.connect(func() -> void:
+		glow.draw_circle(Vector2.ZERO, 26.0, Color(0.8, 1.0, 0.92, 0.12))
+		glow.draw_circle(Vector2.ZERO, 16.0, Color(0.8, 1.0, 0.92, 0.25))
+		glow.draw_circle(Vector2.ZERO, 10.0, Color(0.92, 1.0, 0.95)))
+	props_layer.add_child(glow)
+	var l := LightTextures.make_light(Color(0.75, 0.95, 0.88), 1.0, 2.8)
+	glow.add_child(l)
+	if animated:
+		glow.modulate.a = 0.0
+		l.energy = 0.0
+		var tw := create_tween().set_parallel()
+		tw.tween_property(glow, "modulate:a", 1.0, 3.0)
+		tw.tween_property(l, "energy", 1.0, 3.0)
+
+
+func _lamp_lines(count: int) -> Array:
+	if WorldManager.get_flag(FLAG_RELIT, false):
+		return ["OBJ_LAMP_LIT_R"] if WorldManager.get_flag("lamp_lit_seen", false) else ["OBJ_LAMP_LIT_1", "OBJ_LAMP_LIT_2"]
+	var data: Dictionary = Texts.OBJECTS["lamp"]
+	return data["first"] if count <= 1 else [data["repeat"][(count - 2) % data["repeat"].size()]]
+
+
+func _on_lamplighter_left(_index: int) -> void:
+	if WorldManager.get_flag(FLAG_RELIT, false) and get_node_or_null("Props/LampGlow") == null and not _lit_now:
+		_lit_now = true
+		_light_lamp(true)
+
+
+var _lit_now: bool = false
 
 
 func _detail(parent: Node, kind: String, pos: Vector2) -> Node2D:

@@ -145,6 +145,7 @@ func _ready() -> void:
 	add_child(props_layer)
 	_add_props(props_layer)
 	_add_mod_passage(props_layer)
+	_add_visitor(props_layer)
 	_add_exits(props_layer)
 
 	actor_layer = Node2D.new()
@@ -198,6 +199,36 @@ func exit_at(world_pos: Vector2) -> Node:
 
 
 ## Re-checks exits that open with a world flag (e.g. a hidden passage).
+## The Lamplighter (0.7), when a meeting is due here today.
+func _add_visitor(parent: Node) -> void:
+	var Lamplighter: GDScript = load("res://scripts/world/props/lamplighter.gd")
+	var index: int = Lamplighter.due_visit(room_id)
+	if index < 0:
+		return
+	var v: Dictionary = load("res://scripts/data/lamplighter_visits.gd").VISITS[index]
+	var x := clampf(float(v["x"]), left_limit + 80.0, right_limit - 80.0)
+	var lamp: Node2D = Lamplighter.new()
+	lamp.name = "Lamplighter"
+	lamp.position = Vector2(x, floor_y(x))
+	parent.add_child(lamp)
+	var it := add_interactable(parent, "lamplighter", {"title": "LAMP_TITLE", "first": v["lines"], "repeat": v["lines"]}, lamp.position,
+		{"hit": Vector2(130, 320), "hit_offset": Vector2(10, -150), "prompt": Vector2(0, -350), "stand": 80.0, "radius": 120.0})
+	it.on_examined = func(_count: int) -> void:
+		after_text(func() -> void:
+			Lamplighter.finish_visit(index)
+			lamp.depart()
+			it.queue_free()
+			_on_lamplighter_left(index))
+	get_tree().create_timer(2.0).timeout.connect(func() -> void:
+		if is_instance_valid(lamp) and lamp.is_inside_tree():
+			UIManager.toast(Loc.t("LAMP_NEAR")))
+
+
+## A room can react when the Lamplighter has been and gone.
+func _on_lamplighter_left(_index: int) -> void:
+	pass
+
+
 ## Runs [param f] once the text on screen (if any) has been read.
 func after_text(f: Callable) -> void:
 	if UIManager.is_text_open():

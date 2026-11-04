@@ -50,6 +50,8 @@ func _ready() -> void:
 			mode = "ending"
 		elif arg == "--selftest-ending=check":
 			mode = "ending-check"
+		elif arg == "--selftest-story":
+			mode = "story"
 	match mode:
 		"fps": _fps()
 		"lifecycle": _lifecycle()
@@ -62,6 +64,7 @@ func _ready() -> void:
 		"jail-check": _jail_check()
 		"ending": _ending()
 		"ending-check": _ending_check()
+		"story": _story()
 		"write": _persist_write()
 		"check": _persist_check()
 		_: _full()
@@ -999,3 +1002,119 @@ func _ending_check() -> void:
 		await _click(ending.find_child("Stay", true, false))
 		await _wait(0.6)
 	_finish()
+
+
+const BookProgress := preload("res://scripts/data/book_progress.gd")
+
+
+## 0.7: books of 300 pages read twenty a day, the shelf at home, and the
+## Lamplighter met over the days (who leaves a book and relights a lantern).
+func _story() -> void:
+	await _wait(1.5)
+	_check(main.room.room_id == "home" and main.room.shelf != null, "home has a shelf")
+	_teleport(1130.0)
+	await _wait(0.6)
+	await _shot("s01_home")
+	await _examine_id("shelf")
+	_check(WorldManager.examine_count("shelf") == 1, "the shelf can be examined")
+	await _go("narrow")
+	_check(_find("lamplighter") == null, "no Lamplighter on the first day")
+	_teleport(1940.0)
+	await _examine_id("item_book_door")
+	_check(WorldManager.has_item("book_door"), "the Book of the Door is found")
+	await _press_action("inventory")
+	var satchel := await _wait_node_named("InventoryScreen")
+	if satchel != null:
+		await _click(satchel.find_child("Item_book_door", true, false))
+		var read: Button = satchel.find_child("Read", true, false)
+		_check(read != null and read.visible, "a book can be read from the satchel")
+		await _click(read)
+		var book := await _wait_node_named("BookScreen")
+		_check(book != null, "the book opens")
+		if book != null:
+			await _click(book.find_child("ReadOn", true, false))
+			await _wait(0.5)
+			_check(BookProgress.pages_read("book_door") == 20, "twenty pages read (%d)" % BookProgress.pages_read("book_door"))
+			_check(book.find_child("Passage_1", true, false) != null, "the first passage is shown")
+			_check(not (book.find_child("ReadOn", true, false) as Button).visible, "no more reading today")
+			await _shot("s02_book")
+			await _click(book.find_child("Back", true, false))
+			await _wait(0.5)
+		if is_instance_valid(satchel):
+			await _click(satchel.find_child("Back", true, false))
+			await _wait(0.5)
+	_check(not BookProgress.read_next("book_door"), "the same day, the book waits")
+	TimeManager.debug_add_seconds(DAY_SECONDS)
+	_check(BookProgress.read_next("book_door") and BookProgress.pages_read("book_door") == 40, "the next day, twenty more")
+
+	# Meeting 1: the Narrow Way, from day 1.
+	await _go("narrow")
+	await _meet("narrow")
+	await _go("hall")
+	await _go("narrow")
+	_check(_find("lamplighter") == null, "one meeting a day")
+	# Meeting 2: the hall, day 3. Meeting 3: home, day 6. Meeting 4: garden, day 10.
+	TimeManager.debug_add_seconds(DAY_SECONDS * 2.0)
+	await _go("hall")
+	await _meet("hall")
+	TimeManager.debug_add_seconds(DAY_SECONDS * 3.0)
+	await _go("home")
+	await _meet("home")
+	TimeManager.debug_add_seconds(DAY_SECONDS * 4.0)
+	await _go("garden")
+	await _meet("garden")
+	_check(WorldManager.get_flag("lamp_book_left", false), "the Lamplighter leaves a book")
+	_teleport(980.0)
+	await _examine_id("item_book_herbs")
+	_check(WorldManager.has_item("book_herbs"), "the Herbal is found in the garden")
+	await _go("home")
+	_teleport(1200.0)
+	await _examine_id("item_book_tales")
+	_check(WorldManager.has_item("book_tales"), "the Lamplighter's book is on the shelf")
+	await _wait(0.8)
+	_check(main.room.shelf.books == [true, true, true], "all three books stand on the shelf")
+	await _shot("s03_shelf_full")
+	# Meeting 5: the alcove, day 15, once the passage is open.
+	TimeManager.debug_add_seconds(DAY_SECONDS * 5.0)
+	await _go("alcove")
+	_check(_find("lamplighter") == null, "not in the alcove while the passage is shut")
+	WorldManager.set_flag("passage_open", true)
+	await _go("alcove")
+	_check(_find("lamplighter") != null, "the Lamplighter waits in the alcove")
+	await _wait(0.6)
+	await _shot("s04_lamplighter")
+	await _meet("alcove")
+	await _wait(3.5)
+	_check(WorldManager.get_flag("scribe_lamp_lit", false) and main.room.get_node_or_null("Props/LampGlow") != null, "the scribe's lantern burns again")
+	await _shot("s05_lantern_lit")
+	await _go("alcove")
+	_check(main.room.get_node_or_null("Props/LampGlow") != null, "and stays lit")
+	_check(int(WorldManager.get_flag("lamp_talks", 0)) == 5, "five meetings so far")
+	_check(SaveManager.save_now("story-test"), "save succeeds")
+	_finish()
+
+
+func _go(room_id: String) -> void:
+	main.travel(room_id, "")
+	await _wait_room(room_id, 10.0)
+	await _wait(0.8)
+
+
+func _meet(room_id: String) -> void:
+	var lamp := _find("lamplighter")
+	_check(lamp != null, "the Lamplighter is in %s" % room_id)
+	if lamp == null:
+		return
+	var before := int(WorldManager.get_flag("lamp_talks", 0))
+	_teleport(lamp.global_position.x - 120.0)
+	await _wait(0.3)
+	main.player.interaction.examine(lamp)
+	await _wait_until(func() -> bool: return UIManager.is_text_open(), 8.0)
+	for i in 4:
+		await _read_to_end()
+		if not UIManager.is_text_open():
+			break
+	await _wait(0.6)
+	_check(int(WorldManager.get_flag("lamp_talks", 0)) == before + 1, "a meeting in %s" % room_id)
+	await _wait(2.8)
+	_check(main.room.get_node_or_null("Props/Lamplighter") == null, "and then the Lamplighter is gone")

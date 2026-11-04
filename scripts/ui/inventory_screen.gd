@@ -9,6 +9,8 @@ const ItemArt := preload("res://scripts/world/item_art.gd")
 const Loc := preload("res://scripts/core/loc.gd")
 const ReaderScreen := preload("res://scripts/ui/reader_screen.gd")
 const Notes := preload("res://scripts/data/notes.gd")
+const BookScreen := preload("res://scripts/ui/book_screen.gd")
+const Books := preload("res://scripts/data/books.gd")
 
 var _owns_pause: bool = false
 var _desc: Label
@@ -16,6 +18,7 @@ var _places: Label
 var _cards: Array = []
 var _read: Button
 var _sub: Node = null
+var _selected: String = ""
 
 
 func _build() -> void:
@@ -64,17 +67,27 @@ func _build() -> void:
 func _select(card: Button) -> void:
 	for c in _cards:
 		c.selected = c == card
+	_selected = card.item_id
 	_desc.text = Items.get_def(card.item_id)["desc"]
 	if _read != null:
-		_read.visible = card.item_id == "pages" and Notes.readable() > 0
+		_read.visible = (card.item_id == "pages" and Notes.readable() > 0) or Books.is_book(card.item_id)
+		_read.text = "SATCHEL_READ_BOOK" if Books.is_book(card.item_id) else "SATCHEL_READ"
 
 
 func _open_reader() -> void:
 	if _sub != null and is_instance_valid(_sub):
 		return
-	_sub = ReaderScreen.new()
+	if Books.is_book(_selected):
+		_sub = BookScreen.new()
+		_sub.book_id = _selected
+	else:
+		_sub = ReaderScreen.new()
 	get_parent().add_child(_sub)
-	_sub.closed.connect(func() -> void: _sub = null)
+	# Only one panel at a time: the satchel steps aside while reading.
+	visible = false
+	_sub.closed.connect(func() -> void:
+		_sub = null
+		visible = true)
 
 
 func _unhandled_input(event: InputEvent) -> void:

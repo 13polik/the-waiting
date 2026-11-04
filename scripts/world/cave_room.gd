@@ -15,6 +15,12 @@ const Pool := preload("res://scripts/world/props/pool.gd")
 const PaleCaps := preload("res://scripts/world/props/pale_caps.gd")
 const Door := preload("res://scripts/world/props/door.gd")
 const TunnelMouth := preload("res://scripts/world/props/tunnel_mouth.gd")
+const HomeDecor := preload("res://scripts/world/props/home_decor.gd")
+const Books := preload("res://scripts/data/books.gd")
+const SHELF_X := 1130.0
+const SHELF_UP := 200.0
+## Set by the Lamplighter (0.7): a book left on the shelf.
+const FLAG_LAMP_BOOK := "lamp_book_left"
 
 const ROOM_ID := "home"
 const CRACK_X := 1562.0
@@ -30,6 +36,7 @@ var door: Node2D
 const FLAG_DOOR_SEEN_OPEN := "door_seen_open"
 
 var tally: Node2D
+var shelf: Node2D
 var caps: Node2D
 var cairn: Node2D
 
@@ -69,6 +76,8 @@ func _light_specs() -> Array:
 		[Vector2(CRACK_X + 30, floor_y(CRACK_X) - 30), Color(0.62, 0.68, 0.8), 0.6, 2.4],
 		[Vector2(CRACK_X, 330), Color(0.62, 0.68, 0.8), 0.35, 1.3],
 		[Vector2(1000, floor_y(1000) - 24), Color(0.9, 0.64, 0.4), 0.32, 1.1],
+		# The jar of caps over the nest: a soft night light.
+		[Vector2(880, ceil_y(880) + 200), Color(0.7, 0.95, 0.9), 0.45, 1.5],
 	]
 
 
@@ -86,6 +95,36 @@ func _add_props(parent: Node) -> void:
 	parent.add_child(tally)
 	var tally_i := _interactable(parent, "tally", Vector2(640, floor_y(640)), {"hit": Vector2(270, 200), "hit_offset": Vector2(0, -150), "prompt": Vector2(0, -260), "stand": 30.0})
 	tally_i.dynamic_lines = _tally_lines
+
+	# 0.7: the nest corner, made a home.
+	var mat := HomeDecor.new()
+	mat.kind = "mat"
+	mat.position = Vector2(1000, floor_y(1000) + 6)
+	parent.add_child(mat)
+	var roots := HomeDecor.new()
+	roots.kind = "roots"
+	roots.position = Vector2(1010, ceil_y(1010) - 4)
+	parent.add_child(roots)
+	var jar := HomeDecor.new()
+	jar.kind = "jar"
+	jar.drop = 150.0
+	jar.position = Vector2(880, ceil_y(880) - 4)
+	parent.add_child(jar)
+	shelf = HomeDecor.new()
+	shelf.kind = "shelf"
+	shelf.position = Vector2(SHELF_X, floor_y(SHELF_X) - SHELF_UP)
+	shelf.books = _shelf_books()
+	parent.add_child(shelf)
+	var shelf_i := add_interactable(parent, "shelf", {"title": "OBJ_SHELF_TITLE", "first": [], "repeat": []}, Vector2(SHELF_X, floor_y(SHELF_X)),
+		{"hit": Vector2(260, 150), "hit_offset": Vector2(-20, -SHELF_UP - 60), "prompt": Vector2(-60, -SHELF_UP - 170), "stand": 30.0})
+	shelf_i.dynamic_lines = _shelf_lines
+	if WorldManager.get_flag(FLAG_LAMP_BOOK, false):
+		add_collectible(parent, "book_tales", Vector2(SHELF_X + 60, floor_y(SHELF_X) - SHELF_UP - 4),
+			{"stand": 30.0, "hit": Vector2(90, 90), "hit_offset": Vector2(0, -SHELF_UP - 30), "prompt": Vector2(0, -SHELF_UP - 80)})
+	if not WorldManager.item_added.is_connected(_on_item_added):
+		WorldManager.item_added.connect(_on_item_added)
+	for p in [mat, roots, jar, shelf]:
+		queue_bake(p)
 
 	var nest := Nest.new()
 	nest.position = Vector2(1000, floor_y(1000))
@@ -196,6 +235,36 @@ func _on_wait_completed() -> void:
 func _exit_tree() -> void:
 	if TimeManager.wait_completed.is_connected(_on_wait_completed):
 		TimeManager.wait_completed.disconnect(_on_wait_completed)
+	if WorldManager.item_added.is_connected(_on_item_added):
+		WorldManager.item_added.disconnect(_on_item_added)
+
+
+## Books found stand on the shelf at home (the one being carried, too).
+func _shelf_books() -> Array:
+	var on: Array = []
+	for id in Books.ORDER:
+		on.append(WorldManager.is_collected(id))
+	return on
+
+
+func _shelf_lines(_count: int) -> Array:
+	var n := 0
+	for b in _shelf_books():
+		n += 1 if b else 0
+	if n == 0:
+		return ["OBJ_SHELF_EMPTY"]
+	if n < Books.ORDER.size():
+		return ["OBJ_SHELF_SOME", ["OBJ_SHELF_COUNT", n, Books.ORDER.size()]]
+	return ["OBJ_SHELF_FULL"]
+
+
+func _on_item_added(item_id: String) -> void:
+	if Books.is_book(item_id) and is_instance_valid(shelf):
+		shelf.books = _shelf_books()
+		if shelf.baked:
+			Baker.rebake(shelf)
+		else:
+			shelf.queue_redraw()
 
 
 ## The old passage: one stone may be pulled away each (real) day.

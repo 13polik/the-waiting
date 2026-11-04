@@ -15,6 +15,9 @@ static func draw(ci: CanvasItem, item_id: String, c: Vector2, s: float = 1.0) ->
 		"fragment": _fragment(ci, c, s)
 		"bloom": _bloom(ci, c, s)
 		"pages": _pages(ci, c, s)
+		"book_door": _book(ci, c, s, Color(0.42, 0.2, 0.16), Color(0.85, 0.62, 0.3))
+		"book_herbs": _book(ci, c, s, Color(0.2, 0.32, 0.22), Color(0.75, 0.85, 0.6))
+		"book_tales": _book(ci, c, s, Color(0.2, 0.24, 0.4), Color(0.85, 0.8, 0.55))
 
 
 static func _stone(ci: CanvasItem, c: Vector2, s: float) -> void:
@@ -71,6 +74,23 @@ static func _pages(ci: CanvasItem, c: Vector2, s: float) -> void:
 		lines.append(c + Vector2(-5, y - 3.6) * s)
 		lines.append(c + Vector2(5 - k, y - 3.8) * s)
 	ci.draw_multiline(lines, Color(0.25, 0.22, 0.2, 0.7), 0.8 * s)
+
+
+## A thick old book seen from the front, slightly turned: cover, page block,
+## a mark on the cover.
+static func _book(ci: CanvasItem, c: Vector2, s: float, cover: Color, mark: Color) -> void:
+	var pages := PackedVector2Array([c + Vector2(-8, -11) * s, c + Vector2(11, -10) * s, c + Vector2(12, 11) * s, c + Vector2(-7, 12) * s])
+	ci.draw_colored_polygon(pages, Color(0.82, 0.77, 0.66))
+	for k in 4:
+		var x := 9.0 + k * 0.7
+		ci.draw_line(c + Vector2(x, -9 + k * 0.3) * s, c + Vector2(x + 0.6, 10.5) * s, Color(0.55, 0.5, 0.42, 0.6), 0.6 * s, true)
+	var front := PackedVector2Array([c + Vector2(-11, -12) * s, c + Vector2(8, -12) * s, c + Vector2(9, 11) * s, c + Vector2(-10, 12) * s])
+	ci.draw_colored_polygon(front, cover)
+	ci.draw_line(c + Vector2(-8.5, -11) * s, c + Vector2(-7.5, 11) * s, cover.darkened(0.35), 1.6 * s, true)
+	ci.draw_arc(c + Vector2(0, -1) * s, 4.0 * s, 0, TAU, 16, Color(mark, 0.85), 1.0 * s, true)
+	ci.draw_circle(c + Vector2(0, -1) * s, 1.2 * s, Color(mark, 0.85))
+	ci.draw_polyline(Painter.closed(front), INK, 1.3 * s, true)
+	ci.draw_polyline(Painter.closed(pages), INK, 1.0 * s, true)
 
 
 static func _bloom(ci: CanvasItem, c: Vector2, s: float) -> void:

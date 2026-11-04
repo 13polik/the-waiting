@@ -10,6 +10,8 @@ const Texts := preload("res://scripts/data/home_texts.gd")
 const WorldTexts := preload("res://scripts/data/world_texts.gd")
 const Items := preload("res://scripts/data/items.gd")
 const Rooms := preload("res://scripts/world/rooms.gd")
+const Books := preload("res://scripts/data/books.gd")
+const Visits := preload("res://scripts/data/lamplighter_visits.gd")
 const T0 := 1_800_000_000.0
 const DAY := 86400.0
 
@@ -329,6 +331,13 @@ func _test_translations_complete() -> void:
 			"ENDING_DAYS", "ENDING_PLACES", "ENDING_ITEMS", "ENDING_PAGES", "ENDING_BLOOM_GROWN", "ENDING_BLOOM_GROWING",
 			"ENDING_BLOOM_NONE", "ENDING_HONEST", "ENDING_TAMPERED", "ENDING_STAY", "ENDING_MENU", "MENU_SAVE_DONE", "HUD_DONE"]:
 		check(keys.has(k), "0.6 key %s exists" % k)
+	for k in Books.all_keys() + Visits.all_keys() + ["BOOK_READ_ON", "BOOK_UNOPENED", "BOOK_PAGES", "BOOK_PROGRESS",
+			"BOOK_TOMORROW", "BOOK_FINISHED", "SATCHEL_READ_BOOK", "OBJ_SHELF_TITLE", "OBJ_SHELF_EMPTY", "OBJ_SHELF_SOME",
+			"OBJ_SHELF_COUNT", "OBJ_SHELF_FULL", "OBJ_LAMP_LIT_1", "OBJ_LAMP_LIT_2", "OBJ_LAMP_LIT_R", "LAMP_NEAR",
+			"ENDING_BOOKS", "ENDING_LAMP"]:
+		check(keys.has(k), "0.7 key %s exists" % k)
+	check(Books.SITTINGS * Books.PER_SITTING == 300, "each book has 300 pages")
+	check(Visits.VISITS.size() == 12, "twelve meetings with the Lamplighter")
 	check(Rooms.exists("dungeon") and not Rooms.ORDER.has("dungeon"), "the dungeon exists but is not a place to find")
 	for i in 12:
 		check(keys.has("NOTE_%d" % (i + 1)), "page NOTE_%d exists" % (i + 1))
